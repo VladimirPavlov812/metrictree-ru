@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.101.0",
     "dagre": "^0.8.5",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "html-to-image": "^1.11.13",
     "openai": "^6.7.0",
