@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Дерево метрик продукта: как построить и примеры | MetricTree</title>
+
+  
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247', 'ym');
+
+    ym(105378247, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+
+  <meta
+    name="description"
+    content="Что такое дерево метрик продукта, как его построить и использовать. Пример дерева продуктовых метрик и AI-инструмент MetricTree."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.vercel.app/derevo-metrik/"
+  />
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+  <header style="
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    padding:16px 24px;
+  ">
+    <div style="
+      max-width:900px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    ">
+      <a href="/" style="text-decoration:none; color:#111827; font-weight:700; font-size:20px;">
+        MetricTree
+      </a>
+
+      <a
+        href="/"
+        style="
+          background:#ffdd2d;
+          color:#111827;
+          text-decoration:none;
+          padding:10px 18px;
+          border-radius:10px;
+          font-weight:600;
+        "
+      >
+        Построить дерево →
+      </a>
+    </div>
+  </header>
+
+  <main style="
+    max-width:900px;
+    margin:0 auto;
+    padding:64px 24px;
+  ">
+
+    <h1 style="
+      font-size:42px;
+      line-height:1.15;
+      margin:0 0 20px;
+      max-width:800px;
+    ">
+      Дерево метрик продукта: как построить и примеры
+    </h1>
+
+    <p style="
+      font-size:20px;
+      line-height:1.6;
+      color:#4b5563;
+      max-width:760px;
+      margin-bottom:32px;
+    ">
+      Разбираемся, что такое дерево метрик, зачем оно нужно продуктовой команде,
+      как правильно декомпозировать ключевую метрику и использовать дерево
+      для поиска точек роста.
+    </p>
+
+    <a
+      href="/"
+      style="
+        display:inline-block;
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:14px 22px;
+        border-radius:12px;
+        font-weight:600;
+        font-size:16px;
+      "
+    >
+      Построить дерево метрик с помощью AI
+    </a>
+
+    <section style="
+  margin-top:72px;
+  max-width:760px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 20px;
+  ">
+    Что такое дерево метрик
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Дерево метрик — это способ связать главную цель продукта с метриками,
+    которые на неё влияют. Верхнеуровневая метрика декомпозируется на
+    составляющие, а те, в свою очередь, — на более конкретные показатели,
+    которыми может управлять продуктовая команда.
+  </p>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Например, если ключевая метрика продукта — выручка, её можно разложить
+    на количество покупок и средний чек. Количество покупок — на число
+    активных пользователей и частоту покупок. Так появляется связь между
+    бизнес-результатом и изменениями в поведении пользователей.
+  </p>
+
+</section>
+
+
+<section style="
+  margin-top:56px;
+  max-width:760px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 20px;
+  ">
+    Зачем продукту дерево метрик
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Само по себе наблюдение за верхнеуровневой метрикой редко подсказывает,
+    что именно нужно изменить в продукте. Дерево помогает разложить результат
+    на факторы и найти уровень, на котором команда действительно может
+    повлиять на ситуацию.
+  </p>
+
+  <ul style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+    padding-left:24px;
+  ">
+    <li style="margin-bottom:10px;">
+      <strong>Декомпозировать цель.</strong>
+      Понять, из каких показателей складывается ключевой результат продукта.
+    </li>
+
+    <li style="margin-bottom:10px;">
+      <strong>Найти точки роста.</strong>
+      Определить метрики, изменение которых способно повлиять на результат.
+    </li>
+
+    <li style="margin-bottom:10px;">
+      <strong>Приоритизировать работу.</strong>
+      Сравнивать потенциальное влияние разных продуктовых инициатив.
+    </li>
+
+    <li>
+      <strong>Формировать гипотезы.</strong>
+      Связывать изменения продукта и A/B-эксперименты с конкретными метриками.
+    </li>
+  </ul>
+
+</section>
+
+<section style="
+  margin-top:56px;
+  max-width:760px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 20px;
+  ">
+    Как построить дерево метрик
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Построение дерева начинается с бизнес-результата и постепенно
+    переходит к метрикам, на которые продуктовая команда может влиять
+    через изменения продукта.
+  </p>
+
+  <h3 style="font-size:21px; margin:32px 0 10px;">
+    1. Определите верхнеуровневую метрику
+  </h3>
+
+  <p style="font-size:18px; line-height:1.7; color:#374151;">
+    Начните с показателя, который отражает результат продукта:
+    например, выручки, GMV, количества заказов или числа платящих
+    пользователей. Выбор зависит от бизнес-модели и цели анализа.
+  </p>
+
+  <h3 style="font-size:21px; margin:32px 0 10px;">
+    2. Декомпозируйте её на составляющие
+  </h3>
+
+  <p style="font-size:18px; line-height:1.7; color:#374151;">
+    Определите, из каких показателей складывается верхнеуровневая метрика.
+    Например, GMV можно представить через количество заказов и средний чек.
+    Важно, чтобы связь между родительской и дочерними метриками была
+    понятной и объяснимой.
+  </p>
+
+  <h3 style="font-size:21px; margin:32px 0 10px;">
+    3. Продолжайте декомпозицию до продуктовых метрик
+  </h3>
+
+  <p style="font-size:18px; line-height:1.7; color:#374151;">
+    Спускайтесь ниже по дереву, пока не появятся показатели, на которые
+    команда может воздействовать непосредственно: конверсия, retention,
+    частота использования функции, доля успешных сценариев и другие
+    поведенческие метрики.
+  </p>
+
+  <h3 style="font-size:21px; margin:32px 0 10px;">
+    4. Проверьте связи между метриками
+  </h3>
+
+  <p style="font-size:18px; line-height:1.7; color:#374151;">
+    Для каждой ветки задайте вопрос: действительно ли изменение дочерней
+    метрики должно влиять на родительскую? Если связь невозможно объяснить,
+    структуру дерева стоит пересмотреть.
+  </p>
+
+  <h3 style="font-size:21px; margin:32px 0 10px;">
+    5. Найдите метрики, на которые можно воздействовать
+  </h3>
+
+  <p style="font-size:18px; line-height:1.7; color:#374151;">
+    Готовое дерево позволяет перейти от наблюдения за результатом к действиям:
+    выбрать перспективную метрику, сформулировать продуктовую гипотезу
+    и проверить её с помощью эксперимента.
+  </p>
+
+</section>
+
+<section style="
+  margin-top:64px;
+  max-width:760px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 20px;
+  ">
+    Пример дерева метрик продукта
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Рассмотрим упрощённый пример для маркетплейса. В качестве
+    верхнеуровневой метрики возьмём GMV — общую стоимость товаров,
+    проданных через площадку.
+  </p>
+
+  <div style="
+    margin:32px 0;
+    padding:28px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    overflow-x:auto;
+  ">
+
+    <div style="
+      font-family:monospace;
+      font-size:17px;
+      line-height:1.8;
+      white-space:pre;
+    ">GMV
+├── Количество заказов
+│   ├── Активные покупатели
+│   │   ├── Новые покупатели
+│   │   └── Вернувшиеся покупатели
+│   └── Заказов на покупателя
+│       └── Частота покупок
+│
+└── Средний чек
+    ├── Товаров в заказе
+    └── Средняя цена товара</div>
+
+  </div>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Сам GMV трудно использовать как непосредственную точку воздействия:
+    команда не может просто «увеличить GMV». Дерево показывает,
+    за счёт каких факторов он может измениться.
+  </p>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Например, одна из веток приводит от GMV к количеству заказов,
+    затем к числу активных покупателей и доле вернувшихся пользователей.
+    На этом уровне уже можно сформулировать конкретную продуктовую задачу:
+    повысить возвращаемость покупателей и проверить гипотезы,
+    которые способны повлиять на повторные покупки.
+  </p>
+
+</section>
+
+<section style="
+  margin-top:56px;
+  max-width:760px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 20px;
+  ">
+    Что делать с деревом после построения
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Дерево метрик — не конечный результат анализа, а инструмент для
+    принятия продуктовых решений. После построения дерева можно перейти
+    от общей бизнес-цели к конкретным метрикам и гипотезам.
+  </p>
+
+  <ol style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+    padding-left:24px;
+  ">
+
+    <li style="margin-bottom:14px;">
+      <strong>Выберите метрику.</strong>
+      Найдите показатель, который потенциально ограничивает рост
+      родительской метрики и на который команда способна воздействовать.
+    </li>
+
+    <li style="margin-bottom:14px;">
+      <strong>Сформулируйте гипотезу.</strong>
+      Определите, какое изменение продукта может повлиять на выбранную
+      метрику и почему.
+    </li>
+
+    <li style="margin-bottom:14px;">
+      <strong>Проведите эксперимент.</strong>
+      Если это возможно, проверьте гипотезу с помощью A/B-теста или
+      другого подходящего метода.
+    </li>
+
+    <li>
+      <strong>Оцените влияние выше по дереву.</strong>
+      Рост локальной метрики сам по себе ещё не гарантирует улучшения
+      продукта. Проверьте, изменились ли связанные родительские метрики
+      и итоговый бизнес-результат.
+    </li>
+
+  </ol>
+
+</section>
+
+
+<section style="
+  margin-top:64px;
+  max-width:760px;
+  padding:36px;
+  background:white;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+">
+
+  <h2 style="
+    font-size:30px;
+    line-height:1.25;
+    margin:0 0 18px;
+  ">
+    Как построить дерево метрик с помощью AI
+  </h2>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Дерево метрик можно строить вручную, начиная с ключевой бизнес-метрики
+    и последовательно декомпозируя её до продуктовых и пользовательских
+    показателей. MetricTree помогает ускорить этот процесс с помощью AI.
+  </p>
+
+  <p style="
+    font-size:18px;
+    line-height:1.7;
+    color:#374151;
+  ">
+    Опишите продукт и его бизнес-модель — MetricTree предложит структуру
+    дерева метрик. После генерации дерево можно редактировать, анализировать
+    отдельные метрики, искать точки роста и формировать идеи
+    A/B-экспериментов.
+  </p>
+
+  <a
+    href="/"
+    style="
+      display:inline-block;
+      margin-top:12px;
+      background:#ffdd2d;
+      color:#111827;
+      text-decoration:none;
+      padding:14px 22px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:17px;
+    "
+  >
+    Построить дерево метрик →
+  </a>
+
+</section>
+
+
+  </main>
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых метрик.
+</footer>
+
+</body>
+
+
+</html>

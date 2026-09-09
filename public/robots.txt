@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://metrictree.vercel.app/sitemap.xml
