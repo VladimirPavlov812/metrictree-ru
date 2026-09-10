@@ -205,6 +205,164 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 });
 
 // -----------------------
+// PROJECTS
+// -----------------------
+
+app.get("/api/projects", authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT id, name, created_at, updated_at
+      FROM projects
+      WHERE user_id = $1
+      ORDER BY updated_at DESC
+      `,
+      [req.user.userId]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Projects list error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/projects/:id", authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT id, name, data
+      FROM projects
+      WHERE id = $1 AND user_id = $2
+      LIMIT 1
+      `,
+      [req.params.id, req.user.userId]
+    );
+
+    const project = result.rows[0];
+
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    res.json(project);
+  } catch (err) {
+    console.error("Project load error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/projects", authRequired, async (req, res) => {
+  try {
+    const { name, data } = req.body || {};
+
+    if (!name || !data) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const result = await pool.query(
+      `
+      INSERT INTO projects (user_id, name, data)
+      VALUES ($1, $2, $3)
+      RETURNING id, name, created_at, updated_at
+      `,
+      [req.user.userId, name, data]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Project create error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/api/projects/:id", authRequired, async (req, res) => {
+  try {
+    const { data } = req.body || {};
+
+    const result = await pool.query(
+      `
+      UPDATE projects
+      SET data = $1
+      WHERE id = $2 AND user_id = $3
+      RETURNING id, name, created_at, updated_at
+      `,
+      [data, req.params.id, req.user.userId]
+    );
+
+    if (!result.rows[0]) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Project update error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/api/projects/:id", authRequired, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      DELETE FROM projects
+      WHERE id = $1 AND user_id = $2
+      RETURNING id
+      `,
+      [req.params.id, req.user.userId]
+    );
+
+    if (!result.rows[0]) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Project delete error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// -----------------------
+// FEEDBACK
+// -----------------------
+
+app.post("/api/feedback", async (req, res) => {
+  try {
+    const { source, answers, createdAt } = req.body || {};
+
+    if (!source || !answers?.task || !answers?.nextStep) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    await pool.query(
+      `
+      INSERT INTO feedback
+        (source, task, next_step, reuse_score, contact, created_at)
+      VALUES
+        ($1, $2, $3, $4, $5, $6)
+      `,
+      [
+        source,
+        answers.task,
+        answers.nextStep,
+        answers.reuseScore ? Number(answers.reuseScore) : null,
+        answers.contact || null,
+        createdAt || new Date().toISOString(),
+      ]
+    );
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Feedback error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+
+// -----------------------
 // CLOUD.RU / GPT
 // -----------------------
 

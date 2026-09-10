@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { memo } from "react";
 import { Handle, Position } from "reactflow";
-import { supabase } from "./supabaseClient";
 import AuthModal from "./AuthModal";
 import ReactFlow, {
   Background,
@@ -543,13 +542,13 @@ const handleGenerateExperiment = async () => {
     setCloudLoading(true);
     setCloudError("");
 
-    const { data, error } = await supabase
-      .from("projects")
-      .select("id,name,created_at,updated_at")
-      .order("updated_at", { ascending: false });
+    const res = await fetch("/api/projects");
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error("Не удалось загрузить проекты");
+    }
 
+    const data = await res.json();
     setCloudProjects(data || []);
   } catch (e) {
     console.error(e);
@@ -748,12 +747,19 @@ const handleGenerateExperiment = async () => {
 
     // Если уже открыт проект и не просим "как новый" — делаем UPDATE
     if (activeProjectId && !forceNew) {
-      const { error } = await supabase
-        .from("projects")
-        .update({ data: payload })
-        .eq("id", activeProjectId);
+      const res = await fetch(`/api/projects/${activeProjectId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: payload,
+        }),
+      });
 
-      if (error) throw error;
+      if (!res.ok) {
+        throw new Error("Не удалось сохранить проект");
+      }
 
       setSaveStatus("saved");
       await fetchCloudProjects(); // чтобы updated_at/сортировка обновились
@@ -772,13 +778,22 @@ const handleGenerateExperiment = async () => {
     }
 
     const name = input.trim() || "MetricTree проект";
-    const { data: created, error } = await supabase
-      .from("projects")
-      .insert([{ user_id: session.user.id, name, data: payload }])
-      .select("id")
-      .single();
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        data: payload,
+      }),
+    });
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error("Не удалось создать проект");
+    }
+
+    const created = await res.json();
 
     // сделаем новый проект активным (чтобы дальше сохранять поверх)
     setActiveProjectId(created?.id || null);
@@ -793,14 +808,27 @@ const handleGenerateExperiment = async () => {
   };
 
   useEffect(() => {
-  supabase.auth.getSession().then(({ data }) => setSession(data.session));
+  const loadSession = async () => {
+    try {
+      const res = await fetch("/api/auth/me");
 
-  const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
-    setSession(sess);
-    if (sess) setAuthModalOpen(false); // закрыть модалку после успешного входа
-  });
+      if (!res.ok) {
+        setSession(null);
+        return;
+      }
 
-  return () => sub.subscription.unsubscribe();
+      const data = await res.json();
+
+      setSession({
+        user: data.user,
+      });
+    } catch (e) {
+      console.error("Session load error:", e);
+      setSession(null);
+    }
+  };
+
+  loadSession();
   }, []);
 
   useEffect(() => {
@@ -876,13 +904,13 @@ const handleGenerateExperiment = async () => {
     setCloudLoading(true);
     setCloudError("");
 
-    const { data, error } = await supabase
-      .from("projects")
-      .select("id,name,data")
-      .eq("id", projectId)
-      .single();
+    const res = await fetch(`/api/projects/${projectId}`);
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error("Не удалось открыть проект");
+    }
+
+    const data = await res.json();
 
     const payload = data?.data || {};
     const {
@@ -928,8 +956,13 @@ const handleGenerateExperiment = async () => {
     setCloudLoading(true);
     setCloudError("");
 
-    const { error } = await supabase.from("projects").delete().eq("id", projectId);
-    if (error) throw error;
+    const res = await fetch(`/api/projects/${projectId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      throw new Error("Не удалось удалить проект");
+    }
 
     setCloudProjects((prev) => prev.filter((p) => p.id !== projectId));
   } catch (e) {
@@ -2695,7 +2728,17 @@ const currentNextStepsCopy =
       </div>
 
       <button
-        onClick={() => supabase.auth.signOut()}
+        onClick={async () => {
+        try {
+        await fetch("/api/auth/logout", {
+        method: "POST",
+        });
+
+        setSession(null);
+        } catch (e) {
+        console.error("Logout error:", e);
+        }
+        }}
         className="text-sm px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 transition"
       >
         Выйти
@@ -2755,7 +2798,7 @@ const currentNextStepsCopy =
       onClick={handleSaveToCloud}
       disabled={!treeData && (!nodes?.length || !edges?.length)}
       className="w-full mb-4 bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition text-sm font-medium"
-      title={!session ? "Войдите, чтобы сохранять в облако" : "Сохранить проект в Supabase"}
+      title={!session ? "Войдите, чтобы сохранять в облако" : "Сохранить проект"}
       >
       💾 Сохранить в облако
       </button>
@@ -3792,7 +3835,14 @@ const currentNextStepsCopy =
   </div>
 )}
 
-<AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+<AuthModal
+  open={authModalOpen}
+  onClose={() => setAuthModalOpen(false)}
+  onAuth={(user) => {
+    setSession({ user });
+    setAuthModalOpen(false);
+  }}
+/>
 
 {/* Автор (фиксированно снизу на мобильной версии) */}
     {isMobile && (
