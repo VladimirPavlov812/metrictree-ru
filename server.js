@@ -3,6 +3,7 @@ import pg from "pg";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import crypto from "node:crypto";
 
 const { Pool } = pg;
 
@@ -408,6 +409,316 @@ app.post("/api/openai", async (req, res) => {
     });
   }
 });
+
+// -----------------------
+// MIRO OAUTH START
+// -----------------------
+
+app.get("/api/miro/oauth/start", (req, res) => {
+  const clientId = process.env.MIRO_CLIENT_ID;
+  const redirectUri = process.env.MIRO_REDIRECT_URI;
+
+  if (!clientId || !redirectUri) {
+    return res.status(500).send("Missing MIRO_CLIENT_ID or MIRO_REDIRECT_URI");
+  }
+
+  const state = crypto.randomUUID();
+
+  res.cookie("miro_oauth_state", state, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    maxAge: 10 * 60 * 1000,
+    path: "/",
+  });
+
+  const scopes = encodeURIComponent("boards:read boards:write");
+
+  const authUrl =
+    `https://miro.com/oauth/authorize` +
+    `?response_type=code` +
+    `&client_id=${encodeURIComponent(clientId)}` +
+    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+    `&scope=${scopes}` +
+    `&state=${encodeURIComponent(state)}`;
+
+  res.redirect(authUrl);
+});
+
+// -----------------------
+// MIRO OAUTH CALLBACK
+// -----------------------
+
+app.get("/api/miro/oauth/callback", async (req, res) => {
+  try {
+    const code = req.query.code;
+    const state = req.query.state;
+    const cookieState = req.cookies.miro_oauth_state;
+
+    if (!code) {
+      return res.status(400).send("Missing code");
+    }
+
+    if (!state || !cookieState || state !== cookieState) {
+      return res.status(400).send("Bad OAuth state");
+    }
+
+    const body = new URLSearchParams({
+      grant_type: "authorization_code",
+      client_id: process.env.MIRO_CLIENT_ID,
+      client_secret: process.env.MIRO_CLIENT_SECRET,
+      redirect_uri: process.env.MIRO_REDIRECT_URI,
+      code,
+    });
+
+    const tokenRes = await fetch("https://api.miro.com/v1/oauth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body,
+    });
+
+    const text = await tokenRes.text();
+
+    if (!tokenRes.ok) {
+      console.error("Miro token error:", text);
+      return res.status(500).send(text);
+    }
+
+    const tokens = JSON.parse(text);
+    const accessToken = tokens.access_token;
+
+    if (!accessToken) {
+      return res.status(500).send("No access_token in response");
+    }
+
+    res.clearCookie("miro_oauth_state", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    res.cookie("miro_access_token", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.redirect(`${process.env.APP_URL || "https://metrictree.ru"}/?miro=connected`);
+  } catch (err) {
+    console.error("Miro callback error:", err);
+    res.status(500).send("Callback error");
+  }
+});
+
+// -----------------------
+// MIRO BOARDS
+// -----------------------
+
+app.get("/api/miro/boards", async (req, res) => {
+  const accessToken = req.cookies.miro_access_token;
+
+  if (!accessToken) {
+    return res.status(401).json({ error: "Not connected to Miro" });
+  }
+
+  const r = await fetch("https://api.miro.com/v2/boards?limit=50", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const text = await r.text();
+
+  res.status(r.status);
+  res.type("application/json");
+  res.send(text);
+});
+
+// -----------------------
+// MIRO EXPORT
+// -----------------------
+
+app.post("/api/miro/export", async (req, res) => {
+  try {
+    const token = req.cookies.miro_access_token;
+
+    if (!token) {
+      return res.status(401).json({
+        error: "Not connected to Miro",
+        action: "redirect",
+        redirectUrl: "/api/miro/oauth/start",
+      });
+    }
+
+    const { boardId, nodes, edges, options } = req.body || {};
+
+    if (!boardId) {
+      return res.status(400).json({ error: "Missing boardId" });
+    }
+
+    if (!Array.isArray(nodes) || !Array.isArray(edges)) {
+      return res.status(400).json({
+        error: "nodes and edges must be arrays",
+      });
+    }
+
+    const nodeWidth = options?.nodeWidth ?? 220;
+    const nodeHeight = options?.nodeHeight ?? 110;
+    const padding = options?.padding ?? 300;
+
+    const visibleNodes = nodes.filter((n) => !n.hidden);
+
+    let minX = Infinity;
+    let minY = Infinity;
+
+    for (const n of visibleNodes) {
+      const x = n.position?.x ?? 0;
+      const y = n.position?.y ?? 0;
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+    }
+
+    if (!isFinite(minX)) {
+      return res.status(400).json({ error: "No nodes to export" });
+    }
+
+    const offsetX = -minX + padding;
+    const offsetY = -minY + padding;
+
+    const colorByType = (type) => {
+      if (type === "business") return "#e8f2ff";
+      if (type === "product") return "#e8ffe8";
+      if (type === "proxy") return "#f2f2f2";
+      if (type === "counter") return "#ffe8e8";
+      if (type === "ops") return "#fff7e5";
+      return "#ffffff";
+    };
+
+    const idMap = new Map();
+
+    for (const n of visibleNodes) {
+      const label =
+        n.data?.label ??
+        n.data?.name ??
+        n.name ??
+        n.id;
+
+      const cx =
+        (n.position?.x ?? 0) +
+        nodeWidth / 2 +
+        offsetX;
+
+      const cy =
+        (n.position?.y ?? 0) +
+        nodeHeight / 2 +
+        offsetY;
+
+      const shapeBody = {
+        data: {
+          content: String(label).slice(0, 500),
+          shape: "round_rectangle",
+        },
+        style: {
+          fillColor: colorByType(n.type),
+          borderColor: "#d1d5db",
+          borderOpacity: "1.0",
+          borderWidth: "1.0",
+          color: "#111827",
+          fontFamily: "arial",
+          fontSize: "14",
+          textAlign: "center",
+          textAlignVertical: "middle",
+        },
+        position: {
+          origin: "center",
+          x: cx,
+          y: cy,
+        },
+        geometry: {
+          width: nodeWidth,
+          height: nodeHeight,
+        },
+      };
+
+      const r = await fetch(
+        `https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/shapes`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(shapeBody),
+        }
+      );
+
+      const data = await r.json().catch(() => ({}));
+
+      if (!r.ok) {
+        return res.status(r.status).json({
+          error: "Miro create shape failed",
+          miro: data,
+        });
+      }
+
+      idMap.set(n.id, data.id);
+    }
+
+    for (const e of edges) {
+      const source = idMap.get(e.source);
+      const target = idMap.get(e.target);
+
+      if (!source || !target) continue;
+
+      const connectorBody = {
+        startItem: { id: source, snapTo: "auto" },
+        endItem: { id: target, snapTo: "auto" },
+        shape: "curved",
+        style: {
+          strokeColor: "#9ca3af",
+          strokeWidth: "1.0",
+        },
+      };
+
+      const r = await fetch(
+        `https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/connectors`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(connectorBody),
+        }
+      );
+
+      const data = await r.json().catch(() => ({}));
+
+      if (!r.ok) {
+        return res.status(r.status).json({
+          error: "Miro create connector failed",
+          miro: data,
+        });
+      }
+    }
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("Miro export error:", err);
+
+    return res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+});
+
 
 app.listen(3001, "127.0.0.1", () => {
   console.log("MetricTree backend listening on 127.0.0.1:3001");
