@@ -367,13 +367,31 @@ app.post("/api/feedback", async (req, res) => {
 // CLOUD.RU / GPT
 // -----------------------
 
+const CLOUDRU_MODELS = {
+  "gpt-4.1": "openai/gpt-4.1",
+  "gpt-5.4": "openai/gpt-5.4",
+  "gigachat-3-pro": "GigaChat/GigaChat-3-Pro",
+  "gigachat-3.5": "ai-sage/GigaChat3.5-432B-A28B",
+};
+
 app.post("/api/openai", async (req, res) => {
   try {
-    const { temperature, ...body } = req.body;
+    const { temperature, model, ...body } = req.body;
+
+    // GPT-4.1 is the default model for the RU version.
+    const requestedModel = model || "gpt-4.1";
+    const cloudModel = CLOUDRU_MODELS[requestedModel];
+
+    if (!cloudModel) {
+      return res.status(400).json({
+        error: "Unsupported model",
+        model: requestedModel,
+      });
+    }
 
     const payload = {
       ...body,
-      model: "openai/gpt-5-mini",
+      model: cloudModel,
     };
 
     const apiRes = await fetch(
@@ -393,6 +411,7 @@ app.post("/api/openai", async (req, res) => {
     if (!apiRes.ok) {
       console.error("Cloud.ru upstream error", {
         status: apiRes.status,
+        model: cloudModel,
         body: text,
       });
     }
