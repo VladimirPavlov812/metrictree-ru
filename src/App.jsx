@@ -2373,9 +2373,10 @@ const currentNextStepsCopy =
             >
             
             <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
-            <option value="gpt-5.4">GPT-5.4 (экспертная)</option>
-            <option value="gigachat-3-pro">GigaChat 3 Pro (российская)</option>
+            <option value="gpt-5.5">GPT-5.5 (экспертная)</option>
+            <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
             <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
+            <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
 
             </select>
 
@@ -2413,10 +2414,11 @@ const currentNextStepsCopy =
   }}
   className="w-full border border-gray-200 rounded-xl p-2 mb-3 text-sm bg-white focus:ring-2 focus:ring-[#ffdd2d]"
 >
-  <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
-  <option value="gpt-5.4">GPT-5.4 (экспертная)</option>
-  <option value="gigachat-3-pro">GigaChat 3 Pro (российская)</option>
-  <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
+<option value="gpt-4.1">GPT-4.1 (стандартная)</option>
+<option value="gpt-5.5">GPT-5.5 (экспертная)</option>
+<option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
+<option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
+<option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
 
 </select>
 

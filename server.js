@@ -369,9 +369,10 @@ app.post("/api/feedback", async (req, res) => {
 
 const CLOUDRU_MODELS = {
   "gpt-4.1": "openai/gpt-4.1",
-  "gpt-5.4": "openai/gpt-5.4",
-  "gigachat-3-pro": "GigaChat/GigaChat-3-Pro",
+  "gpt-5.5": "openai/gpt-5.5",
+  "claude-sonnet-4.6": "anthropic/claude-sonnet-4.6",
   "gigachat-3.5": "ai-sage/GigaChat3.5-432B-A28B",
+  "deepseek-v4-pro": "deepseek-ai/DeepSeek-V4-Pro",
 };
 
 app.post("/api/openai", async (req, res) => {
