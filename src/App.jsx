@@ -2371,16 +2371,11 @@ const currentNextStepsCopy =
            }}
             className="border border-gray-200 rounded-xl p-2 text-sm bg-white focus:ring-2 focus:ring-[#ffdd2d] outline-none"
             >
-            {/*<option value="gpt-4o-mini">GPT-4o-mini — быстрые черновики</option>
-            <option value="gpt-4o">GPT-4o — стабильные ответы</option>
-            <option value="gpt-4.1">GPT-4.1 — аналитика и стратегии</option>*/}
-            <option value="gpt-4.1">Модель GPT-4.1 (простая)</option>
-            <option value="gpt-5.1">Модель GPT-5.1</option>
-            <option value="gpt-5.2">Модель GPT-5.2</option>
-            <option value="gpt-5.4">Модель GPT-5.4</option>
-            <option value="gpt-5.6-sol">GPT-5.6 Sol (Мощная)</option>
-            <option value="gpt-5.6-terra">GPT-5.6 Terra (Оптимальная)</option>
-            <option value="gpt-5.6-luna">GPT-5.6 Luna (Послабее)</option>
+            
+            <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
+            <option value="gpt-5.4">GPT-5.4 (экспертная)</option>
+            <option value="gigachat-3-pro">GigaChat 3 Pro (российская)</option>
+            <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
 
             </select>
 
@@ -2418,13 +2413,10 @@ const currentNextStepsCopy =
   }}
   className="w-full border border-gray-200 rounded-xl p-2 mb-3 text-sm bg-white focus:ring-2 focus:ring-[#ffdd2d]"
 >
-  {/*<option value="gpt-4o-mini">GPT-4o-mini — быстрые черновики</option>
-  <option value="gpt-4o">GPT-4o — стабильные ответы</option>
-  <option value="gpt-4.1">GPT-4.1 — аналитика и стратегии</option>*/}
-  <option value="gpt-4.1">Модель GPT-4.1 (простая)</option>
-  <option value="gpt-5.1">Модель GPT-5.1</option>
-  <option value="gpt-5.2">Модель GPT-5.2</option>
-  <option value="gpt-5.4">Модель GPT-5.4 (эксперт)</option>
+  <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
+  <option value="gpt-5.4">GPT-5.4 (экспертная)</option>
+  <option value="gigachat-3-pro">GigaChat 3 Pro (российская)</option>
+  <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
 
 </select>
 
