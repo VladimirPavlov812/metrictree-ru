@@ -391,9 +391,15 @@ app.post("/api/openai", async (req, res) => {
     }
 
     const payload = {
-      ...body,
-      model: cloudModel,
+    ...body,
+    model: cloudModel,
     };
+
+    // Claude в Cloud.ru не поддерживает response_format: json_object.
+    // JSON-формат уже явно задан в system prompt.
+    if (cloudModel.startsWith("anthropic/")) {
+      delete payload.response_format;
+    }
 
     const apiRes = await fetch(
       "https://foundation-models.api.cloud.ru/v1/chat/completions",
