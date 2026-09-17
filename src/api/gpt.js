@@ -57,6 +57,18 @@ export async function callOpenAI(payload, options = {}) {
   return { data, limitInfo };
 }
 
+
+function parseModelJson(raw) {
+  const cleaned = raw
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  return JSON.parse(cleaned);
+}
+
+
 // === Наводящие вопросы / мини-опросник ===
 export async function generateClarifyingQuestions(productDescription, model = "gpt-4o-mini", options = {}) {
   const response = await callOpenAI({
@@ -90,7 +102,7 @@ export async function generateClarifyingQuestions(productDescription, model = "g
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (questions)");
 
-  return { questions: JSON.parse(raw), limitInfo: response.limitInfo };
+  return { questions: parseModelJson(raw), limitInfo: response.limitInfo };
 }
 
 
@@ -149,7 +161,7 @@ export async function normalizeProductBrief(
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (brief)");
 
-  return { brief: JSON.parse(raw), limitInfo: response.limitInfo };
+  return { brief: parseModelJson(raw), limitInfo: response.limitInfo };
 }
 
 
@@ -291,7 +303,7 @@ SLA соблюдение
 
   try {
     return {
-      tree: JSON.parse(raw),
+      tree: parseModelJson(raw),
       limitInfo,
     };
   } catch (e) {
@@ -443,7 +455,7 @@ export async function generateExperiment(payload, model = "gpt-4o-mini") {
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (experiment)");
 
-  return { experiment: JSON.parse(raw), limitInfo: response.limitInfo };
+  return { experiment: parseModelJson(raw), limitInfo: response.limitInfo };
 }
 
 
@@ -519,7 +531,7 @@ export async function prioritizeMetrics(
 
   try {
     return {
-      prioritization: JSON.parse(raw),
+      prioritization: parseModelJson(raw),
       limitInfo,
     };
   } catch (e) {
