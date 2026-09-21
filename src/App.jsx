@@ -711,17 +711,22 @@ const handleGenerateExperiment = async () => {
     return { nodes: layoutedNodes, edges };
   };
 
-  // Обновление отображения локальных квот
   const refreshQuotaView = () => {
-    setQuotaView({
-      generate: getQuotaInfo("generate_tree", 5),
-      insight: getQuotaInfo("insight", 5),
-      suggestion: getQuotaInfo("suggestion", 5),
-      prioritization: getQuotaInfo("prioritization", 5),
-      experiment: getQuotaInfo("experiment", 5),
-    });
-  };
+  // Для авторизованного пользователя квоты берём только с сервера.
+  if (session?.user?.id) {
+    fetchServerQuota();
+    return;
+  }
 
+  // Для гостя используется локальный лимит.
+  setQuotaView({
+    generate: getQuotaInfo("generate_tree", 1),
+    insight: getQuotaInfo("insight", 5),
+    suggestion: getQuotaInfo("suggestion", 5),
+    prioritization: getQuotaInfo("prioritization", 5),
+    experiment: getQuotaInfo("experiment", 5),
+  });
+  };
 
   const fetchServerQuota = async () => {
   if (!session?.user?.id) return;
