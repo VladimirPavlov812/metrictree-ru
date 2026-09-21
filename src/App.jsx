@@ -722,6 +722,25 @@ const handleGenerateExperiment = async () => {
     });
   };
 
+
+  const fetchServerQuota = async () => {
+  if (!session?.user?.id) return;
+
+  try {
+    const res = await fetch("/api/quota");
+
+    if (!res.ok) {
+      throw new Error("Не удалось загрузить лимиты");
+    }
+
+    const data = await res.json();
+
+    setQuotaView(data.quota);
+  } catch (err) {
+    console.error("Quota load error:", err);
+  }
+  };
+
   const handleSaveToCloud = async ({ forceNew = false } = {}) => {
   if (!session?.user?.id) {
     setAuthModalOpen(true);
@@ -847,8 +866,14 @@ const handleGenerateExperiment = async () => {
   }, []);
 
   useEffect(() => {
-  if (session?.user?.id) fetchCloudProjects();
-  else setCloudProjects([]);
+  if (session?.user?.id) {
+    fetchCloudProjects();
+    fetchServerQuota();
+  } else {
+    setCloudProjects([]);
+    refreshQuotaView();
+  }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.id]);
 
