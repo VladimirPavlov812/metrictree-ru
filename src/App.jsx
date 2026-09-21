@@ -474,6 +474,7 @@ const handleGenerateExperiment = async () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [session, setSession] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalReason, setAuthModalReason] = useState("default");
   const [activeProjectId, setActiveProjectId] = useState(null); // если открыт проект из облака
   const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved | error
   const setAnswer = (field, value) => {
@@ -1288,8 +1289,9 @@ const handleGenerateExperiment = async () => {
   const quota = checkLocalQuota("generate_tree", 1);
 
   if (!quota.ok) {
-    setAuthModalOpen(true);
-    return;
+  setAuthModalReason("generation_limit");
+  setAuthModalOpen(true);
+  return;
   }
 
   refreshQuotaView();
@@ -2462,15 +2464,13 @@ const currentNextStepsCopy =
         </div>
         )}
 
-        {/* === Мобильные лимиты (одной строкой) === */}
-{isMobile && (
-  <div className="px-4 py-2 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-600 flex justify-between">
-    <span>Генерация: {quotaView.generate.left}/{quotaView.generate.limit}</span>
-    <span>Разборы метрик: {quotaView.insight.left}/{quotaView.insight.limit}</span>
-    <span>Подсказки: {quotaView.suggestion.left}/{quotaView.suggestion.limit}</span>
-    <span>Приорит.: {quotaView.prioritization.left}/{quotaView.prioritization.limit}</span>
-  </div>
-)}
+        {/* === Мобильные лимиты === */}
+        {isMobile && !session?.user?.id && (
+        <div className="px-4 py-2 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-600">
+        Бесплатная генерация:{" "}
+        {getQuotaInfo("generate_tree", 1).left}/1
+        </div>
+        )}
 
         {/* === вкладки === */}
         <div className={`flex flex-col flex-1 bg-[#f5f6fa] ${isMobile ? "pt-0" : ""}`}>
@@ -2947,9 +2947,26 @@ const currentNextStepsCopy =
 
     {/* === TAB: ЛИМИТЫ === */}
     {rightTab === "quota" && (
-      <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+    {!session?.user?.id ? (
+      <>
         <h3 className="text-sm font-semibold mb-2 text-gray-700">
-          Лимиты на сегодня
+          Гостевой режим
+        </h3>
+
+        <QuotaLine
+          label="Бесплатная генерация"
+          info={getQuotaInfo("generate_tree", 1)}
+        />
+
+        <p className="mt-3 text-xs text-gray-500">
+          Зарегистрируйтесь или войдите, чтобы продолжить работу с MetricTree.
+        </p>
+      </>
+    ) : (
+      <>
+        <h3 className="text-sm font-semibold mb-2 text-gray-700">
+          Лимиты аккаунта
         </h3>
 
         <QuotaLine label="Генерация дерева" info={quotaView.generate} />
@@ -2957,14 +2974,9 @@ const currentNextStepsCopy =
         <QuotaLine label="Подсказки метрик" info={quotaView.suggestion} />
         <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
         <QuotaLine label="A/B эксперименты" info={quotaView.experiment} />
-
-        <button
-          onClick={refreshQuotaView}
-          className="mt-3 w-full bg-white border border-gray-200 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-100 transition text-sm"
-        >
-          Обновить
-        </button>
-      </div>
+      </>
+    )}
+    </div>
     )}
 
     {rightTab === "cloud" && (
@@ -3837,10 +3849,15 @@ const currentNextStepsCopy =
 
 <AuthModal
   open={authModalOpen}
-  onClose={() => setAuthModalOpen(false)}
+  reason={authModalReason}
+  onClose={() => {
+    setAuthModalOpen(false);
+    setAuthModalReason("default");
+  }}
   onAuth={(user) => {
     setSession({ user });
     setAuthModalOpen(false);
+    setAuthModalReason("default");
   }}
 />
 

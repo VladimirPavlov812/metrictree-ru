@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AuthModal({ open, onClose, onAuth }) {
+export default function AuthModal({ open, onClose, onAuth, reason = "default" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,9 @@ export default function AuthModal({ open, onClose, onAuth }) {
             </h3>
 
             <p className="text-sm text-gray-500">
-              Вход нужен для сохранения и синхронизации проектов.
+            {reason === "generation_limit"
+            ? "Бесплатное дерево уже создано. Зарегистрируйтесь или войдите, чтобы продолжить работу и сохранять проекты."
+            : "Вход нужен для сохранения и синхронизации проектов."}
             </p>
           </div>
 
