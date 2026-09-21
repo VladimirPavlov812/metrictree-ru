@@ -2465,14 +2465,6 @@ const currentNextStepsCopy =
           )}
   
 
-
-          {error && (
-          <div className="mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-          {error}
-          </div>
-          )}
-
-
           <div className="flex flex-col gap-2 self-start">
           <select
           value={model}
