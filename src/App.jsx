@@ -746,6 +746,24 @@ const handleGenerateExperiment = async () => {
   }
   };
 
+
+  const checkServerQuota = async (type) => {
+  const res = await fetch("/api/quota");
+
+  if (!res.ok) {
+    throw new Error("Не удалось проверить лимит");
+  }
+
+  const data = await res.json();
+  const quota = data?.quota?.[type];
+
+  if (!quota || quota.left <= 0) {
+    return false;
+  }
+
+  return true;
+  };
+
   const consumeServerQuota = async (type) => {
   const res = await fetch("/api/quota/consume", {
     method: "POST",
@@ -1335,6 +1353,24 @@ const handleGenerateExperiment = async () => {
   const handleGenerate = async (e) => {
   e.preventDefault();
   if (!description.trim()) return;
+
+  // Для авторизованного пользователя проверяем серверный лимит
+  // до любых AI-запросов.
+  if (session?.user?.id) {
+  try {
+    const hasQuota = await checkServerQuota("generate");
+
+    if (!hasQuota) {
+      setError("Лимит генераций исчерпан.");
+      return;
+    }
+  } catch (err) {
+    console.error("Quota check error:", err);
+    setError("Не удалось проверить лимит генераций.");
+    return;
+  }
+  }  
+
 
   // Для гостя — 1 бесплатная генерация дерева.
   // Для авторизованного пользователя гостевой лимит не применяется.
