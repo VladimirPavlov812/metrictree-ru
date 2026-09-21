@@ -746,6 +746,29 @@ const handleGenerateExperiment = async () => {
   }
   };
 
+  const consumeServerQuota = async (type) => {
+  const res = await fetch("/api/quota/consume", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type }),
+  });
+
+  const data = await res.json();
+
+  if (res.status === 429) {
+    throw new Error("Лимит исчерпан");
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.error || "Не удалось обновить лимит");
+  }
+
+  await fetchServerQuota();
+
+  return data;
+  };
+
+
   const handleSaveToCloud = async ({ forceNew = false } = {}) => {
   if (!session?.user?.id) {
     setAuthModalOpen(true);
@@ -1347,6 +1370,11 @@ const handleGenerateExperiment = async () => {
       setBrief(b);
 
       const treeRes = await generateMetricTree(b, model);
+
+      if (session?.user?.id) {
+      await consumeServerQuota("generate");
+      }
+
       ymEvent("generate_tree");
 
       const treeJson = treeRes.tree;
@@ -1385,6 +1413,11 @@ const handleGenerateExperiment = async () => {
       setBrief(b);
 
       const treeRes = await generateMetricTree(b, model);
+
+      if (session?.user?.id) {
+      await consumeServerQuota("generate");
+      }
+
 
       ymEvent("generate_tree");
       const treeJson = treeRes.tree;
@@ -1483,6 +1516,10 @@ try {
 
     // если отменили — просто выходим (на всякий случай)
     if (controller.signal.aborted) return;
+
+    if (session?.user?.id) {
+    await consumeServerQuota("generate");
+    }
 
     ymEvent("generate_tree");
 
