@@ -1282,16 +1282,20 @@ const handleGenerateExperiment = async () => {
   e.preventDefault();
   if (!description.trim()) return;
 
-  const quota = checkLocalQuota("generate_tree", 5);
+  // Для гостя — 1 бесплатная генерация дерева.
+  // Для авторизованного пользователя гостевой лимит не применяется.
+  if (!session?.user?.id) {
+  const quota = checkLocalQuota("generate_tree", 1);
+
   if (!quota.ok) {
-    alert(
-      "Вы использовали 5 из 5 генераций дерева.\n" +
-        "Хотите больше? Напишите мне, формирую список на ранний доступ: @v_v_pavloff"
-    );
-    refreshQuotaView();
+    setAuthModalOpen(true);
     return;
   }
+
   refreshQuotaView();
+  } 
+
+
   setLoading(true);
   setSelectedMetric(null);
   setActiveProjectId(null);
@@ -1451,6 +1455,8 @@ try {
     ymEvent("generate_tree");
 
     const treeJson = treeRes.tree;
+
+    console.log("RAW TREE JSON:", JSON.stringify(treeJson, null, 2));
 
     setBriefMeta({
       missingInfo: treeRes.meta?.missingInfo || [],

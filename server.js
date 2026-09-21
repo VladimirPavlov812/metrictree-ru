@@ -205,6 +205,59 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
   }
 });
 
+
+// -----------------------
+// QUOTAS
+// -----------------------
+
+const FREE_MONTHLY_LIMITS = {
+  generate: 5,
+  insight: 5,
+  suggestion: 5,
+  prioritization: 5,
+  experiment: 5,
+};
+
+app.get("/api/quota", authRequired, async (req, res) => {
+  try {
+    const period = new Date().toISOString().slice(0, 7);
+
+    const result = await pool.query(
+      `
+      SELECT quota_type, used
+      FROM user_usage
+      WHERE user_id = $1
+        AND period = $2
+      `,
+      [req.user.userId, period]
+    );
+
+    const usage = Object.fromEntries(
+      result.rows.map((row) => [row.quota_type, row.used])
+    );
+
+    const quota = {};
+
+    for (const [type, limit] of Object.entries(FREE_MONTHLY_LIMITS)) {
+      const used = usage[type] || 0;
+
+      quota[type] = {
+        used,
+        limit,
+        left: Math.max(0, limit - used),
+      };
+    }
+
+    return res.json({
+      period,
+      quota,
+    });
+  } catch (err) {
+    console.error("Quota get error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // -----------------------
 // PROJECTS
 // -----------------------
