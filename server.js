@@ -258,6 +258,57 @@ app.get("/api/quota", authRequired, async (req, res) => {
   }
 });
 
+
+app.post("/api/quota/consume", authRequired, async (req, res) => {
+  try {
+    const { type } = req.body || {};
+    const limit = FREE_MONTHLY_LIMITS[type];
+
+    if (!limit) {
+      return res.status(400).json({ error: "Invalid quota type" });
+    }
+
+    const period = new Date().toISOString().slice(0, 7);
+
+    const result = await pool.query(
+      `
+      INSERT INTO user_usage (user_id, quota_type, period, used)
+      VALUES ($1, $2, $3, 1)
+      ON CONFLICT (user_id, quota_type, period)
+      DO UPDATE SET
+        used = user_usage.used + 1,
+        updated_at = now()
+      WHERE user_usage.used < $4
+      RETURNING used
+      `,
+      [req.user.userId, type, period, limit]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(429).json({
+        error: "Quota exceeded",
+        type,
+        limit,
+        left: 0,
+      });
+    }
+
+    const used = result.rows[0].used;
+
+    return res.json({
+      type,
+      period,
+      used,
+      limit,
+      left: Math.max(0, limit - used),
+    });
+  } catch (err) {
+    console.error("Quota consume error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 // -----------------------
 // PROJECTS
 // -----------------------
