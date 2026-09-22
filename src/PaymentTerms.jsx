@@ -108,7 +108,7 @@ export default function PaymentTerms() {
               Контактная информация
             </h2>
 
-            <p>E-mail: support@metrictree.ru</p>
+            <p>E-mail: vladimir.pavlov@yashaservice.ru</p>
             <p>Сайт: metrictree.ru</p>
           </section>
 
