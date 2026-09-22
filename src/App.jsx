@@ -3070,20 +3070,44 @@ const currentNextStepsCopy =
     {rightTab === "quota" && (
     <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
     {!session?.user?.id ? (
+      
       <>
-        <h3 className="text-sm font-semibold mb-2 text-gray-700">
-          Гостевой режим
-        </h3>
+      <h3 className="text-sm font-semibold mb-2 text-gray-700">
+      Гостевой режим
+      </h3>
 
-        <QuotaLine
-          label="Бесплатная генерация"
-          info={getQuotaInfo("generate_tree", 1)}
-        />
+      <QuotaLine
+      label="Бесплатная генерация"
+      info={getQuotaInfo("generate_tree", 1)}
+      />
 
-        <p className="mt-3 text-xs text-gray-500">
-          Зарегистрируйтесь или войдите, чтобы продолжить работу с MetricTree.
-        </p>
-      </>
+    <div className="mt-2 space-y-2 text-sm">
+    <div className="flex justify-between gap-3">
+      <span className="text-gray-600">Разбор метрик</span>
+      <span className="text-gray-500">После входа</span>
+    </div>
+
+    <div className="flex justify-between gap-3">
+      <span className="text-gray-600">Подсказки метрик</span>
+      <span className="text-gray-500">После входа</span>
+    </div>
+
+    <div className="flex justify-between gap-3">
+      <span className="text-gray-600">Приоритизация</span>
+      <span className="text-gray-500">После входа</span>
+    </div>
+
+    <div className="flex justify-between gap-3">
+      <span className="text-gray-600">A/B эксперименты</span>
+      <span className="text-gray-500">После входа</span>
+    </div>
+    </div>
+
+    <p className="mt-3 text-xs text-gray-500">
+    Зарегистрируйтесь или войдите, чтобы продолжить работу с MetricTree.
+    </p>
+    </>
+
     ) : (
       <>
         <h3 className="text-sm font-semibold mb-2 text-gray-700">
