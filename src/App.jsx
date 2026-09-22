@@ -225,6 +225,12 @@ const handleCancelGeneration = () => {
 const handleRunPrioritization = async () => {
   if (!treeData) return;
 
+  if (!session?.user?.id) {
+  setAuthModalReason("default");
+  setAuthModalOpen(true);
+  return;
+  }
+
   const quota = checkLocalQuota("prioritization", 5);
   if (!quota.ok) {
     alert(
@@ -358,6 +364,13 @@ const updateFeedbackField = (field, value) => {
 
 const handleGenerateExperiment = async () => {
   if (!selectedMetric) return;
+  if (!session?.user?.id) {
+  setAuthModalReason("default");
+  setAuthModalOpen(true);
+  return;
+  }
+
+
   // UI: сразу откроем модалку и покажем загрузку
   setShowExperimentModal(true);
   setExperimentLoading(true);
@@ -1603,6 +1616,12 @@ try {
   const handleAddMetric = async () => {
     if (!selectedMetric) return;
 
+    if (!session?.user?.id) {
+    setAuthModalReason("default");
+    setAuthModalOpen(true);
+    return;
+    }
+
     const quota = checkLocalQuota("suggestion", 5);
     if (!quota.ok) {
     alert(
@@ -2093,6 +2112,13 @@ const handleGetInsight = async (metricArg) => {
     ? nodes.find(n => n.id === metricArg.id)
     : selectedMetric;
   if (!rfMetric) return;
+
+  if (!session?.user?.id) {
+  setAuthModalReason("default");
+  setAuthModalOpen(true);
+  return;
+  }
+
   const metric = rfMetric; 
   setSelectedMetric(metric);
   const quota = checkLocalQuota("insight", 5);
