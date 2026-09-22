@@ -231,16 +231,18 @@ const handleRunPrioritization = async () => {
   return;
   }
 
-  const quota = checkLocalQuota("prioritization", 5);
-  if (!quota.ok) {
-    alert(
-      "Вы использовали 5 из 5 приоритизаций.\n" +
-      "Хотите больше? Напишите мне, формирую список на ранний доступ: @v_v_pavloff"
-    );
-    refreshQuotaView();
+  try {
+  const hasQuota = await checkServerQuota("prioritization");
+
+  if (!hasQuota) {
+    alert("Лимит приоритизаций исчерпан.");
     return;
   }
-  refreshQuotaView();
+  } catch (err) {
+  console.error("Prioritization quota check error:", err);
+  alert("Не удалось проверить лимит приоритизаций.");
+  return;
+  }
 
   setPriorLoading(true);
   setPriorResult(null);
@@ -257,6 +259,9 @@ const handleRunPrioritization = async () => {
       },
       model
     );
+
+    await consumeServerQuota("prioritization");
+
     const p = res.prioritization || {};
     const top = Array.isArray(p.topMetrics) ? p.topMetrics : [];
     const avoid = Array.isArray(p.avoidMetrics) ? p.avoidMetrics : [];
@@ -392,29 +397,19 @@ const handleGenerateExperiment = async () => {
       children: children.map(normalizeNode),
     };
 
-    // СНАЧАЛА проверим квоту (не списывая)
-    const quota = getQuotaInfo("experiment", 5);
-    if ((quota.left ?? 0) <= 0) {
-      throw new Error(
-        "Вы использовали 5 из 5 A/B тестов.\n" +
-          "Хотите больше? Напишите мне, формирую список на ранний доступ: @v_v_pavloff"
-      );
+    // Проверяем серверную квоту до запроса к AI
+    const hasQuota = await checkServerQuota("experiment");
+
+    if (!hasQuota) {
+    throw new Error("Лимит A/B экспериментов исчерпан.");
     }
 
-    // запрос к GPT
+    // запрос к AI
     const res = await generateExperiment(payload, model);
-    const exp = res.experiment; // ✅ уже объект
+    const exp = res.experiment;
 
-    // ТЕПЕРЬ списываем квоту (успешная генерация)
-    const commit = checkLocalQuota("experiment", 5);
-    if (!commit.ok) {
-      // На всякий случай, если параллельно открыли в другой вкладке
-      throw new Error(
-        "Лимит A/B тестов исчерпан.\n" +
-          "Хотите больше? Напишите мне: @v_v_pavloff"
-      );
-    }
-    refreshQuotaView();
+    // Списываем только после успешной генерации
+    await consumeServerQuota("experiment");
 
     // кладем данные в стейт
     setExperiment({
@@ -1622,21 +1617,18 @@ try {
     return;
     }
 
-    const quota = checkLocalQuota("suggestion", 5);
-    if (!quota.ok) {
-    alert(
-    "Вы использовали 5 из 5 подсказок метрик.\n" +
-    "Хотите больше? Напишите мне, формирую список на ранний доступ: @v_v_pavloff"
-    );
-    refreshQuotaView();
-  
-    // По-прежнему открываем модалку, чтобы пользователь мог вручную добавить метрику
-    setShowAddModal(true);
-    setMetricSuggestions([]);
-    setLoadingSuggestions(false);
+    try {
+    const hasQuota = await checkServerQuota("suggestion");
+
+    if (!hasQuota) {
+    alert("Лимит подсказок метрик исчерпан.");
     return;
     }
-    refreshQuotaView();
+    } catch (err) {
+    console.error("Suggestion quota check error:", err);
+    alert("Не удалось проверить лимит подсказок.");
+    return;
+    }
 
     setShowAddModal(true);
     setMetricSuggestions([]);
@@ -1650,6 +1642,9 @@ try {
         },
         model
       );
+
+      await consumeServerQuota("suggestion");
+
       setMetricSuggestions(result.suggestions);
 
       // === событие метрики ===
@@ -2121,16 +2116,19 @@ const handleGetInsight = async (metricArg) => {
 
   const metric = rfMetric; 
   setSelectedMetric(metric);
-  const quota = checkLocalQuota("insight", 5);
-  if (!quota.ok) {
-  alert(
-    "Вы использовали 5 из 5 разборов метрик на сегодня.\n" +
-    "Хотите больше? Напишите мне, формирую список на ранний доступ: @v_v_pavloff"
-  );
-  refreshQuotaView();
+
+  try {
+  const hasQuota = await checkServerQuota("insight");
+
+  if (!hasQuota) {
+    alert("Лимит разборов метрик исчерпан.");
+    return;
+  }
+  } catch (err) {
+  console.error("Insight quota check error:", err);
+  alert("Не удалось проверить лимит разборов метрик.");
   return;
   }
-  refreshQuotaView();
 
   if (isMobile) {
     setInsightPending(true);
@@ -2169,6 +2167,8 @@ const handleGetInsight = async (metricArg) => {
       },
       model
     );
+
+    await consumeServerQuota("insight");
 
     if (!isMobile) setShowInsightModal(true);
 
