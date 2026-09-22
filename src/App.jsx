@@ -138,6 +138,7 @@ const MetricNode = memo(function MetricNode({ id, data }) {
 });
 
 export default function App() {
+  
   // === определение мобильной версии ===
   const [isMobile, setIsMobile] = useState(false);
   const nodeTypes = useMemo(() => ({
@@ -3158,12 +3159,25 @@ const currentNextStepsCopy =
      
           </>
         ) : (
+          <div>
           <div className="text-sm text-gray-500">
-            Выбери метрику в дереве — здесь появятся действия.
+          Выбери метрику в дереве — здесь появятся действия.
           </div>
-        )}
-      </>
-    )}
+
+          <div className="mt-6 pt-4 border-t border-gray-200 text-xs text-gray-400">
+          <a
+          href="/payment-terms"
+          className="text-blue-600 hover:underline"
+          >
+          Оплата и условия
+          </a>
+          <span className="mx-2">·</span>
+          <span>© 2026 MetricTree</span>
+          </div>
+          </div>
+          )}
+          </>
+          )}
 
     {/* === TAB: ЛИМИТЫ === */}
     {rightTab === "quota" && (
