@@ -683,6 +683,8 @@ const handleGenerateExperiment = async () => {
   highlightedNodes,
   ]);
 
+  const [accountPlan, setAccountPlan] = useState("free");
+
   // === Лимиты (для отображения) ===
   const [quotaView, setQuotaView] = useState({
     generate: { used: 0, limit: 5, left: 5 },
@@ -745,10 +747,38 @@ const handleGenerateExperiment = async () => {
     const data = await res.json();
 
     setQuotaView(data.quota);
+    setAccountPlan(data.plan || "free");
+    return data.plan || "free";
+
   } catch (err) {
     console.error("Quota load error:", err);
+    return null;
   }
   };
+
+  const handleBuyPro = async () => {
+  try {
+    const res = await fetch("/api/payments/pro", {
+      method: "POST",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data?.error || "Не удалось создать платёж");
+    }
+
+    if (!data.paymentUrl) {
+      throw new Error("Не получена ссылка на оплату");
+    }
+
+    window.location.href = data.paymentUrl;
+  } catch (err) {
+    console.error("Pro payment error:", err);
+    alert("Не удалось перейти к оплате. Попробуйте ещё раз.");
+  }
+  };
+
 
 
   const checkServerQuota = async (type) => {
@@ -900,6 +930,65 @@ const handleGenerateExperiment = async () => {
 
   loadSession();
   }, []);
+
+    useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const payment = params.get("payment");
+
+    if (payment !== "success" && payment !== "fail") return;
+    if (!session?.user?.id) return;
+
+    params.delete("payment");
+    const query = params.toString();
+    const cleanUrl =
+      window.location.pathname +
+      (query ? `?${query}` : "") +
+      window.location.hash;
+
+    window.history.replaceState({}, "", cleanUrl);
+
+    if (payment === "fail") {
+      alert("Оплата не завершена. Pro не активирован.");
+      return;
+    }
+
+    alert(
+      "Вы вернулись со страницы оплаты. Проверяем подтверждение платежа — Pro активируется после получения уведомления от Robokassa."
+    );
+
+    let cancelled = false;
+    let attempts = 0;
+    let timer;
+
+    const checkPayment = async () => {
+      if (cancelled) return;
+
+      const plan = await fetchServerQuota();
+      if (cancelled) return;
+
+      if (plan === "pro") {
+        alert("MetricTree Pro активирован!");
+        return;
+      }
+
+      attempts += 1;
+
+      if (attempts < 6) {
+        timer = window.setTimeout(checkPayment, 3000);
+      } else {
+        alert(
+          "Подтверждение оплаты пока не получено. Проверьте статус Pro в разделе «Лимиты аккаунта» чуть позже."
+        );
+      }
+    };
+
+    timer = window.setTimeout(checkPayment, 1500);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+   }, [session?.user?.id]);
 
   useEffect(() => {
   if (isFullscreen) {
@@ -3123,6 +3212,42 @@ const currentNextStepsCopy =
         <h3 className="text-sm font-semibold mb-2 text-gray-700">
           Лимиты аккаунта
         </h3>
+
+        <div className="mb-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
+        <div className="flex items-center justify-between gap-3">
+        <div>
+        <div className="text-sm font-semibold text-gray-900">
+        {accountPlan === "pro" ? "MetricTree Pro" : "MetricTree Free"}
+        </div>
+
+        {accountPlan === "pro" ? (
+        <div className="text-xs text-gray-500 mt-1">
+          Расширенные лимиты аккаунта
+        </div>
+        ) : (
+        <div className="text-xs text-gray-500 mt-1">
+          Pro: 50 операций каждого типа в месяц
+        </div>
+        )}
+        </div>
+
+        {accountPlan !== "pro" && (
+        <div className="text-sm font-semibold whitespace-nowrap">
+        490 ₽
+        </div>
+        )}
+        </div>
+
+        {accountPlan !== "pro" && (
+        <button
+        type="button"
+        onClick={handleBuyPro}
+        className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
+        >
+        Перейти на Pro — 490 ₽
+        </button>
+        )}
+        </div>
 
         <QuotaLine label="Генерация дерева" info={quotaView.generate} />
         <QuotaLine label="Разбор метрик" info={quotaView.insight} />

@@ -10,6 +10,7 @@ const { Pool } = pg;
 const app = express();
 
 app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 const pool = new Pool({
@@ -21,6 +22,10 @@ const pool = new Pool({
 });
 
 const COOKIE_NAME = "metrictree_session";
+const ROBOKASSA_MERCHANT_LOGIN = process.env.ROBOKASSA_MERCHANT_LOGIN;
+const ROBOKASSA_PASSWORD_1 = process.env.ROBOKASSA_PASSWORD_1;
+const ROBOKASSA_PASSWORD_2 = process.env.ROBOKASSA_PASSWORD_2;
+const ROBOKASSA_TEST_MODE = process.env.ROBOKASSA_TEST_MODE === "true";
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -184,7 +189,7 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT id, email, created_at
+      SELECT id, email, created_at, plan, pro_until
       FROM users
       WHERE id = $1
       LIMIT 1
@@ -218,9 +223,55 @@ const FREE_MONTHLY_LIMITS = {
   experiment: 5,
 };
 
+const PRO_MONTHLY_LIMITS = {
+  generate: 50,
+  insight: 50,
+  suggestion: 50,
+  prioritization: 50,
+  experiment: 50,
+};
+
+const PRO_PRICE_RUB = 490;
+const PRO_DURATION_DAYS = 30;
+
+async function getUserPlan(userId) {
+  const result = await pool.query(
+    `
+    SELECT plan, pro_until
+    FROM users
+    WHERE id = $1
+    LIMIT 1
+    `,
+    [userId]
+  );
+
+  const user = result.rows[0];
+
+  if (
+    user?.plan === "pro" &&
+    user.pro_until &&
+    new Date(user.pro_until) > new Date()
+  ) {
+    return "pro";
+  }
+
+  return "free";
+}
+
+async function getUserLimits(userId) {
+  const plan = await getUserPlan(userId);
+
+  return {
+    plan,
+    limits: plan === "pro" ? PRO_MONTHLY_LIMITS : FREE_MONTHLY_LIMITS,
+  };
+}
+
+
 app.get("/api/quota", authRequired, async (req, res) => {
   try {
     const period = new Date().toISOString().slice(0, 7);
+    const { plan, limits } = await getUserLimits(req.user.userId);
 
     const result = await pool.query(
       `
@@ -238,7 +289,7 @@ app.get("/api/quota", authRequired, async (req, res) => {
 
     const quota = {};
 
-    for (const [type, limit] of Object.entries(FREE_MONTHLY_LIMITS)) {
+    for (const [type, limit] of Object.entries(limits)) {
       const used = usage[type] || 0;
 
       quota[type] = {
@@ -249,8 +300,9 @@ app.get("/api/quota", authRequired, async (req, res) => {
     }
 
     return res.json({
-      period,
-      quota,
+    period,
+    plan,
+    quota,
     });
   } catch (err) {
     console.error("Quota get error:", err);
@@ -259,12 +311,12 @@ app.get("/api/quota", authRequired, async (req, res) => {
 });
 
 async function consumeUserQuota(userId, type) {
-  const limit = FREE_MONTHLY_LIMITS[type];
+  const { limits } = await getUserLimits(userId);
+  const limit = limits[type];
 
   if (!limit) {
     throw new Error("Invalid quota type");
   }
-
   const period = new Date().toISOString().slice(0, 7);
 
   const result = await pool.query(
@@ -357,8 +409,8 @@ app.post("/api/quota/consume", authRequired, async (req, res) => {
   try {
         const { type } = req.body || {};
 
-    if (!FREE_MONTHLY_LIMITS[type]) {
-      return res.status(400).json({ error: "Invalid quota type" });
+    if (!Object.prototype.hasOwnProperty.call(FREE_MONTHLY_LIMITS, type)) {
+    return res.status(400).json({ error: "Invalid quota type" });
     }
 
     const quota = await consumeUserQuota(req.user.userId, type);
@@ -379,6 +431,182 @@ app.post("/api/quota/consume", authRequired, async (req, res) => {
     console.error("Quota consume error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
+});
+
+// -----------------------
+// PAYMENTS / ROBOKASSA
+// -----------------------
+function robokassaMd5(value) {
+  return crypto
+    .createHash("md5")
+    .update(value, "utf8")
+    .digest("hex");
+}
+function safeEqualHex(a, b) {
+  const left = Buffer.from(String(a || "").toLowerCase(), "utf8");
+  const right = Buffer.from(String(b || "").toLowerCase(), "utf8");
+
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(left, right);
+}
+
+app.post("/api/payments/pro", authRequired, async (req, res) => {
+  try {
+    if (!ROBOKASSA_MERCHANT_LOGIN || !ROBOKASSA_PASSWORD_1) {
+      return res.status(503).json({ error: "Payments are not configured" });
+    }
+
+    const amount = PRO_PRICE_RUB.toFixed(2);
+
+    const result = await pool.query(
+      `
+      INSERT INTO payments (
+        user_id,
+        amount,
+        currency,
+        status,
+        plan,
+        duration_days
+      )
+      VALUES ($1, $2, 'RUB', 'pending', 'pro', $3)
+      RETURNING id
+      `,
+      [req.user.userId, amount, PRO_DURATION_DAYS]
+    );
+
+    const invId = result.rows[0].id;
+
+    const signature = robokassaMd5(
+      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${ROBOKASSA_PASSWORD_1}`
+    );
+
+    const params = new URLSearchParams({
+      MerchantLogin: ROBOKASSA_MERCHANT_LOGIN,
+      OutSum: amount,
+      InvId: String(invId),
+      Description: `MetricTree Pro на ${PRO_DURATION_DAYS} дней`,
+      SignatureValue: signature,
+      Culture: "ru",
+      Encoding: "utf-8",
+    });
+
+    if (ROBOKASSA_TEST_MODE) {
+      params.set("IsTest", "1");
+    }
+
+    return res.json({
+      paymentId: invId,
+      paymentUrl: `https://auth.robokassa.ru/Merchant/Index.aspx?${params.toString()}`,
+    });
+  } catch (err) {
+    console.error("Create Pro payment error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.all("/api/payments/robokassa/result", async (req, res) => {
+  const data = req.method === "GET" ? req.query : req.body;
+
+  const outSum = String(data?.OutSum || "");
+  const invId = String(data?.InvId || "");
+  const signatureValue = String(data?.SignatureValue || "");
+
+  if (!outSum || !invId || !signatureValue || !ROBOKASSA_PASSWORD_2) {
+    return res.status(400).send("Bad request");
+  }
+
+  const expectedSignature = robokassaMd5(
+    `${outSum}:${invId}:${ROBOKASSA_PASSWORD_2}`
+  );
+
+  if (!safeEqualHex(signatureValue, expectedSignature)) {
+    return res.status(403).send("Invalid signature");
+  }
+
+    let client;
+
+    try {
+    client = await pool.connect();
+    await client.query("BEGIN");
+
+    const paymentResult = await client.query(
+      `
+      SELECT id, user_id, amount, status, plan, duration_days
+      FROM payments
+      WHERE id = $1
+      FOR UPDATE
+      `,
+      [invId]
+    );
+
+    const payment = paymentResult.rows[0];
+
+    if (!payment) {
+      await client.query("ROLLBACK");
+      return res.status(404).send("Payment not found");
+    }
+
+    if (Number(payment.amount).toFixed(2) !== Number(outSum).toFixed(2)) {
+      await client.query("ROLLBACK");
+      return res.status(400).send("Invalid amount");
+    }
+
+    if (payment.status === "paid") {
+      await client.query("COMMIT");
+      return res.send(`OK${invId}`);
+    }
+
+    if (payment.plan !== "pro") {
+      await client.query("ROLLBACK");
+      return res.status(400).send("Invalid plan");
+    }
+
+    await client.query(
+      `
+      UPDATE payments
+      SET status = 'paid',
+          paid_at = now()
+      WHERE id = $1
+      `,
+      [payment.id]
+    );
+
+    await client.query(
+      `
+      UPDATE users
+      SET plan = 'pro',
+          pro_until =
+            GREATEST(
+              COALESCE(pro_until, now()),
+              now()
+            ) + ($2 * interval '1 day')
+      WHERE id = $1
+      `,
+      [payment.user_id, payment.duration_days]
+    );
+
+    await client.query("COMMIT");
+
+    return res.send(`OK${invId}`);
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Robokassa ResultURL error:", err);
+    return res.status(500).send("Internal server error");
+    } finally {
+    client?.release();
+    }
+});
+
+app.get("/api/payments/robokassa/success", (req, res) => {
+  return res.redirect("https://metrictree.ru/?payment=success");
+});
+
+app.get("/api/payments/robokassa/fail", (req, res) => {
+  return res.redirect("https://metrictree.ru/?payment=fail");
 });
 
 
