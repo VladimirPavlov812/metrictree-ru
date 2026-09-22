@@ -258,51 +258,124 @@ app.get("/api/quota", authRequired, async (req, res) => {
   }
 });
 
+async function consumeUserQuota(userId, type) {
+  const limit = FREE_MONTHLY_LIMITS[type];
 
-app.post("/api/quota/consume", authRequired, async (req, res) => {
+  if (!limit) {
+    throw new Error("Invalid quota type");
+  }
+
+  const period = new Date().toISOString().slice(0, 7);
+
+  const result = await pool.query(
+    `
+    INSERT INTO user_usage (user_id, quota_type, period, used)
+    VALUES ($1, $2, $3, 1)
+    ON CONFLICT (user_id, quota_type, period)
+    DO UPDATE SET
+      used = user_usage.used + 1,
+      updated_at = now()
+    WHERE user_usage.used < $4
+    RETURNING used
+    `,
+    [userId, type, period, limit]
+  );
+
+  if (result.rows.length === 0) {
+    return {
+      ok: false,
+      type,
+      period,
+      limit,
+      left: 0,
+    };
+  }
+
+  const used = result.rows[0].used;
+
+  return {
+    ok: true,
+    type,
+    period,
+    used,
+    limit,
+    left: Math.max(0, limit - used),
+  };
+}
+
+async function createGenerateOperation(userId) {
+  const result = await pool.query(
+    `
+    INSERT INTO ai_operations (
+      user_id,
+      operation,
+      calls_used,
+      max_calls,
+      expires_at
+    )
+    VALUES ($1, 'generate', 0, 3, now() + interval '30 minutes')
+    RETURNING id, operation, calls_used, max_calls, expires_at
+    `,
+    [userId]
+  );
+
+  return result.rows[0];
+}
+
+app.post("/api/generate/start", authRequired, async (req, res) => {
   try {
-    const { type } = req.body || {};
-    const limit = FREE_MONTHLY_LIMITS[type];
+    const quota = await consumeUserQuota(req.user.userId, "generate");
 
-    if (!limit) {
-      return res.status(400).json({ error: "Invalid quota type" });
-    }
-
-    const period = new Date().toISOString().slice(0, 7);
-
-    const result = await pool.query(
-      `
-      INSERT INTO user_usage (user_id, quota_type, period, used)
-      VALUES ($1, $2, $3, 1)
-      ON CONFLICT (user_id, quota_type, period)
-      DO UPDATE SET
-        used = user_usage.used + 1,
-        updated_at = now()
-      WHERE user_usage.used < $4
-      RETURNING used
-      `,
-      [req.user.userId, type, period, limit]
-    );
-
-    if (result.rows.length === 0) {
+    if (!quota.ok) {
       return res.status(429).json({
         error: "Quota exceeded",
-        type,
-        limit,
+        type: "generate",
+        limit: quota.limit,
         left: 0,
       });
     }
 
-    const used = result.rows[0].used;
+    const operation = await createGenerateOperation(req.user.userId);
 
     return res.json({
-      type,
-      period,
-      used,
-      limit,
-      left: Math.max(0, limit - used),
+      generationId: operation.id,
+      expiresAt: operation.expires_at,
+      quota: {
+        used: quota.used,
+        limit: quota.limit,
+        left: quota.left,
+      },
     });
   } catch (err) {
+    console.error("Generate start error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.post("/api/quota/consume", authRequired, async (req, res) => {
+  try {
+        const { type } = req.body || {};
+
+    if (!FREE_MONTHLY_LIMITS[type]) {
+      return res.status(400).json({ error: "Invalid quota type" });
+    }
+
+    const quota = await consumeUserQuota(req.user.userId, type);
+
+    if (!quota.ok) {
+      return res.status(429).json({
+        error: "Quota exceeded",
+        type: quota.type,
+        limit: quota.limit,
+        left: 0,
+      });
+    }
+
+    return res.json(quota);
+
+
+    } catch (err) {
     console.error("Quota consume error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -481,6 +554,88 @@ const CLOUDRU_MODELS = {
 
 app.post("/api/openai", async (req, res) => {
   try {
+
+        const operation = req.get("X-MetricTree-Operation");
+
+    const allowedOperations = new Set([
+      "generate",
+      "insight",
+      "suggestion",
+      "experiment",
+      "prioritization",
+    ]);
+
+    if (!operation || !allowedOperations.has(operation)) {
+      return res.status(400).json({
+        error: "Invalid or missing AI operation",
+      });
+    }
+
+        const token = req.cookies[COOKIE_NAME];
+
+    if (operation !== "generate") {
+      if (!token) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      try {
+        req.user = jwt.verify(token, process.env.JWT_SECRET);
+      } catch {
+        return res.status(401).json({ error: "Invalid session" });
+      }
+    }
+
+    if (operation === "generate" && token) {
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    return res.status(401).json({ error: "Invalid session" });
+  }
+
+  const generationId = req.get("X-MetricTree-Generation-Id");
+
+  if (!generationId) {
+    return res.status(400).json({
+      error: "Missing generation ID",
+    });
+  }
+
+  const result = await pool.query(
+    `
+    UPDATE ai_operations
+    SET calls_used = calls_used + 1
+    WHERE id = $1
+      AND user_id = $2
+      AND operation = 'generate'
+      AND expires_at > now()
+      AND calls_used < max_calls
+    RETURNING id, calls_used, max_calls
+    `,
+    [generationId, req.user.userId]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(403).json({
+      error: "Invalid or expired generation",
+    });
+  }
+}
+
+
+        if (operation !== "generate") {
+      const quota = await consumeUserQuota(req.user.userId, operation);
+
+      if (!quota.ok) {
+        return res.status(429).json({
+          error: "Quota exceeded",
+          type: quota.type,
+          limit: quota.limit,
+          left: 0,
+        });
+      }
+    }
+
+
     const { temperature, model, ...body } = req.body;
 
     // GPT-4.1 is the default model for the RU version.

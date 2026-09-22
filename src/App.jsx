@@ -260,8 +260,6 @@ const handleRunPrioritization = async () => {
       model
     );
 
-    await consumeServerQuota("prioritization");
-
     const p = res.prioritization || {};
     const top = Array.isArray(p.topMetrics) ? p.topMetrics : [];
     const avoid = Array.isArray(p.avoidMetrics) ? p.avoidMetrics : [];
@@ -408,9 +406,6 @@ const handleGenerateExperiment = async () => {
     const res = await generateExperiment(payload, model);
     const exp = res.experiment;
 
-    // Списываем только после успешной генерации
-    await consumeServerQuota("experiment");
-
     // кладем данные в стейт
     setExperiment({
       hypothesis: exp.hypothesis ?? "",
@@ -446,6 +441,7 @@ const handleGenerateExperiment = async () => {
   return null;
   };
   const generateAbortRef = useRef(null);
+  const generationIdRef = useRef(null);
   const metricNameById = (id) => findNodeInTree(treeData, id)?.name || id;
   // === Product Brief / Questions flow ===
   const [brief, setBrief] = useState(null);              // нормализованный контекст
@@ -1362,22 +1358,34 @@ const handleGenerateExperiment = async () => {
   e.preventDefault();
   if (!description.trim()) return;
 
-  // Для авторизованного пользователя проверяем серверный лимит
-  // до любых AI-запросов.
-  if (session?.user?.id) {
-  try {
-    const hasQuota = await checkServerQuota("generate");
+  let generationId = null;
 
-    if (!hasQuota) {
-      setError("Лимит генераций исчерпан.");
+if (session?.user?.id) {
+  try {
+    const res = await fetch("/api/generate/start", {
+      method: "POST",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (res.status === 429) {
+        setError("Лимит генераций исчерпан.");
+      } else {
+        setError("Не удалось начать генерацию.");
+      }
       return;
     }
+
+    generationId = data.generationId;
+    generationIdRef.current = generationId;
+    await fetchServerQuota();
   } catch (err) {
-    console.error("Quota check error:", err);
-    setError("Не удалось проверить лимит генераций.");
+    console.error("Generate start error:", err);
+    setError("Не удалось начать генерацию.");
     return;
   }
-  }  
+}
 
 
   // Для гостя — 1 бесплатная генерация дерева.
@@ -1407,17 +1415,18 @@ const handleGenerateExperiment = async () => {
         // ✅ НОВОЕ: GPT-4.1 — сразу генерим, без уточняющих вопросов
     if (model === "gpt-4.1") {
       const briefRes = await normalizeProductBrief(
-        { productDescription: description, answers: {} },
-        model
+      { productDescription: description, answers: {} },
+      model,
+      { generationId }
       );
       const b = briefRes.brief;
       setBrief(b);
 
-      const treeRes = await generateMetricTree(b, model);
-
-      if (session?.user?.id) {
-      await consumeServerQuota("generate");
-      }
+      const treeRes = await generateMetricTree(
+      b,
+      model,
+      { generationId }
+      );
 
       ymEvent("generate_tree");
 
@@ -1441,7 +1450,11 @@ const handleGenerateExperiment = async () => {
 
     // 1) Сначала попросим GPT сгенерировать уточняющие вопросы
     setQuestionsLoading(true);
-    const qRes = await generateClarifyingQuestions(description, model);
+    const qRes = await generateClarifyingQuestions(
+    description,
+    model,
+    { generationId }
+    );
     const q = qRes?.questions?.questions || qRes?.questions || [];
     const list = Array.isArray(q) ? q : [];
     setQuestionsList(list);
@@ -1456,12 +1469,11 @@ const handleGenerateExperiment = async () => {
       const b = briefRes.brief;
       setBrief(b);
 
-      const treeRes = await generateMetricTree(b, model);
-
-      if (session?.user?.id) {
-      await consumeServerQuota("generate");
-      }
-
+      const treeRes = await generateMetricTree(
+      b,
+      model,
+      { generationId }
+      );
 
       ymEvent("generate_tree");
       const treeJson = treeRes.tree;
@@ -1520,7 +1532,10 @@ try {
   briefRes = await normalizeProductBrief(
     { productDescription: description, answers },
     model,
-    { signal: controller.signal }
+    {
+    signal: controller.signal,
+    generationId: generationIdRef.current,
+    }
   );
 } catch (err) {
   console.error("Ошибка на шаге normalizeProductBrief:", err);
@@ -1544,10 +1559,13 @@ let treeRes;
 
 try {
   treeRes = await generateMetricTree(
-    b,
-    model,
-    { signal: controller.signal }
-  );
+  b,
+  model,
+  {
+    signal: controller.signal,
+    generationId: generationIdRef.current,
+  }
+);
 } catch (err) {
   console.error("Ошибка на шаге generateMetricTree:", err);
 
@@ -1560,10 +1578,6 @@ try {
 
     // если отменили — просто выходим (на всякий случай)
     if (controller.signal.aborted) return;
-
-    if (session?.user?.id) {
-    await consumeServerQuota("generate");
-    }
 
     ymEvent("generate_tree");
 
@@ -1642,8 +1656,6 @@ try {
         },
         model
       );
-
-      await consumeServerQuota("suggestion");
 
       setMetricSuggestions(result.suggestions);
 
@@ -2167,8 +2179,6 @@ const handleGetInsight = async (metricArg) => {
       },
       model
     );
-
-    await consumeServerQuota("insight");
 
     if (!isMobile) setShowInsightModal(true);
 

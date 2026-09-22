@@ -21,7 +21,16 @@ export async function callOpenAI(payload, options = {}) {
 
   const res = await fetch("/api/openai", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+    "Content-Type": "application/json",
+    ...(options.operation
+    ? { "X-MetricTree-Operation": options.operation }
+    : {}),
+    ...(options.generationId
+    ? { "X-MetricTree-Generation-Id": options.generationId }
+    : {}),
+    },
+
     body: JSON.stringify(requestPayload),
     signal: options.signal,
   });
@@ -97,7 +106,7 @@ export async function generateClarifyingQuestions(productDescription, model = "g
         content: `Описание продукта (ответь в JSON): ${productDescription}`,
       },
     ],
-  }, options);
+  }, { ...options, operation: "generate" });
 
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (questions)");
@@ -156,7 +165,7 @@ export async function normalizeProductBrief(
         ),
       },
     ],
-  }, options);
+  }, { ...options, operation: "generate" });
 
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (brief)");
@@ -293,7 +302,7 @@ SLA соблюдение
         content: `Описание продукта (текст или JSON):\n${descriptionText}`,
       },
     ],
-  }, options);
+  }, { ...options, operation: "generate" });
 
   const data = response.data;
   const limitInfo = response.limitInfo;
@@ -351,7 +360,7 @@ export async function generateMetricInsight(
         `,
       },
     ],
-  });
+  }, { operation: "insight" });
 
   const data = response.data;
   const limitInfo = response.limitInfo;
@@ -391,7 +400,7 @@ export async function suggestMetricNames(
         `.trim(),
       },
     ],
-  });
+   }, { operation: "suggestion" });
 
   const data = response.data;
   const limitInfo = response.limitInfo;
@@ -450,7 +459,7 @@ export async function generateExperiment(payload, model = "gpt-4o-mini") {
         content: JSON.stringify(payload, null, 2),
       },
     ],
-  });
+  }, { operation: "experiment" });
 
   const raw = response.data?.choices?.[0]?.message?.content;
   if (!raw) throw new Error("Пустой ответ от модели (experiment)");
@@ -521,7 +530,7 @@ export async function prioritizeMetrics(
         ),
       },
     ],
-  });
+   }, { operation: "prioritization" });
 
   const data = response.data;
   const limitInfo = response.limitInfo;
