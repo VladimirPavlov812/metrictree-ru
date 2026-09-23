@@ -215,94 +215,110 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 // QUOTAS
 // -----------------------
 
-const FREE_MONTHLY_LIMITS = {
-  generate: 2,
-  insight: 2,
-  suggestion: 2,
-  prioritization: 2,
-  experiment: 2,
-};
-
-const PRO_MONTHLY_LIMITS = {
-  generate: 20,
-  insight: 20,
-  suggestion: 20,
-  prioritization: 20,
-  experiment: 20,
-};
-
 const PRO_PRICE_RUB = 490;
-const PRO_DURATION_DAYS = 30;
 
-async function getUserPlan(userId) {
-  const result = await pool.query(
+const FREE_INITIAL_OPERATIONS = 2;
+const PAID_PACKAGE_OPERATIONS = 20;
+
+const OPERATION_TYPES = [
+  "generate",
+  "insight",
+  "suggestion",
+  "prioritization",
+  "experiment",
+];
+
+async function ensureOperationBalances(userId, client = pool) {
+  await client.query(
     `
-    SELECT plan, pro_until
-    FROM users
-    WHERE id = $1
-    LIMIT 1
+    INSERT INTO operation_balances (user_id, quota_type)
+    SELECT $1, unnest($2::text[])
+    ON CONFLICT (user_id, quota_type) DO NOTHING
     `,
-    [userId]
+    [userId, OPERATION_TYPES]
   );
-
-  const user = result.rows[0];
-
-  if (
-    user?.plan === "pro" &&
-    user.pro_until &&
-    new Date(user.pro_until) > new Date()
-  ) {
-    return "pro";
-  }
-
-  return "free";
 }
 
-async function getUserLimits(userId) {
-  const plan = await getUserPlan(userId);
+
+async function consumeOperationBalance(userId, type) {
+  if (!OPERATION_TYPES.includes(type)) {
+    throw new Error("Invalid quota type");
+  }
+
+  await ensureOperationBalances(userId);
+
+  const result = await pool.query(
+    `
+    UPDATE operation_balances
+    SET
+      free_left = CASE
+        WHEN free_left > 0 THEN free_left - 1
+        ELSE free_left
+      END,
+      paid_left = CASE
+        WHEN free_left = 0 AND paid_left > 0 THEN paid_left - 1
+        ELSE paid_left
+      END
+    WHERE user_id = $1
+      AND quota_type = $2
+      AND (free_left > 0 OR paid_left > 0)
+    RETURNING free_left, paid_left
+    `,
+    [userId, type]
+  );
+
+  if (result.rows.length === 0) {
+    return {
+      ok: false,
+      type,
+      left: 0,
+    };
+  }
+
+  const { free_left, paid_left } = result.rows[0];
 
   return {
-    plan,
-    limits: plan === "pro" ? PRO_MONTHLY_LIMITS : FREE_MONTHLY_LIMITS,
+    ok: true,
+    type,
+    left: free_left + paid_left,
   };
 }
 
-
 app.get("/api/quota", authRequired, async (req, res) => {
   try {
-    const period = new Date().toISOString().slice(0, 7);
-    const { plan, limits } = await getUserLimits(req.user.userId);
+    const userId = req.user.userId;
+
+    await ensureOperationBalances(userId);
 
     const result = await pool.query(
       `
-      SELECT quota_type, used
-      FROM user_usage
+      SELECT quota_type, free_left, paid_left
+      FROM operation_balances
       WHERE user_id = $1
-        AND period = $2
       `,
-      [req.user.userId, period]
+      [userId]
     );
 
-    const usage = Object.fromEntries(
-      result.rows.map((row) => [row.quota_type, row.used])
+    const balances = Object.fromEntries(
+      result.rows.map((row) => [row.quota_type, row])
     );
 
     const quota = {};
 
-    for (const [type, limit] of Object.entries(limits)) {
-      const used = usage[type] || 0;
+    for (const type of OPERATION_TYPES) {
+      const balance = balances[type];
+      const freeLeft = balance?.free_left ?? 0;
+      const paidLeft = balance?.paid_left ?? 0;
 
       quota[type] = {
-        used,
-        limit,
-        left: Math.max(0, limit - used),
+        freeLeft,
+        paidLeft,
+        left: freeLeft + paidLeft,
       };
     }
 
     return res.json({
-    period,
-    plan,
-    quota,
+      quota,
     });
   } catch (err) {
     console.error("Quota get error:", err);
@@ -311,47 +327,12 @@ app.get("/api/quota", authRequired, async (req, res) => {
 });
 
 async function consumeUserQuota(userId, type) {
-  const { limits } = await getUserLimits(userId);
-  const limit = limits[type];
-
-  if (!limit) {
-    throw new Error("Invalid quota type");
-  }
-  const period = new Date().toISOString().slice(0, 7);
-
-  const result = await pool.query(
-    `
-    INSERT INTO user_usage (user_id, quota_type, period, used)
-    VALUES ($1, $2, $3, 1)
-    ON CONFLICT (user_id, quota_type, period)
-    DO UPDATE SET
-      used = user_usage.used + 1,
-      updated_at = now()
-    WHERE user_usage.used < $4
-    RETURNING used
-    `,
-    [userId, type, period, limit]
-  );
-
-  if (result.rows.length === 0) {
-    return {
-      ok: false,
-      type,
-      period,
-      limit,
-      left: 0,
-    };
-  }
-
-  const used = result.rows[0].used;
+  const result = await consumeOperationBalance(userId, type);
 
   return {
-    ok: true,
-    type,
-    period,
-    used,
-    limit,
-    left: Math.max(0, limit - used),
+    ok: result.ok,
+    type: result.type,
+    left: result.left,
   };
 }
 
@@ -382,7 +363,6 @@ app.post("/api/generate/start", authRequired, async (req, res) => {
       return res.status(429).json({
         error: "Quota exceeded",
         type: "generate",
-        limit: quota.limit,
         left: 0,
       });
     }
@@ -393,9 +373,7 @@ app.post("/api/generate/start", authRequired, async (req, res) => {
       generationId: operation.id,
       expiresAt: operation.expires_at,
       quota: {
-        used: quota.used,
-        limit: quota.limit,
-        left: quota.left,
+      left: quota.left,
       },
     });
   } catch (err) {
@@ -409,7 +387,7 @@ app.post("/api/quota/consume", authRequired, async (req, res) => {
   try {
         const { type } = req.body || {};
 
-    if (!Object.prototype.hasOwnProperty.call(FREE_MONTHLY_LIMITS, type)) {
+    if (!OPERATION_TYPES.includes(type)) {
     return res.status(400).json({ error: "Invalid quota type" });
     }
 
@@ -419,7 +397,6 @@ app.post("/api/quota/consume", authRequired, async (req, res) => {
       return res.status(429).json({
         error: "Quota exceeded",
         type: quota.type,
-        limit: quota.limit,
         left: 0,
       });
     }
@@ -462,19 +439,19 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
     const amount = PRO_PRICE_RUB.toFixed(2);
 
     const result = await pool.query(
-      `
-      INSERT INTO payments (
-        user_id,
-        amount,
-        currency,
-        status,
-        plan,
-        duration_days
-      )
-      VALUES ($1, $2, 'RUB', 'pending', 'pro', $3)
-      RETURNING id
-      `,
-      [req.user.userId, amount, PRO_DURATION_DAYS]
+    `
+    INSERT INTO payments (
+    user_id,
+    amount,
+    currency,
+    status,
+    plan,
+    duration_days
+    )
+    VALUES ($1, $2, 'RUB', 'pending', 'operations', 0)
+    RETURNING id
+    `,
+    [req.user.userId, amount]
     );
 
     const invId = result.rows[0].id;
@@ -487,7 +464,7 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
       MerchantLogin: ROBOKASSA_MERCHANT_LOGIN,
       OutSum: amount,
       InvId: String(invId),
-      Description: `MetricTree Pro на ${PRO_DURATION_DAYS} дней`,
+      Description: "MetricTree: пакет из 20 операций каждого типа",
       SignatureValue: signature,
       Culture: "ru",
       Encoding: "utf-8",
@@ -503,6 +480,41 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
     });
   } catch (err) {
     console.error("Create Pro payment error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+app.get("/api/payments/:id/status", authRequired, async (req, res) => {
+  try {
+    const paymentId = Number(req.params.id);
+
+    if (!Number.isSafeInteger(paymentId) || paymentId <= 0) {
+      return res.status(400).json({ error: "Invalid payment ID" });
+    }
+
+    const result = await pool.query(
+      `
+      SELECT id, status
+      FROM payments
+      WHERE id = $1 AND user_id = $2
+      LIMIT 1
+      `,
+      [paymentId, req.user.userId]
+    );
+
+    const payment = result.rows[0];
+
+    if (!payment) {
+      return res.status(404).json({ error: "Payment not found" });
+    }
+
+    return res.json({
+      paymentId: payment.id,
+      status: payment.status,
+    });
+  } catch (err) {
+    console.error("Payment status error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -560,7 +572,7 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
       return res.send(`OK${invId}`);
     }
 
-    if (payment.plan !== "pro") {
+    if (payment.plan !== "operations" && payment.plan !== "pro") {
       await client.query("ROLLBACK");
       return res.status(400).send("Invalid plan");
     }
@@ -575,25 +587,27 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
       [payment.id]
     );
 
-    await client.query(
-      `
-      UPDATE users
-      SET plan = 'pro',
-          pro_until =
-            GREATEST(
-              COALESCE(pro_until, now()),
-              now()
-            ) + ($2 * interval '1 day')
-      WHERE id = $1
-      `,
-      [payment.user_id, payment.duration_days]
+    await ensureOperationBalances(payment.user_id, client);
+
+    const creditResult = await client.query(
+    `
+    UPDATE operation_balances
+    SET paid_left = paid_left + $2
+    WHERE user_id = $1
+    AND quota_type = ANY($3::text[])
+    `,
+    [payment.user_id, PAID_PACKAGE_OPERATIONS, OPERATION_TYPES]
     );
+
+    if (creditResult.rowCount !== OPERATION_TYPES.length) {
+    throw new Error("Не удалось начислить все пять типов операций");
+    }
 
     await client.query("COMMIT");
 
     return res.send(`OK${invId}`);
   } catch (err) {
-    await client.query("ROLLBACK");
+    if (client) await client.query("ROLLBACK");
     console.error("Robokassa ResultURL error:", err);
     return res.status(500).send("Internal server error");
     } finally {
@@ -857,7 +871,6 @@ app.post("/api/openai", async (req, res) => {
         return res.status(429).json({
           error: "Quota exceeded",
           type: quota.type,
-          limit: quota.limit,
           left: 0,
         });
       }

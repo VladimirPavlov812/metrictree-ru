@@ -64,7 +64,7 @@ document.head.appendChild(tabPulseStyle);
 
 // Маленький компонент для строки лимита
 function QuotaLine({ label, info }) {
-  const left = info.left ?? Math.max(0, (info.limit || 0) - (info.used || 0));
+  const left = info?.left ?? 0;
 
   let color = "text-green-700";
   if (left <= 2) color = "text-yellow-700";
@@ -74,7 +74,7 @@ function QuotaLine({ label, info }) {
     <div className="flex justify-between text-sm mb-1">
       <span className="text-gray-600">{label}:</span>
       <span className={color}>
-        {left} / {info.limit ?? "—"}
+        Осталось: {left}
       </span>
     </div>
   );
@@ -684,8 +684,6 @@ const handleGenerateExperiment = async () => {
   highlightedNodes,
   ]);
 
-  const [accountPlan, setAccountPlan] = useState("free");
-
   // === Лимиты (для отображения) ===
   const [quotaView, setQuotaView] = useState({
     generate: { used: 0, limit: 2, left: 2 },
@@ -748,8 +746,7 @@ const handleGenerateExperiment = async () => {
     const data = await res.json();
 
     setQuotaView(data.quota);
-    setAccountPlan(data.plan || "free");
-    return data.plan || "free";
+    return data.quota;
 
   } catch (err) {
     console.error("Quota load error:", err);
@@ -773,7 +770,15 @@ const handleGenerateExperiment = async () => {
       throw new Error("Не получена ссылка на оплату");
     }
 
+    
+    if (!data.paymentId) {
+    throw new Error("Не получен номер платежа");
+    }
+
+    sessionStorage.setItem("metrictree_pending_payment_id", String(data.paymentId));
     window.location.href = data.paymentUrl;
+
+
   } catch (err) {
     console.error("Pro payment error:", err);
     alert("Не удалось перейти к оплате. Попробуйте ещё раз.");
@@ -941,45 +946,59 @@ const handleGenerateExperiment = async () => {
 
     params.delete("payment");
     const query = params.toString();
-    const cleanUrl =
-      window.location.pathname +
-      (query ? `?${query}` : "") +
-      window.location.hash;
+    window.history.replaceState(
+      {},
+      "",
+      window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+    );
 
-    window.history.replaceState({}, "", cleanUrl);
+    const paymentId = sessionStorage.getItem("metrictree_pending_payment_id");
 
     if (payment === "fail") {
-      alert("Оплата не завершена. Pro не активирован.");
+      sessionStorage.removeItem("metrictree_pending_payment_id");
+      alert("Оплата не завершена. Операции не начислены.");
       return;
     }
 
-    alert(
-      "Вы вернулись со страницы оплаты. Проверяем подтверждение платежа — Pro активируется после получения уведомления от Robokassa."
-    );
+    if (!paymentId || !/^\d+$/.test(paymentId)) {
+      alert("Не удалось определить номер платежа. Если оплата прошла, обновите страницу и проверьте остаток операций или обратитесь в поддержку.");
+      return;
+    }
 
     let cancelled = false;
-    let attempts = 0;
     let timer;
+    let attempts = 0;
 
     const checkPayment = async () => {
       if (cancelled) return;
 
-      const plan = await fetchServerQuota();
-      if (cancelled) return;
+      try {
+        const res = await fetch(`/api/payments/${encodeURIComponent(paymentId)}/status`);
+        if (!res.ok) throw new Error(`Payment status HTTP ${res.status}`);
+        const data = await res.json();
+        if (cancelled) return;
 
-      if (plan === "pro") {
-        alert("MetricTree Pro активирован!");
-        return;
+        if (data.status === "paid") {
+          sessionStorage.removeItem("metrictree_pending_payment_id");
+          await fetchServerQuota();
+          if (!cancelled) alert("Оплата подтверждена! По 20 операций каждого типа начислены на ваш баланс.");
+          return;
+        }
+
+        if (data.status === "failed") {
+          sessionStorage.removeItem("metrictree_pending_payment_id");
+          alert("Платёж не прошёл. Операции не начислены.");
+          return;
+        }
+      } catch (err) {
+        console.error("Payment status check error:", err);
       }
 
       attempts += 1;
-
-      if (attempts < 6) {
+      if (attempts < 10) {
         timer = window.setTimeout(checkPayment, 3000);
-      } else {
-        alert(
-          "Подтверждение оплаты пока не получено. Проверьте статус Pro в разделе «Лимиты аккаунта» чуть позже."
-        );
+      } else if (!cancelled) {
+        alert("Подтверждение платежа пока не получено. Проверьте остаток операций позднее. Если деньги списаны, обратитесь в поддержку, указав номер платежа: " + paymentId);
       }
     };
 
@@ -989,7 +1008,7 @@ const handleGenerateExperiment = async () => {
       cancelled = true;
       window.clearTimeout(timer);
     };
-   }, [session?.user?.id]);
+  }, [session?.user?.id]);
 
   useEffect(() => {
   if (isFullscreen) {
@@ -3228,39 +3247,26 @@ const currentNextStepsCopy =
         </h3>
 
         <div className="mb-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
-        <div className="flex items-center justify-between gap-3">
-        <div>
-        <div className="text-sm font-semibold text-gray-900">
-        {accountPlan === "pro" ? "MetricTree Pro" : "MetricTree Free"}
-        </div>
-
-        {accountPlan === "pro" ? (
-        <div className="text-xs text-gray-500 mt-1">
-          Расширенные лимиты аккаунта
-        </div>
-        ) : (
-        <div className="text-xs text-gray-500 mt-1">
-          Pro: 20 операций каждого типа в месяц
-        </div>
-        )}
-        </div>
-
-        {accountPlan !== "pro" && (
-        <div className="text-sm font-semibold whitespace-nowrap">
-        490 ₽
-        </div>
-        )}
-        </div>
-
-        {accountPlan !== "pro" && (
-        <button
-        type="button"
-        onClick={handleBuyPro}
-        className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
-        >
-        Перейти на Pro — 490 ₽
-        </button>
-        )}
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-sm font-semibold text-gray-900">
+                Пакет операций MetricTree
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                +20 операций каждого типа без ограничения срока действия
+              </div>
+            </div>
+            <div className="text-sm font-semibold whitespace-nowrap">
+              490 ₽
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleBuyPro}
+            className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
+          >
+            Купить 20 операций каждого типа — 490 ₽
+          </button>
         </div>
 
         <QuotaLine label="Генерация дерева" info={quotaView.generate} />
