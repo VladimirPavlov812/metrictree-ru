@@ -216,19 +216,19 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 // -----------------------
 
 const FREE_MONTHLY_LIMITS = {
-  generate: 5,
-  insight: 5,
-  suggestion: 5,
-  prioritization: 5,
-  experiment: 5,
+  generate: 2,
+  insight: 2,
+  suggestion: 2,
+  prioritization: 2,
+  experiment: 2,
 };
 
 const PRO_MONTHLY_LIMITS = {
-  generate: 50,
-  insight: 50,
-  suggestion: 50,
-  prioritization: 50,
-  experiment: 50,
+  generate: 20,
+  insight: 20,
+  suggestion: 20,
+  prioritization: 20,
+  experiment: 20,
 };
 
 const PRO_PRICE_RUB = 490;

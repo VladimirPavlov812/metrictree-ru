@@ -688,11 +688,11 @@ const handleGenerateExperiment = async () => {
 
   // === Лимиты (для отображения) ===
   const [quotaView, setQuotaView] = useState({
-    generate: { used: 0, limit: 5, left: 5 },
-    insight: { used: 0, limit: 5, left: 5 },
-    suggestion: { used: 0, limit: 5, left: 5 },
-    prioritization: { used: 0, limit: 5, left: 5 },
-    experiment: { used: 0, limit: 5 }
+    generate: { used: 0, limit: 2, left: 2 },
+    insight: { used: 0, limit: 2, left: 2 },
+    suggestion: { used: 0, limit: 2, left: 2 },
+    prioritization: { used: 0, limit: 2, left: 2 },
+    experiment: { used: 0, limit: 2 }
   });
 
   const STORAGE_KEY = "metrictree_data_v1";
@@ -3240,7 +3240,7 @@ const currentNextStepsCopy =
         </div>
         ) : (
         <div className="text-xs text-gray-500 mt-1">
-          Pro: 50 операций каждого типа в месяц
+          Pro: 20 операций каждого типа в месяц
         </div>
         )}
         </div>
