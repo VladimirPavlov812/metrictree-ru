@@ -23,9 +23,15 @@ const pool = new Pool({
 
 const COOKIE_NAME = "metrictree_session";
 const ROBOKASSA_MERCHANT_LOGIN = process.env.ROBOKASSA_MERCHANT_LOGIN;
-const ROBOKASSA_PASSWORD_1 = process.env.ROBOKASSA_PASSWORD_1;
-const ROBOKASSA_PASSWORD_2 = process.env.ROBOKASSA_PASSWORD_2;
 const ROBOKASSA_TEST_MODE = process.env.ROBOKASSA_TEST_MODE === "true";
+
+const ROBOKASSA_PASSWORD_1 = ROBOKASSA_TEST_MODE
+  ? process.env.ROBOKASSA_TEST_PASSWORD_1
+  : process.env.ROBOKASSA_PROD_PASSWORD_1;
+
+const ROBOKASSA_PASSWORD_2 = ROBOKASSA_TEST_MODE
+  ? process.env.ROBOKASSA_TEST_PASSWORD_2
+  : process.env.ROBOKASSA_PROD_PASSWORD_2;
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
