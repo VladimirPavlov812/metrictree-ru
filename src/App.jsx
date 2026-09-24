@@ -137,6 +137,7 @@ const MetricNode = memo(function MetricNode({ id, data }) {
   );
 });
 
+
 export default function App() {
   
   // === определение мобильной версии ===

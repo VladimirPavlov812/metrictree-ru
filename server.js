@@ -4,10 +4,21 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import crypto from "node:crypto";
+import nodemailer from "nodemailer";
 
 const { Pool } = pg;
 
 const app = express();
+
+const mailTransport = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT || 465),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +43,13 @@ const ROBOKASSA_PASSWORD_1 = ROBOKASSA_TEST_MODE
 const ROBOKASSA_PASSWORD_2 = ROBOKASSA_TEST_MODE
   ? process.env.ROBOKASSA_TEST_PASSWORD_2
   : process.env.ROBOKASSA_PROD_PASSWORD_2;
+
+
+function hashResetToken(token) {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
+const RESET_TOKEN_TTL_MS = 30 * 60 * 1000;
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -120,6 +138,126 @@ app.post("/api/auth/register", async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+// -----------------------
+// AUTH: FORGOT PASSWORD
+// -----------------------
+
+app.post("/api/auth/forgot-password", async (req, res) => {
+  const email = normalizeEmail(req.body?.email);
+  const genericResponse = {
+    message: "Если такой email зарегистрирован, мы отправим ссылку для восстановления пароля.",
+  };
+
+  if (!email || email.length > 254) {
+    return res.status(400).json({ error: "Укажите корректный email" });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, email FROM users WHERE email = $1 LIMIT 1",
+      [email]
+    );
+
+    if (rows.length === 0) {
+      return res.json(genericResponse);
+    }
+
+    const user = rows[0];
+    const token = crypto.randomBytes(32).toString("hex");
+    const tokenHash = hashResetToken(token);
+    const expiresAt = new Date(Date.now() + RESET_TOKEN_TTL_MS);
+
+    await pool.query(
+      `INSERT INTO password_reset_tokens (user_id, token_hash, expires_at)
+       VALUES ($1, $2, $3)`,
+      [user.id, tokenHash, expiresAt]
+    );
+
+    const resetUrl = new URL("/reset-password", "https://metrictree.ru");
+    resetUrl.searchParams.set("token", token);
+
+    await mailTransport.sendMail({
+      from: process.env.MAIL_FROM,
+      to: user.email,
+      subject: "Восстановление пароля MetricTree",
+      text: `Для установки нового пароля перейдите по ссылке:\n\n${resetUrl.toString()}\n\nСсылка действует 30 минут. Если вы не запрашивали восстановление пароля, проигнорируйте это письмо.`,
+    });
+
+    return res.json(genericResponse);
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    return res.status(500).json({ error: "Не удалось обработать запрос. Попробуйте позже." });
+  }
+});
+
+
+// -----------------------
+// AUTH: RESET PASSWORD
+// -----------------------
+
+app.post("/api/auth/reset-password", async (req, res) => {
+  const token = String(req.body?.token || "");
+  const password = req.body?.password;
+
+  if (!/^[a-f0-9]{64}$/.test(token)) {
+    return res.status(400).json({ error: "Недействительная ссылка восстановления" });
+  }
+
+  if (typeof password !== "string" || password.length < 8 || password.length > 72) {
+    return res.status(400).json({ error: "Пароль должен содержать от 8 до 72 символов" });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const { rows } = await client.query(
+      `UPDATE password_reset_tokens
+       SET used_at = NOW()
+       WHERE token_hash = $1
+         AND used_at IS NULL
+         AND expires_at > NOW()
+       RETURNING user_id`,
+      [hashResetToken(token)]
+    );
+
+    if (rows.length === 0) {
+      await client.query("ROLLBACK");
+      return res.status(400).json({
+        error: "Ссылка недействительна или срок её действия истёк",
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    await client.query(
+      "UPDATE users SET password_hash = $1 WHERE id = $2",
+      [passwordHash, rows[0].user_id]
+    );
+
+    await client.query(
+      `UPDATE password_reset_tokens
+       SET used_at = NOW()
+       WHERE user_id = $1 AND used_at IS NULL`,
+      [rows[0].user_id]
+    );
+
+    await client.query("COMMIT");
+    res.clearCookie(COOKIE_NAME, { path: "/" });
+
+    return res.json({ message: "Пароль успешно изменён. Войдите с новым паролем." });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Reset password error:", err);
+    return res.status(500).json({ error: "Не удалось изменить пароль. Попробуйте позже." });
+  } finally {
+    client.release();
+  }
+});
+
 
 // -----------------------
 // AUTH: LOGIN
