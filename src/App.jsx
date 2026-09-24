@@ -2688,20 +2688,28 @@ const currentNextStepsCopy =
 
         </div>    
         {session?.user?.id && (
-        <div className="mb-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
-        <div className="text-sm font-semibold text-gray-900 mb-2">
-        Осталось операций
-        </div>
+    <div className="mb-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+    <div className="mb-2 text-sm font-semibold text-gray-900">
+      Осталось операций
+    </div>
 
-        <div className="space-y-1">
-        <QuotaLine label="Генерация дерева" info={quotaView.generate} />
-        <QuotaLine label="Инсайты" info={quotaView.insight} />
-        <QuotaLine label="Подсказки названий" info={quotaView.suggestion} />
-        <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
-        <QuotaLine label="A/B-эксперименты" info={quotaView.experiment} />
-        </div>
-        </div>
-        )}  
+    <div className="space-y-1">
+      <QuotaLine label="Генерация дерева" info={quotaView.generate} />
+      <QuotaLine label="Инсайты" info={quotaView.insight} />
+      <QuotaLine label="Подсказки названий" info={quotaView.suggestion} />
+      <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
+      <QuotaLine label="A/B-эксперименты" info={quotaView.experiment} />
+    </div>
+
+    <button
+      type="button"
+      onClick={handleBuyPro}
+      className="mt-3 w-full rounded-lg bg-[#ffdd2d] px-4 py-3 text-sm font-semibold text-black"
+    >
+      Купить 20 операций каждого типа — 490 ₽
+    </button>
+    </div>
+    )}
 
         <textarea
           value={description}
