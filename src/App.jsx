@@ -32,7 +32,7 @@ import { checkLocalQuota, getQuotaInfo } from "./quota";
 function ymEvent(name) {
   try {
     if (window?.ym) {
-      window.ym(105378247, "reachGoal", name);
+      window.ym(112997205, "reachGoal", name);
     }
   } catch (e) {
     console.warn("YM event error:", e);
