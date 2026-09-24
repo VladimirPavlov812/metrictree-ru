@@ -2653,7 +2653,30 @@ const currentNextStepsCopy =
         {session?.user?.email || "Гостевой режим"}
         </span>
 
-        {!session?.user?.id && (
+        {session?.user?.id ? (
+        <button
+        type="button"
+        onClick={async () => {
+        try {
+        const res = await fetch("/api/auth/logout", {
+          method: "POST",
+        });
+
+        if (!res.ok) {
+          throw new Error("Не удалось выйти из аккаунта");
+        }
+
+        setSession(null);
+        } catch (e) {
+        console.error("Logout error:", e);
+        alert("Не удалось выйти из аккаунта. Попробуйте ещё раз.");
+        }
+        }}
+        className="shrink-0 bg-white border border-gray-200 px-3 py-2 rounded-lg text-sm"
+        >
+        Выйти
+        </button>
+        ) : (
         <button
         type="button"
         onClick={() => setAuthModalOpen(true)}
@@ -2662,6 +2685,7 @@ const currentNextStepsCopy =
         Войти / Регистрация
         </button>
         )}
+
         </div>    
 
 
