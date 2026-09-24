@@ -2648,6 +2648,23 @@ const currentNextStepsCopy =
         AI-генератор дерева метрик продукта
         </div>    
 
+        <div className="flex items-center justify-between gap-2 mb-3">
+        <span className="text-xs text-gray-600 truncate">
+        {session?.user?.email || "Гостевой режим"}
+        </span>
+
+        {!session?.user?.id && (
+        <button
+        type="button"
+        onClick={() => setAuthModalOpen(true)}
+        className="shrink-0 bg-[#ffdd2d] text-black px-3 py-2 rounded-lg text-sm font-medium"
+        >
+        Войти / Регистрация
+        </button>
+        )}
+        </div>    
+
+
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
