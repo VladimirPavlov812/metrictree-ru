@@ -78,6 +78,33 @@ function parseModelJson(raw) {
 }
 
 
+function validateMetricTree(node, path = "root") {
+  if (!node || typeof node !== "object" || Array.isArray(node)) {
+    throw new Error(`Некорректное дерево: ${path} должен быть объектом`);
+  }
+
+  if (typeof node.id !== "string" || typeof node.name !== "string") {
+    throw new Error(`Некорректное дерево: у ${path} отсутствует id или name`);
+  }
+
+  if (node.children == null) {
+    return { ...node, children: [] };
+  }
+
+  if (!Array.isArray(node.children)) {
+    throw new Error(
+      `Некорректное дерево от AI: ${path}.children должен быть массивом, получено ${typeof node.children}`
+    );
+  }
+
+  return {
+    ...node,
+    children: node.children.map((child, index) =>
+      validateMetricTree(child, `${path}.children[${index}]`)
+    ),
+  };
+}
+
 // === Наводящие вопросы / мини-опросник ===
 export async function generateClarifyingQuestions(productDescription, model = "gpt-4o-mini", options = {}) {
   const response = await callOpenAI({
@@ -311,10 +338,10 @@ SLA соблюдение
   if (!raw) throw new Error("Пустой ответ от модели");
 
   try {
-    return {
-      tree: parseModelJson(raw),
-      limitInfo,
-    };
+  return {
+  tree: validateMetricTree(parseModelJson(raw)),
+  limitInfo,
+  };
   } catch (e) {
     console.error("❌ Ошибка парсинга JSON:", raw);
     throw new Error("Невалидный JSON от модели");
