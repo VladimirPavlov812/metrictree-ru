@@ -2603,7 +2603,7 @@ const currentNextStepsCopy =
             <option value="gpt-5.5">GPT-5.5 (экспертная)</option>
             <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
             <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
-            <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+            
 
             </select>
 
@@ -2708,7 +2708,7 @@ const currentNextStepsCopy =
 <option value="gpt-5.5">GPT-5.5 (экспертная)</option>
 <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
 <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
-<option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+
 
 </select>
 
