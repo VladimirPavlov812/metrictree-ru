@@ -2687,7 +2687,21 @@ const currentNextStepsCopy =
         )}
 
         </div>    
+        {session?.user?.id && (
+        <div className="mb-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+        <div className="text-sm font-semibold text-gray-900 mb-2">
+        Осталось операций
+        </div>
 
+        <div className="space-y-1">
+        <QuotaLine label="Генерация дерева" info={quotaView.generate} />
+        <QuotaLine label="Инсайты" info={quotaView.insight} />
+        <QuotaLine label="Подсказки названий" info={quotaView.suggestion} />
+        <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
+        <QuotaLine label="A/B-эксперименты" info={quotaView.experiment} />
+        </div>
+        </div>
+        )}  
 
         <textarea
           value={description}
