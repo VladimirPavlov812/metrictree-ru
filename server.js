@@ -1042,7 +1042,8 @@ app.post("/api/openai", async (req, res) => {
     // Claude в Cloud.ru не поддерживает response_format: json_object.
     // JSON-формат уже явно задан в system prompt.
     if (cloudModel.startsWith("anthropic/")) {
-      delete payload.response_format;
+    delete payload.response_format;
+    payload.max_tokens = 8192;
     }
 
     const apiRes = await fetch(
