@@ -25,7 +25,7 @@ import {
   normalizeProductBrief,
   generateExperiment,
 } from "./api/gpt";
-import { checkLocalQuota } from "./quota";
+import { checkLocalQuota, getQuotaInfo } from "./quota";
 
 
 // === Яндекс.Метрика: отправка событий ===
