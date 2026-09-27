@@ -369,7 +369,7 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 // QUOTAS
 // -----------------------
 
-const PRO_PRICE_RUB = 5;
+const PRO_PRICE_RUB = 490;
 
 const PAID_PACKAGE_CREDITS = 300;
 
