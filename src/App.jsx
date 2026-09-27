@@ -1412,7 +1412,11 @@ const handleGenerateExperiment = async () => {
 if (session?.user?.id) {
   try {
     const res = await fetch("/api/generate/start", {
-      method: "POST",
+    method: "POST",
+    headers: {
+    "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ model }),
     });
 
     const data = await res.json();

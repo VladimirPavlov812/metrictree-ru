@@ -499,9 +499,82 @@ async function createGenerateOperation(userId) {
   return result.rows[0];
 }
 
+
+const CREDIT_COSTS = {
+  generate: {
+    "claude-sonnet-4.6": 15,
+    "gpt-4.1": 5,
+    "gpt-5.5": 10,
+    "gigachat-3.5": 2,
+  },
+  insight: {
+    "claude-sonnet-4.6": 8,
+    "gpt-4.1": 3,
+    "gpt-5.5": 5,
+    "gigachat-3.5": 2,
+  },
+  experiment: {
+    "claude-sonnet-4.6": 3,
+    "gpt-4.1": 2,
+    "gpt-5.5": 5,
+    "gigachat-3.5": 1,
+  },
+  suggestion: {
+    "claude-sonnet-4.6": 5,
+    "gpt-4.1": 2,
+    "gpt-5.5": 1,
+    "gigachat-3.5": 1,
+  },
+  prioritization: {
+    "claude-sonnet-4.6": 7,
+    "gpt-4.1": 3,
+    "gpt-5.5": 10,
+    "gigachat-3.5": 1,
+  },
+};
+
+async function consumeCredits(userId, amount) {
+  const result = await pool.query(
+    `
+    UPDATE credit_balances
+    SET
+      free_credits = GREATEST(free_credits - $2, 0),
+      paid_credits = paid_credits - GREATEST($2 - free_credits, 0),
+      updated_at = now()
+    WHERE user_id = $1
+      AND (free_credits + paid_credits) >= $2
+    RETURNING free_credits, paid_credits
+    `,
+    [userId, amount]
+  );
+
+  if (result.rows.length === 0) {
+    return {
+      ok: false,
+      left: 0,
+    };
+  }
+
+  const { free_credits, paid_credits } = result.rows[0];
+
+  return {
+    ok: true,
+    left: free_credits + paid_credits,
+  };
+}
+
 app.post("/api/generate/start", authRequired, async (req, res) => {
   try {
-    const quota = await consumeUserQuota(req.user.userId, "generate");
+    const { model } = req.body || {};
+    const cost = CREDIT_COSTS.generate[model];
+
+    if (!cost) {
+    return res.status(400).json({
+    error: "Invalid model",
+    });
+    }
+
+    const quota = await consumeCredits(req.user.userId, cost);
 
     if (!quota.ok) {
       return res.status(429).json({
