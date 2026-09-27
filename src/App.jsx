@@ -25,7 +25,7 @@ import {
   normalizeProductBrief,
   generateExperiment,
 } from "./api/gpt";
-import { checkLocalQuota, getQuotaInfo } from "./quota";
+import { checkLocalQuota } from "./quota";
 
 
 // === Яндекс.Метрика: отправка событий ===
@@ -251,6 +251,7 @@ const handleRunPrioritization = async () => {
     // подсветка: top + avoid + (опционально) ближайшие связи
     setHighlightedNodes([...new Set([...topIds, ...avoidIds])]);
     ymEvent("prioritization");
+    await fetchServerQuota();
   } catch (e) {
     console.error(e);
     setPriorResult({ summary: "Ошибка при приоритизации 😢" });
@@ -399,6 +400,7 @@ const handleGenerateExperiment = async () => {
     });
 
     ymEvent("experiment");
+    await fetchServerQuota();
     setPendingFeedbackSource("experiment");
   } catch (e) {
     console.error(e);
@@ -545,6 +547,40 @@ const handleGenerateExperiment = async () => {
 
   // === Переключатель модели ===
   const [model, setModel] = useState("gpt-4.1");
+  const CREDIT_COSTS = {
+  generate: {
+    "claude-sonnet-4.6": 15,
+    "gpt-4.1": 5,
+    "gpt-5.5": 10,
+    "gigachat-3.5": 2,
+  },
+  insight: {
+    "claude-sonnet-4.6": 8,
+    "gpt-4.1": 3,
+    "gpt-5.5": 5,
+    "gigachat-3.5": 2,
+  },
+  experiment: {
+    "claude-sonnet-4.6": 3,
+    "gpt-4.1": 2,
+    "gpt-5.5": 5,
+    "gigachat-3.5": 1,
+  },
+  suggestion: {
+    "claude-sonnet-4.6": 5,
+    "gpt-4.1": 2,
+    "gpt-5.5": 1,
+    "gigachat-3.5": 1,
+  },
+  prioritization: {
+    "claude-sonnet-4.6": 7,
+    "gpt-4.1": 3,
+    "gpt-5.5": 10,
+    "gigachat-3.5": 1,
+  },
+  };
+
+
   // === Приоритизация метрик ===
   const [priorLoading, setPriorLoading] = useState(false);
   const [showPriorModal, setShowPriorModal] = useState(false);
@@ -664,12 +700,10 @@ const handleGenerateExperiment = async () => {
   ]);
 
   // === Лимиты (для отображения) ===
-  const [quotaView, setQuotaView] = useState({
-    generate: { used: 0, limit: 2, left: 2 },
-    insight: { used: 0, limit: 2, left: 2 },
-    suggestion: { used: 0, limit: 2, left: 2 },
-    prioritization: { used: 0, limit: 2, left: 2 },
-    experiment: { used: 0, limit: 2 }
+  const [creditBalance, setCreditBalance] = useState({
+  freeCredits: 0,
+  paidCredits: 0,
+  left: 0,
   });
 
   const STORAGE_KEY = "metrictree_data_v1";
@@ -696,21 +730,11 @@ const handleGenerateExperiment = async () => {
   };
 
   const refreshQuotaView = () => {
-  // Для авторизованного пользователя квоты берём только с сервера.
   if (session?.user?.id) {
     fetchServerQuota();
-    return;
   }
-
-  // Для гостя используется локальный лимит.
-  setQuotaView({
-    generate: getQuotaInfo("generate_tree", 1),
-    insight: getQuotaInfo("insight", 5),
-    suggestion: getQuotaInfo("suggestion", 5),
-    prioritization: getQuotaInfo("prioritization", 5),
-    experiment: getQuotaInfo("experiment", 5),
-  });
   };
+
 
   const fetchServerQuota = async () => {
   if (!session?.user?.id) return;
@@ -724,8 +748,8 @@ const handleGenerateExperiment = async () => {
 
     const data = await res.json();
 
-    setQuotaView(data.quota);
-    return data.quota;
+    setCreditBalance(data.credits);
+    return data.credits;
 
   } catch (err) {
     console.error("Quota load error:", err);
@@ -765,46 +789,23 @@ const handleGenerateExperiment = async () => {
   };
 
 
-
   const checkServerQuota = async (type) => {
   const res = await fetch("/api/quota");
 
   if (!res.ok) {
-    throw new Error("Не удалось проверить лимит");
+    throw new Error("Не удалось проверить баланс кредитов");
   }
 
   const data = await res.json();
-  const quota = data?.quota?.[type];
+  const creditsLeft = data?.credits?.left ?? 0;
+  const cost = CREDIT_COSTS[type]?.[model];
 
-  if (!quota || quota.left <= 0) {
-    return false;
+  if (!cost) {
+    throw new Error("Неизвестная стоимость AI-операции");
   }
 
-  return true;
+  return creditsLeft >= cost;
   };
-
-  const consumeServerQuota = async (type) => {
-  const res = await fetch("/api/quota/consume", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type }),
-  });
-
-  const data = await res.json();
-
-  if (res.status === 429) {
-    throw new Error("Лимит исчерпан");
-  }
-
-  if (!res.ok) {
-    throw new Error(data?.error || "Не удалось обновить лимит");
-  }
-
-  await fetchServerQuota();
-
-  return data;
-  };
-
 
   const handleSaveToCloud = async ({ forceNew = false } = {}) => {
   if (!session?.user?.id) {
@@ -960,7 +961,7 @@ const handleGenerateExperiment = async () => {
         if (data.status === "paid") {
           sessionStorage.removeItem("metrictree_pending_payment_id");
           await fetchServerQuota();
-          if (!cancelled) alert("Оплата подтверждена! По 20 операций каждого типа начислены на ваш баланс.");
+          if (!cancelled) alert("Оплата подтверждена! 300 AI-кредитов начислены на ваш баланс.");
           return;
         }
 
@@ -1714,9 +1715,7 @@ try {
 
       // === событие метрики ===
       ymEvent("suggestion");
-
-
-
+      await fetchServerQuota();
     } catch (err) {
       console.warn("Не удалось получить подсказки:", err);
     } finally {
@@ -2239,6 +2238,7 @@ const handleGetInsight = async (metricArg) => {
     setInsightPending(false);
 
     ymEvent("insight");
+    await fetchServerQuota();
     // запоминаем, что после инсайта нужно показать форму
     setPendingFeedbackSource("insight");
 
@@ -2637,11 +2637,12 @@ const currentNextStepsCopy =
     </div>
 
     <div className="space-y-1">
-      <QuotaLine label="Генерация дерева" info={quotaView.generate} />
-      <QuotaLine label="Инсайты" info={quotaView.insight} />
-      <QuotaLine label="Подсказки названий" info={quotaView.suggestion} />
-      <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
-      <QuotaLine label="A/B-эксперименты" info={quotaView.experiment} />
+    <div className="flex items-center justify-between text-sm">
+    <span className="text-gray-700">AI-кредиты</span>
+    <span className="font-semibold text-gray-900">
+    {creditBalance.left}
+    </span>
+    </div>
     </div>
 
     <button
@@ -2649,7 +2650,7 @@ const currentNextStepsCopy =
       onClick={handleBuyPro}
       className="mt-3 w-full rounded-lg bg-[#ffdd2d] px-4 py-3 text-sm font-semibold text-black"
     >
-      Купить 20 операций каждого типа — 490 ₽
+      Купить 300 кредитов — 490 ₽
     </button>
     </div>
     )}
@@ -3244,12 +3245,14 @@ const currentNextStepsCopy =
         <div className="mb-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between gap-3">
             <div>
+             
               <div className="text-sm font-semibold text-gray-900">
-                Пакет операций MetricTree
+              Пакет AI-кредитов
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                +20 операций каждого типа без ограничения срока действия
+              300 кредитов без ограничения срока действия
               </div>
+            
             </div>
             <div className="text-sm font-semibold whitespace-nowrap">
               490 ₽
@@ -3260,15 +3263,16 @@ const currentNextStepsCopy =
             onClick={handleBuyPro}
             className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
           >
-            Купить 20 операций каждого типа — 490 ₽
+            Купить 300 кредитов — 490 ₽
           </button>
         </div>
 
-        <QuotaLine label="Генерация дерева" info={quotaView.generate} />
-        <QuotaLine label="Разбор метрик" info={quotaView.insight} />
-        <QuotaLine label="Подсказки метрик" info={quotaView.suggestion} />
-        <QuotaLine label="Приоритизация" info={quotaView.prioritization} />
-        <QuotaLine label="A/B эксперименты" info={quotaView.experiment} />
+        <div className="flex items-center justify-between text-sm">
+        <span className="text-gray-700">AI-кредиты</span>
+        <span className="font-semibold text-gray-900">
+        {creditBalance.left}
+        </span>
+        </div>
       </>
     )}
     </div>

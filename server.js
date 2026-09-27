@@ -122,6 +122,16 @@ app.post("/api/auth/register", async (req, res) => {
     );
 
     const user = result.rows[0];
+
+    await pool.query(
+    `
+    INSERT INTO credit_balances (user_id, free_credits, paid_credits)
+    VALUES ($1, 30, 0)
+    ON CONFLICT (user_id) DO NOTHING
+    `,
+    [user.id]
+    );
+
     const token = createToken(user);
 
     setSessionCookie(res, token);
@@ -361,124 +371,41 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 
 const PRO_PRICE_RUB = 490;
 
-const FREE_INITIAL_OPERATIONS = 2;
-const PAID_PACKAGE_OPERATIONS = 20;
-
-const OPERATION_TYPES = [
-  "generate",
-  "insight",
-  "suggestion",
-  "prioritization",
-  "experiment",
-];
-
-async function ensureOperationBalances(userId, client = pool) {
-  await client.query(
-    `
-    INSERT INTO operation_balances (user_id, quota_type)
-    SELECT $1, unnest($2::text[])
-    ON CONFLICT (user_id, quota_type) DO NOTHING
-    `,
-    [userId, OPERATION_TYPES]
-  );
-}
-
-
-async function consumeOperationBalance(userId, type) {
-  if (!OPERATION_TYPES.includes(type)) {
-    throw new Error("Invalid quota type");
-  }
-
-  await ensureOperationBalances(userId);
-
-  const result = await pool.query(
-    `
-    UPDATE operation_balances
-    SET
-      free_left = CASE
-        WHEN free_left > 0 THEN free_left - 1
-        ELSE free_left
-      END,
-      paid_left = CASE
-        WHEN free_left = 0 AND paid_left > 0 THEN paid_left - 1
-        ELSE paid_left
-      END
-    WHERE user_id = $1
-      AND quota_type = $2
-      AND (free_left > 0 OR paid_left > 0)
-    RETURNING free_left, paid_left
-    `,
-    [userId, type]
-  );
-
-  if (result.rows.length === 0) {
-    return {
-      ok: false,
-      type,
-      left: 0,
-    };
-  }
-
-  const { free_left, paid_left } = result.rows[0];
-
-  return {
-    ok: true,
-    type,
-    left: free_left + paid_left,
-  };
-}
+const PAID_PACKAGE_CREDITS = 300;
 
 app.get("/api/quota", authRequired, async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    await ensureOperationBalances(userId);
-
     const result = await pool.query(
       `
-      SELECT quota_type, free_left, paid_left
-      FROM operation_balances
+      SELECT free_credits, paid_credits
+      FROM credit_balances
       WHERE user_id = $1
       `,
       [userId]
     );
 
-    const balances = Object.fromEntries(
-      result.rows.map((row) => [row.quota_type, row])
-    );
-
-    const quota = {};
-
-    for (const type of OPERATION_TYPES) {
-      const balance = balances[type];
-      const freeLeft = balance?.free_left ?? 0;
-      const paidLeft = balance?.paid_left ?? 0;
-
-      quota[type] = {
-        freeLeft,
-        paidLeft,
-        left: freeLeft + paidLeft,
-      };
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "Credit balance not found",
+      });
     }
 
+    const { free_credits, paid_credits } = result.rows[0];
+
     return res.json({
-      quota,
+      credits: {
+        freeCredits: free_credits,
+        paidCredits: paid_credits,
+        left: free_credits + paid_credits,
+      },
     });
   } catch (err) {
-    console.error("Quota get error:", err);
+    console.error("Credits get error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
-async function consumeUserQuota(userId, type) {
-  const result = await consumeOperationBalance(userId, type);
-
-  return {
-    ok: result.ok,
-    type: result.type,
-    left: result.left,
-  };
-}
 
 async function createGenerateOperation(userId) {
   const result = await pool.query(
@@ -600,33 +527,6 @@ app.post("/api/generate/start", authRequired, async (req, res) => {
 });
 
 
-app.post("/api/quota/consume", authRequired, async (req, res) => {
-  try {
-        const { type } = req.body || {};
-
-    if (!OPERATION_TYPES.includes(type)) {
-    return res.status(400).json({ error: "Invalid quota type" });
-    }
-
-    const quota = await consumeUserQuota(req.user.userId, type);
-
-    if (!quota.ok) {
-      return res.status(429).json({
-        error: "Quota exceeded",
-        type: quota.type,
-        left: 0,
-      });
-    }
-
-    return res.json(quota);
-
-
-    } catch (err) {
-    console.error("Quota consume error:", err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 // -----------------------
 // PAYMENTS / ROBOKASSA
 // -----------------------
@@ -681,7 +581,7 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
       MerchantLogin: ROBOKASSA_MERCHANT_LOGIN,
       OutSum: amount,
       InvId: String(invId),
-      Description: "MetricTree: пакет из 20 операций каждого типа",
+      Description: "MetricTree: пакет из 300 AI-кредитов",
       SignatureValue: signature,
       Culture: "ru",
       Encoding: "utf-8",
@@ -804,20 +704,20 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
       [payment.id]
     );
 
-    await ensureOperationBalances(payment.user_id, client);
-
     const creditResult = await client.query(
     `
-    UPDATE operation_balances
-    SET paid_left = paid_left + $2
+    UPDATE credit_balances
+    SET
+    paid_credits = paid_credits + $2,
+    updated_at = now()
     WHERE user_id = $1
-    AND quota_type = ANY($3::text[])
+    RETURNING paid_credits
     `,
-    [payment.user_id, PAID_PACKAGE_OPERATIONS, OPERATION_TYPES]
+    [payment.user_id, PAID_PACKAGE_CREDITS]
     );
 
-    if (creditResult.rowCount !== OPERATION_TYPES.length) {
-    throw new Error("Не удалось начислить все пять типов операций");
+    if (creditResult.rowCount !== 1) {
+    throw new Error("Не удалось начислить AI-кредиты");
     }
 
     await client.query("COMMIT");
@@ -1013,6 +913,7 @@ const CLOUDRU_MODELS = {
 
 app.post("/api/openai", async (req, res) => {
   try {
+        const { temperature, model, ...body } = req.body;
 
         const operation = req.get("X-MetricTree-Operation");
 
@@ -1081,20 +982,27 @@ app.post("/api/openai", async (req, res) => {
 }
 
 
-        if (operation !== "generate") {
-      const quota = await consumeUserQuota(req.user.userId, operation);
+    if (operation !== "generate") {
+    const requestedModel = model || "gpt-4.1";
+    const cost = CREDIT_COSTS[operation]?.[requestedModel];
 
-      if (!quota.ok) {
-        return res.status(429).json({
-          error: "Quota exceeded",
-          type: quota.type,
-          left: 0,
-        });
-      }
+    if (!cost) {
+    return res.status(400).json({
+      error: "Invalid model or operation",
+    });
     }
 
+    const credits = await consumeCredits(req.user.userId, cost);
 
-    const { temperature, model, ...body } = req.body;
+    if (!credits.ok) {
+    return res.status(429).json({
+      error: "Insufficient credits",
+      type: operation,
+      left: 0,
+    });
+    }
+    }
+
 
     // GPT-4.1 is the default model for the RU version.
     const requestedModel = model || "gpt-4.1";
