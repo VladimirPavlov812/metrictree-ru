@@ -1046,22 +1046,6 @@ const handleGenerateExperiment = async () => {
     }
   }, [nodes, edges, description, treeData]);
 
-  // === экспорт ===
-  const handleExport = () => {
-    try {
-      const data = JSON.stringify({ description, nodes, edges, treeData }, null, 2);
-      const blob = new Blob([data], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "metrictree.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Ошибка при экспорте:", err);
-      alert("Ошибка при экспорте файла 😢");
-    }
-  };
 
   const openCloudProject = async (projectId) => {
   try {
@@ -1248,30 +1232,7 @@ const handleGenerateExperiment = async () => {
   }
   };
 
-  // === импорт ===
-  const handleImport = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      const text = await file.text();
-      const data = JSON.parse(text);
-      if (!data.nodes || !data.edges) throw new Error("Некорректный формат файла");
-      setDescription(data.description || "");
-      setNodes(data.nodes);
-      setEdges(data.edges);
-      setTreeData(data.treeData || null);
-      localStorage.setItem(STORAGE_KEY, text);
-      alert("✅ Данные успешно импортированы!");
-      setActiveProjectId(null);
-      setSaveStatus("idle");
-    } catch (err) {
-      console.error("Ошибка при импорте:", err);
-      alert("❌ Не удалось импортировать JSON");
-    } finally {
-      e.target.value = "";
-    }
-  };
-
+  
   const handleSave = () => {
     const data = { description, nodes, edges, treeData };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -3094,18 +3055,6 @@ const currentNextStepsCopy =
       ➕
       </button>
            
-      <button
-        onClick={handleExport}
-        className="bg-green-50 text-green-700 px-3 py-2 rounded-xl hover:bg-green-100 font-medium transition text-sm"
-      >
-        Экспорт
-      </button>
-
-      <label className="bg-blue-50 text-blue-700 px-3 py-2 rounded-xl hover:bg-blue-100 font-medium transition cursor-pointer text-sm">
-        Импорт
-        <input type="file" accept=".json" className="hidden" onChange={handleImport} />
-      </label>
-
       <button
         onClick={handleDownloadSvg}
         disabled={!treeData}
