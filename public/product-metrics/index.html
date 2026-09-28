@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Продуктовые метрики: основные метрики продукта и примеры | MetricTree</title>
+
+  <meta
+    name="description"
+    content="Что такое продуктовые метрики, какие метрики продукта бывают и как их выбрать. Основные метрики продуктовой аналитики: конверсия, retention, MAU, ARPU, LTV и другие показатели."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.ru/product-metrics/"
+  />
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) { return; }
+        }
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],
+        k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247', 'ym');
+
+    ym(105378247, 'init', {
+      ssr:true,
+      webvisor:true,
+      clickmap:true,
+      ecommerce:"dataLayer",
+      referrer:document.referrer,
+      url:location.href,
+      accurateTrackBounce:true,
+      trackLinks:true
+    });
+  </script>
+  <noscript>
+    <div>
+      <img
+        src="https://mc.yandex.ru/watch/105378247"
+        style="position:absolute; left:-9999px;"
+        alt=""
+      />
+    </div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+<header style="
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:16px 24px;
+">
+  <div style="
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  ">
+    <a href="/" style="text-decoration:none; color:#111827; font-weight:700; font-size:20px;">
+      MetricTree
+    </a>
+
+    <a
+      href="/"
+      style="
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:10px 18px;
+        border-radius:10px;
+        font-weight:600;
+      "
+    >
+      Построить дерево →
+    </a>
+  </div>
+</header>
+
+<main style="
+  max-width:900px;
+  margin:0 auto;
+  padding:64px 24px;
+">
+
+  <h1 style="
+    font-size:42px;
+    line-height:1.15;
+    margin:0 0 20px;
+    max-width:800px;
+  ">
+    Продуктовые метрики: основные метрики продукта и примеры
+  </h1>
+
+  <p style="
+    font-size:20px;
+    line-height:1.6;
+    color:#4b5563;
+    max-width:760px;
+    margin-bottom:32px;
+  ">
+    Разбираемся, что такое продуктовые метрики, какие показатели нужны
+    продуктовой команде и как связать бизнес-результат, поведение пользователей
+    и метрики продукта в единую систему.
+  </p>
+
+  <a
+    href="/"
+    style="
+      display:inline-block;
+      background:#ffdd2d;
+      color:#111827;
+      text-decoration:none;
+      padding:14px 22px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:16px;
+    "
+  >
+    Построить дерево продуктовых метрик с AI
+  </a>
+
+
+  <section style="margin-top:72px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Что такое продуктовые метрики
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Продуктовые метрики — это количественные показатели, которые помогают
+      понять, как пользователи взаимодействуют с продуктом и насколько продукт
+      достигает своих целей. Они позволяют продуктовой команде оценивать
+      привлечение и активацию пользователей, вовлечённость, удержание,
+      монетизацию и другие аспекты поведения аудитории.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      В отличие от отдельных бизнес-показателей, например общей выручки,
+      продуктовые метрики помогают разобраться, за счёт каких изменений
+      пользовательского поведения меняется итоговый результат бизнеса.
+      Поэтому их используют для поиска точек роста, проверки гипотез
+      и оценки результатов продуктовых изменений.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Какие есть метрики продукта
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Универсального набора метрик для любого продукта не существует.
+      Выбор показателей зависит от бизнес-модели, пользовательского сценария
+      и стадии развития продукта. Однако основные продуктовые метрики
+      можно разделить на несколько групп.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики привлечения
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Показывают, сколько новых пользователей приходит в продукт и насколько
+      эффективно работают каналы привлечения. К ним относятся количество
+      новых пользователей, CAC, стоимость регистрации или установки,
+      а также конверсия из рекламного контакта в целевое действие.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики активации и конверсии
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Отражают прохождение пользователем ключевых этапов продукта:
+      регистрацию, создание первого проекта, оформление заказа,
+      первую оплату или другое целевое действие. Обычно для этого
+      анализируют конверсии между этапами пользовательской воронки.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики вовлечённости
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Помогают оценить интенсивность использования продукта. В зависимости
+      от продукта это могут быть DAU, WAU, MAU, частота использования,
+      число сессий или количество ключевых действий на пользователя.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики удержания
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention показывает, какая доля пользователей продолжает пользоваться
+      продуктом спустя определённое время. Вместе с retention часто
+      анализируют churn — долю пользователей или клиентов,
+      которые перестали использовать продукт.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики монетизации
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Показывают способность продукта создавать денежный результат.
+      К ним относятся выручка, ARPU, ARPPU, средний чек, LTV,
+      доля платящих пользователей и другие показатели,
+      связанные с бизнес-моделью продукта.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Основные продуктовые метрики
+    </h2>
+
+    <div style="
+      margin:28px 0;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      overflow-x:auto;
+    ">
+
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        font-size:17px;
+        line-height:1.5;
+      ">
+        <thead>
+          <tr style="background:#f3f4f6; text-align:left;">
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Метрика</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Что показывает</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>Conversion Rate</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Долю пользователей, совершивших целевое действие</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>DAU / WAU / MAU</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Размер активной аудитории продукта</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>Retention</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Долю пользователей, которые возвращаются в продукт</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>Churn</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Долю потерянных пользователей или клиентов</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>ARPU</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Среднюю выручку на пользователя</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>CAC</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Стоимость привлечения клиента</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;"><strong>LTV</strong></td>
+            <td style="padding:14px 16px;">Ценность клиента за время отношений с продуктом</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Эти показатели не следует использовать как универсальный чек-лист.
+      Для конкретного продукта важнее определить метрики, связанные
+      с его бизнес-моделью и ключевым пользовательским сценарием.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Метрики продуктовой аналитики: как выбрать нужные
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Продуктовая аналитика становится полезной не тогда, когда команда
+      отслеживает максимальное количество показателей, а когда понятно,
+      как они связаны с целями продукта.
+    </p>
+
+    <ol style="
+      font-size:18px;
+      line-height:1.7;
+      color:#374151;
+      padding-left:24px;
+    ">
+      <li style="margin-bottom:14px;">
+        <strong>Определите бизнес-цель.</strong>
+        Например, рост выручки, GMV, числа заказов или платящих клиентов.
+      </li>
+
+      <li style="margin-bottom:14px;">
+        <strong>Определите ключевое поведение пользователя.</strong>
+        Найдите действия, которые создают ценность для пользователя
+        и влияют на бизнес-результат.
+      </li>
+
+      <li style="margin-bottom:14px;">
+        <strong>Выберите измеримые показатели.</strong>
+        Конверсия, частота использования, retention и другие метрики
+        должны отражать изменение этого поведения.
+      </li>
+
+      <li>
+        <strong>Свяжите метрики между собой.</strong>
+        Вместо набора независимых показателей постройте систему,
+        показывающую, как изменение одной метрики влияет на другие.
+      </li>
+    </ol>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Бизнес-метрики и продуктовые метрики: в чём разница
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Бизнес-метрики описывают результат компании или направления:
+      например, выручку, прибыль, GMV или количество заказов.
+      Продуктовые метрики находятся ближе к поведению пользователей:
+      конверсии, активности, удержанию, частоте использования
+      и прохождению ключевых сценариев.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      На практике эти группы не должны существовать отдельно.
+      Если бизнес хочет увеличить выручку, продуктовой команде важно
+      понимать, какие пользовательские показатели способны на неё повлиять.
+      Именно такую связь удобно представлять в виде дерева метрик.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Как связать метрики продукта в дерево
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Отдельный список продуктовых метрик показывает состояние продукта,
+      но не всегда объясняет причинно-следственные связи между показателями.
+      Дерево метрик позволяет начать с ключевого бизнес-результата
+      и последовательно декомпозировать его до показателей,
+      на которые способна влиять продуктовая команда.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, выручку можно разложить на количество покупок и средний чек.
+      Количество покупок — на число активных покупателей и частоту покупок.
+      Активную аудиторию, в свою очередь, можно связать с привлечением,
+      активацией и удержанием пользователей.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Подробнее о методологии и примерах можно прочитать на странице
+      <a href="/derevo-metrik/" style="color:#111827; font-weight:600;">
+        «Дерево метрик продукта»
+      </a>.
+    </p>
+
+  </section>
+
+
+  <section style="
+    margin-top:64px;
+    max-width:760px;
+    padding:36px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+  ">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 18px;">
+      Постройте дерево продуктовых метрик с помощью AI
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      MetricTree помогает перейти от списка отдельных показателей
+      к структуре метрик конкретного продукта. Опишите продукт,
+      его аудиторию и бизнес-модель — AI предложит дерево метрик
+      и связи между показателями.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Полученное дерево можно редактировать, анализировать отдельные метрики,
+      искать точки роста, приоритизировать показатели и формировать идеи
+      A/B-экспериментов.
+    </p>
+
+    <a
+      href="/"
+      style="
+        display:inline-block;
+        margin-top:12px;
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:14px 22px;
+        border-radius:12px;
+        font-weight:600;
+        font-size:17px;
+      "
+    >
+      Построить дерево метрик →
+    </a>
+
+  </section>
+
+</main>
+
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых метрик.
+</footer>
+
+</body>
+</html>

@@ -2522,15 +2522,7 @@ const currentNextStepsCopy =
           </a>
           </div>
 
-          {/* SEO-страница */}
-          <div className="mt-1">
-          <a
-          href="/derevo-metrik/"
-          className="text-sm text-blue-600 hover:underline"
-          >
-          Как построить дерево метрик
-          </a>
-          </div>
+          
           </div>
           </div>
 
@@ -3179,7 +3171,24 @@ const currentNextStepsCopy =
           Выбери метрику в дереве — здесь появятся действия.
           </div>
 
+
+
+
           <div className="mt-6 pt-4 border-t border-gray-200 text-xs text-gray-400">
+          <a
+          href="/product-metrics/"
+          className="text-blue-600 hover:underline"
+          >
+          Продуктовые метрики
+          </a>
+          <span className="mx-2">·</span>
+          <a
+          href="/derevo-metrik/"
+          className="text-blue-600 hover:underline"
+          >
+          Дерево метрик
+          </a>
+          <span className="mx-2">·</span>
           <a
           href="/payment-terms"
           className="text-blue-600 hover:underline"
@@ -3189,7 +3198,9 @@ const currentNextStepsCopy =
           <span className="mx-2">·</span>
           <span>© 2026 MetricTree</span>
           </div>
+         
           </div>
+
           )}
           </>
           )}
