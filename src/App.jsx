@@ -452,6 +452,7 @@ const handleGenerateExperiment = async () => {
   const [cloudLoading, setCloudLoading] = useState(false);
   const [cloudProjects, setCloudProjects] = useState([]);
   const [cloudError, setCloudError] = useState("");
+  const [showMobileProjects, setShowMobileProjects] = useState(false);
   const [pulseInsightTab, setPulseInsightTab] = useState(true);
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [questionsList, setQuestionsList] = useState([]); // массив {id, field, question}
@@ -2691,7 +2692,42 @@ const currentNextStepsCopy =
       {priorLoading ? "..." : "Приоритизировать"}
     </button>
   </div>
-</div>
+
+    <div className="flex gap-2">
+  <button
+    type="button"
+    onClick={() => handleSaveToCloud()}
+    disabled={!treeData && (!nodes?.length || !edges?.length)}
+    className="w-1/2 bg-black text-white px-3 py-3 rounded-xl disabled:opacity-50 font-medium transition text-sm"
+  >
+    {saveStatus === "saving"
+      ? "Сохранение..."
+      : saveStatus === "saved"
+      ? "✓ Сохранено"
+      : activeProjectId
+      ? "Сохранить"
+      : "Сохранить проект"}
+    </button>
+
+    <button
+    type="button"
+    onClick={() => {
+      if (!session?.user?.id) {
+        setAuthModalOpen(true);
+        return;
+      }
+
+      fetchCloudProjects();
+      setShowMobileProjects(true);
+    }}
+    className="w-1/2 bg-gray-100 text-gray-800 px-3 py-3 rounded-xl font-medium transition text-sm"
+    >
+    Мои проекты
+    </button>
+    </div>  
+
+
+  </div>
         </div>
         )}
 
@@ -3368,6 +3404,104 @@ const currentNextStepsCopy =
 
   </aside>
   )}
+
+
+  {isMobile && showMobileProjects && (
+  <div className="fixed inset-0 z-[10000] bg-black/40 flex items-end">
+    <div className="bg-white w-full max-h-[80vh] rounded-t-2xl shadow-xl flex flex-col">
+
+      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="text-base font-semibold text-gray-900">
+          Мои проекты
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowMobileProjects(false)}
+          className="text-gray-500 text-xl px-2"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div className="p-4 overflow-y-auto">
+
+        <button
+        type="button"
+        onClick={async () => {
+        await handleSaveToCloud({ forceNew: true });
+        await fetchCloudProjects();
+        }}
+        disabled={!treeData && (!nodes?.length || !edges?.length)}
+        className="w-full mb-4 bg-black text-white px-4 py-3 rounded-xl disabled:opacity-50 text-sm font-medium"
+        >
+        + Сохранить как новый проект
+        </button>
+
+
+
+        {cloudError && (
+          <div className="mb-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+            {cloudError}
+          </div>
+        )}
+
+        {cloudLoading ? (
+          <div className="text-sm text-gray-500">
+            Загрузка…
+          </div>
+        ) : cloudProjects.length === 0 ? (
+          <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-sm text-gray-600">
+            Пока нет сохранённых проектов.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {cloudProjects.map((p) => (
+              <div
+                key={p.id}
+                className="p-3 bg-white rounded-xl border border-gray-200"
+              >
+                <div className="text-sm font-medium text-gray-900 mb-1">
+                  {p.name}
+                </div>
+
+                <div className="text-xs text-gray-500 mb-3">
+                  Обновлён:{" "}
+                  {new Date(
+                    p.updated_at || p.created_at
+                  ).toLocaleString()}
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await openCloudProject(p.id);
+                      setShowMobileProjects(false);
+                    }}
+                    className="flex-1 bg-[#ffdd2d] text-black px-3 py-2 rounded-lg text-sm font-medium"
+                  >
+                    Открыть
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => deleteCloudProject(p.id)}
+                    className="px-3 py-2 rounded-lg bg-red-50 text-red-700 text-sm"
+                  >
+                    Удалить
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+    </div>
+    </div>
+    )}
+
 
       {/* === Модалка: Добавить === */}
       {showAddModal && (
