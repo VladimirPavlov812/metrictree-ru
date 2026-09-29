@@ -2584,9 +2584,23 @@ const currentNextStepsCopy =
         </div>    
 
         <div className="flex items-center justify-between gap-2 mb-3">
-        <span className="text-xs text-gray-600 truncate">
+      
+        <div className="min-w-0">
+        <div className="text-xs text-gray-600 truncate">
         {session?.user?.email || "Гостевой режим"}
-        </span>
+        </div>
+
+        {session?.user?.id && (
+        <button
+        type="button"
+        onClick={handleBuyPro}
+        className="mt-1 text-xs font-medium text-blue-600"
+        >
+        {creditBalance.left} AI-кредитов · Купить
+        </button>
+        )}
+        </div>
+
 
         {session?.user?.id ? (
         <button
@@ -2622,30 +2636,7 @@ const currentNextStepsCopy =
         )}
 
         </div>    
-        {session?.user?.id && (
-    <div className="mb-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
-    <div className="mb-2 text-sm font-semibold text-gray-900">
-      Осталось операций
-    </div>
-
-    <div className="space-y-1">
-    <div className="flex items-center justify-between text-sm">
-    <span className="text-gray-700">AI-кредиты</span>
-    <span className="font-semibold text-gray-900">
-    {creditBalance.left}
-    </span>
-    </div>
-    </div>
-
-    <button
-      type="button"
-      onClick={handleBuyPro}
-      className="mt-3 w-full rounded-lg bg-[#ffdd2d] px-4 py-3 text-sm font-semibold text-black"
-    >
-      Купить 300 кредитов — 490 ₽
-    </button>
-    </div>
-    )}
+       
 
         <textarea
           value={description}
