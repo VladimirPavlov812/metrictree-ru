@@ -3898,8 +3898,14 @@ const currentNextStepsCopy =
 
 {/* === Модалка: Преимущества MetricTree === */}
 {showBenefitsModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 backdrop-blur-sm">
-    <div className="bg-white rounded-2xl shadow-2xl p-7 w-[650px] max-w-[92vw] max-h-[85vh] overflow-y-auto relative">
+       <div
+        className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 backdrop-blur-sm"
+        onClick={() => setShowBenefitsModal(false)}
+        >
+        <div
+        className="bg-white rounded-2xl shadow-2xl p-7 w-[650px] max-w-[92vw] max-h-[85vh] overflow-y-auto relative"
+        onClick={(e) => e.stopPropagation()}
+        >
 
       <h3 className="text-xl font-semibold mb-4 text-gray-900">
         Почему MetricTree полезен
