@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Retention Rate: что это, формула и как рассчитать удержание | MetricTree</title>
+
+  <meta
+    name="description"
+    content="Что такое Retention Rate, как рассчитать удержание пользователей по формуле и когортам. D1, D7, D30 Retention, пример расчёта, связь с Churn и способы улучшения."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.ru/metrics/retention/"
+  />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Retention Rate: что это, формула и как рассчитать удержание пользователей",
+    "description": "Что такое Retention Rate, как рассчитать удержание пользователей по формуле и когортам. D1, D7, D30 Retention, пример расчёта, связь с Churn и способы улучшения.",
+    "inLanguage": "ru",
+    "mainEntityOfPage": "https://metrictree.ru/metrics/retention/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MetricTree",
+      "url": "https://metrictree.ru/"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "MetricTree",
+        "item": "https://metrictree.ru/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Продуктовые метрики",
+        "item": "https://metrictree.ru/product-metrics/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Retention Rate",
+        "item": "https://metrictree.ru/metrics/retention/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) { return; }
+        }
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],
+        k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247', 'ym');
+
+    ym(105378247, 'init', {
+      ssr:true,
+      webvisor:true,
+      clickmap:true,
+      ecommerce:"dataLayer",
+      referrer:document.referrer,
+      url:location.href,
+      accurateTrackBounce:true,
+      trackLinks:true
+    });
+  </script>
+  <noscript>
+    <div>
+      <img
+        src="https://mc.yandex.ru/watch/105378247"
+        style="position:absolute; left:-9999px;"
+        alt=""
+      />
+    </div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+<header style="
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:16px 24px;
+">
+  <div style="
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  ">
+    <a href="/" style="text-decoration:none; color:#111827; font-weight:700; font-size:20px;">
+      MetricTree
+    </a>
+
+    <a
+      href="/"
+      style="
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:10px 18px;
+        border-radius:10px;
+        font-weight:600;
+      "
+    >
+      Построить дерево →
+    </a>
+  </div>
+</header>
+
+<main style="
+  max-width:900px;
+  margin:0 auto;
+  padding:64px 24px;
+">
+
+  <div style="font-size:14px; color:#6b7280; margin-bottom:22px;">
+    <a href="/" style="color:#6b7280; text-decoration:none;">MetricTree</a>
+    <span style="margin:0 8px;">→</span>
+    <a href="/product-metrics/" style="color:#6b7280; text-decoration:none;">Продуктовые метрики</a>
+    <span style="margin:0 8px;">→</span>
+    <span>Retention Rate</span>
+  </div>
+
+  <h1 style="
+    font-size:42px;
+    line-height:1.15;
+    margin:0 0 20px;
+    max-width:820px;
+  ">
+    Retention Rate: что это за метрика и как рассчитать удержание пользователей
+  </h1>
+
+  <p style="
+    font-size:20px;
+    line-height:1.6;
+    color:#4b5563;
+    max-width:780px;
+    margin-bottom:32px;
+  ">
+    Retention Rate — это доля пользователей, которые возвращаются в продукт
+    и продолжают им пользоваться спустя определённое время после первого
+    посещения, регистрации, покупки или другого выбранного события.
+  </p>
+
+  <a
+    href="/"
+    style="
+      display:inline-block;
+      background:#ffdd2d;
+      color:#111827;
+      text-decoration:none;
+      padding:14px 22px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:16px;
+    "
+  >
+    Построить дерево метрик с AI
+  </a>
+
+  <section style="margin-top:72px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Что такое Retention
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention (удержание) показывает, какая часть пользователей продолжает
+      взаимодействовать с продуктом после первого использования. Метрика помогает
+      понять, создаёт ли продукт ценность, ради которой пользователи готовы возвращаться.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, если приложение получило 1 000 новых пользователей, а через 30 дней
+      250 из них снова пользуются продуктом, Retention на 30-й день составляет 25%.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Формула Retention Rate
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      В простом варианте Retention Rate рассчитывается как отношение числа пользователей
+      из исходной группы, которые вернулись в выбранный период, к общему числу
+      пользователей в этой группе.
+    </p>
+
+    <div style="
+      background:#111827;
+      color:#f9fafb;
+      padding:28px;
+      border-radius:16px;
+      margin:28px 0;
+      overflow-x:auto;
+      font-family:monospace;
+      font-size:18px;
+      line-height:1.7;
+      white-space:pre;
+    ">Retention Rate = Вернувшиеся пользователи / Пользователи исходной когорты × 100%</div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Важно заранее определить, что именно считается возвращением: открытие приложения,
+      вход в сервис, заказ, платёж или другое целевое действие. Для разных продуктов
+      полезное действие может отличаться.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Пример расчёта Retention
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Допустим, в понедельник в сервисе зарегистрировались 500 новых пользователей.
+      Через 7 дней 125 пользователей из этой же группы снова совершили целевое действие.
+    </p>
+
+    <div style="
+      margin:28px 0;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      padding:24px;
+      font-size:18px;
+      line-height:1.7;
+    ">
+      <strong>D7 Retention = 125 / 500 × 100% = 25%</strong>
+    </div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Это означает, что на седьмой день продукт удержал четверть пользователей
+      исходной когорты.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Что такое D1, D7 и D30 Retention
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention часто измеряют через определённое количество дней после первого
+      взаимодействия пользователя с продуктом.
+    </p>
+
+    <div style="
+      margin:28px 0;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      overflow-x:auto;
+    ">
+      <table style="width:100%; border-collapse:collapse; font-size:17px; line-height:1.5;">
+        <thead>
+          <tr style="background:#f3f4f6; text-align:left;">
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Метрика</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Что показывает</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>D1 Retention</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Доля пользователей, вернувшихся на следующий день</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;"><strong>D7 Retention</strong></td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Доля пользователей, вернувшихся через 7 дней</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;"><strong>D30 Retention</strong></td>
+            <td style="padding:14px 16px;">Доля пользователей, вернувшихся через 30 дней</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Какой период важнее, зависит от частоты естественного использования продукта.
+      Для ежедневного приложения полезны короткие интервалы, а для продукта,
+      которым пользуются раз в месяц, D30 может быть информативнее D1.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Когортный анализ Retention
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention обычно анализируют по когортам — группам пользователей,
+      объединённым общим стартовым событием и периодом. Например, можно отдельно
+      сравнивать пользователей, зарегистрировавшихся в разные недели.
+    </p>
+
+    <div style="
+      margin:28px 0;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      overflow-x:auto;
+    ">
+      <table style="width:100%; border-collapse:collapse; font-size:16px; line-height:1.5;">
+        <thead>
+          <tr style="background:#f3f4f6; text-align:left;">
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Когорта</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">D1</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">D7</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">D30</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Неделя 1</td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">42%</td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">25%</td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">14%</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;">Неделя 2</td>
+            <td style="padding:14px 16px;">46%</td>
+            <td style="padding:14px 16px;">29%</td>
+            <td style="padding:14px 16px;">17%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Такой подход позволяет увидеть, улучшается ли удержание новых пользователей
+      после изменений продукта, онбординга, коммуникаций или каналов привлечения.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Retention и Churn: в чём разница
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention показывает долю пользователей или клиентов, которых продукт
+      удерживает, а Churn — долю потерянных пользователей или клиентов.
+      Эти показатели описывают удержание с разных сторон, но способ их расчёта
+      должен соответствовать одной и той же логике периода и события.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      В некоторых простых моделях Retention и Churn могут дополнять друг друга
+      до 100%, но это не универсальное правило: всё зависит от определения
+      активного, удержанного и ушедшего пользователя.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Какой Retention считается хорошим
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Универсального «хорошего Retention» не существует. Значение зависит
+      от типа продукта, частоты использования, аудитории, стадии продукта
+      и выбранного периода измерения.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Поэтому полезнее сравнивать Retention с предыдущими когортами,
+      собственными историческими значениями и релевантными продуктами,
+      а не стремиться к одному универсальному проценту.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Как увеличить Retention
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Рост удержания обычно требует найти причины, по которым пользователь
+      не получает ожидаемую ценность или перестаёт возвращаться в продукт.
+      Направления работы зависят от конкретного продукта.
+    </p>
+
+    <ul style="font-size:18px; line-height:1.7; color:#374151; padding-left:24px;">
+      <li style="margin-bottom:12px;">улучшить первое использование и онбординг;</li>
+      <li style="margin-bottom:12px;">быстрее приводить пользователя к ключевой ценности продукта;</li>
+      <li style="margin-bottom:12px;">анализировать точки оттока в пользовательском пути;</li>
+      <li style="margin-bottom:12px;">сегментировать Retention по аудиториям и каналам привлечения;</li>
+      <li style="margin-bottom:12px;">улучшать сценарии повторного использования продукта;</li>
+      <li>проверять изменения через продуктовые эксперименты.</li>
+    </ul>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Retention в дереве метрик
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention редко существует изолированно. В дереве метрик он может быть
+      связан с активной пользовательской базой, повторными действиями,
+      частотой использования и в конечном счёте с бизнес-результатом.
+    </p>
+
+    <div style="
+      background:#111827;
+      color:#f9fafb;
+      padding:28px;
+      border-radius:16px;
+      margin:28px 0;
+      overflow-x:auto;
+      font-family:monospace;
+      font-size:16px;
+      line-height:1.7;
+      white-space:pre;
+    ">Выручка
+└── Активные клиенты
+    ├── Новые клиенты
+    └── Удержанные клиенты
+        └── Retention Rate
+            ├── D1 Retention
+            ├── D7 Retention
+            └── D30 Retention</div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Конкретная декомпозиция зависит от бизнес-модели и механики продукта.
+      Дерево помогает связать Retention с показателями верхнего уровня
+      и определить метрики, через которые команда может на него воздействовать.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Подробнее:
+      <a href="/product-metrics/" style="color:#111827; font-weight:600;">продуктовые метрики</a>,
+      <a href="/business-metrics/" style="color:#111827; font-weight:600;">бизнес-метрики</a>
+      и
+      <a href="/derevo-metrik/" style="color:#111827; font-weight:600;">как построить дерево метрик</a>.
+    </p>
+  </section>
+
+  <section style="margin-top:56px; max-width:760px;">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Частые вопросы о Retention
+    </h2>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Что показывает Retention Rate?
+    </h3>
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention Rate показывает долю пользователей исходной группы,
+      которые продолжают пользоваться продуктом или возвращаются к целевому
+      действию через выбранный период времени.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Как рассчитать Retention?
+    </h3>
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Число вернувшихся пользователей делят на число пользователей
+      исходной когорты и умножают результат на 100%.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Чем Retention отличается от Churn?
+    </h3>
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Retention описывает удержанных пользователей, а Churn — пользователей
+      или клиентов, которых продукт потерял за выбранный период.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Какой Retention считать хорошим?
+    </h3>
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Единого значения нет. Оценивать Retention нужно с учётом типа продукта,
+      естественной частоты использования, периода измерения и динамики когорт.
+    </p>
+  </section>
+
+  <section style="
+    margin-top:64px;
+    max-width:760px;
+    padding:36px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+  ">
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 18px;">
+      Постройте дерево метрик с помощью AI
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      MetricTree помогает связать Retention с бизнес- и продуктовыми показателями,
+      декомпозировать метрики и увидеть возможные точки роста.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру
+      дерева метрик, которую можно редактировать, анализировать
+      и использовать для поиска идей экспериментов.
+    </p>
+
+    <a
+      href="/"
+      style="
+        display:inline-block;
+        margin-top:12px;
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:14px 22px;
+        border-radius:12px;
+        font-weight:600;
+        font-size:17px;
+      "
+    >
+      Построить дерево метрик →
+    </a>
+  </section>
+
+</main>
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.
+</footer>
+
+</body>
+</html>
