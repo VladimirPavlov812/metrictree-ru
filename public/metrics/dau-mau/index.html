@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DAU, WAU и MAU: что это, формулы и DAU/MAU Stickiness | MetricTree</title>
+<meta name="description" content="Что такое DAU, WAU и MAU, как считать активную аудиторию и DAU/MAU Stickiness. Формулы, пример расчёта, интерпретация и дерево метрик.">
+<link rel="canonical" href="https://metrictree.ru/metrics/dau-mau/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DAU, WAU и MAU: что это и как рассчитать DAU/MAU Stickiness","description":"DAU, WAU, MAU, формула DAU/MAU, пример расчёта и место метрик активности в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/dau-mau/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Продуктовые метрики","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"DAU / MAU","item":"https://metrictree.ru/metrics/dau-mau/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
+</head>
+<body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
+
+<main style="max-width:900px;margin:0 auto;padding:64px 24px">
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">Продуктовые метрики</a><span style="margin:0 8px">→</span><span>DAU / MAU</span></div>
+
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">DAU, WAU и MAU: что это и как рассчитать DAU/MAU</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">DAU, WAU и MAU показывают размер активной аудитории продукта за день, неделю и месяц. Отношение DAU к MAU часто используют как показатель регулярности использования продукта — Stickiness.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
+
+<section style="margin-top:72px;max-width:760px">
+<h2 style="font-size:30px">Что такое DAU, WAU и MAU</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Метрики активной аудитории считают уникальных пользователей, которые совершили определённое активное действие в продукте за выбранный период.</p>
+<div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Метрика</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Что показывает</th></tr></thead>
+<tbody>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>DAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Количество активных пользователей за день</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>WAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Количество активных пользователей за неделю</td></tr>
+<tr><td style="padding:14px 16px"><strong>MAU</strong></td><td style="padding:14px 16px">Количество активных пользователей за месяц</td></tr>
+</tbody></table></div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Ключевой вопрос — что считать активностью. Для мессенджера это может быть отправка сообщения, для маркетплейса — просмотр товаров или покупка, для B2B-сервиса — выполнение ключевого рабочего сценария. Простого открытия приложения может быть недостаточно.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Что такое DAU/MAU Stickiness</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU показывает, какая доля месячной активной аудитории пользуется продуктом в типичный день. Чем выше отношение, тем чаще пользователи возвращаются к продукту в течение месяца.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">DAU / MAU = DAU / MAU × 100%</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Показатель также называют Stickiness. Он отражает частоту использования, но не заменяет Retention: эти метрики отвечают на разные вопросы.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Пример расчёта DAU/MAU</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, у продукта 50 000 активных пользователей за месяц, а в среднем за день продуктом пользуются 10 000 активных пользователей.</p>
+<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.7"><strong>DAU/MAU = 10 000 / 50 000 × 100% = 20%</strong></div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Это означает, что средняя дневная активная аудитория составляет 20% месячной активной аудитории.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">DAU/MAU и Retention — в чём разница</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU характеризует регулярность использования продукта внутри периода. Retention показывает, какая доля пользователей исходной когорты вернулась через определённое время.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Например, продукт может иметь хороший месячный Retention, но использоваться только несколько раз в месяц. Для такого продукта DAU/MAU будет относительно невысоким — и это не обязательно проблема, если такая частота соответствует естественному сценарию использования.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate — удержание пользователей</a>.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Как правильно определить активного пользователя</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Определение активности должно быть связано с получением ценности от продукта. Иначе рост DAU или MAU может выглядеть позитивно, хотя реальное использование ключевых функций не меняется.</p>
+<ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
+<li>выберите действие, отражающее реальное использование продукта;</li>
+<li>используйте одинаковое определение активности для DAU, WAU и MAU;</li>
+<li>исключайте технические события и случайные открытия, если они не отражают ценность;</li>
+<li>при необходимости считайте активность отдельно для разных сегментов пользователей.</li>
+</ul>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Какой DAU/MAU считается хорошим</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Универсального хорошего значения DAU/MAU нет. Показатель зависит от естественной частоты использования продукта. Для мессенджера или социальной сети ежедневное использование может быть ожидаемым, а для сервиса путешествий, недвижимости или крупных покупок — нет.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому DAU/MAU полезнее сравнивать с собственной динамикой, продуктовыми сегментами и ожидаемой частотой ключевого сценария, а не с абстрактным отраслевым ориентиром.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Что влияет на DAU и MAU</h2>
+<ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
+<li>размер новой аудитории и качество привлечения;</li>
+<li>активация новых пользователей;</li>
+<li>удержание и отток;</li>
+<li>частота возникновения пользовательской потребности;</li>
+<li>качество основного сценария продукта;</li>
+<li>уведомления, контент и другие механики возврата;</li>
+<li>сезонность и изменения пользовательского поведения.</li>
+</ul>
+<p style="font-size:18px;line-height:1.7;color:#374151">Рост MAU сам по себе не показывает источник изменения: аудитория может увеличиваться как за счёт привлечения новых пользователей, так и за счёт лучшего удержания существующих.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">DAU и MAU в дереве метрик</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Активную аудиторию можно декомпозировать через приток новых пользователей, активацию, удержание и частоту использования. Это помогает перейти от наблюдения за MAU к причинам его изменения.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Активная аудитория
+├── MAU
+│   ├── Новые активные пользователи
+│   └── Удержанные пользователи
+│       ├── Retention
+│       └── Churn
+└── Частота использования
+    └── DAU / MAU</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Для конкретного продукта дерево стоит адаптировать под его пользовательский цикл и определение активности.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Связанные метрики: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention</a>, <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn</a> и <a href="/metrics/conversion-rate/" style="color:#111827;font-weight:600">Conversion Rate</a>.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/product-metrics/" style="color:#111827;font-weight:600">продуктовые метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Частые вопросы о DAU и MAU</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Что означает DAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU — Daily Active Users, количество уникальных активных пользователей продукта за день.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Что означает MAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">MAU — Monthly Active Users, количество уникальных активных пользователей за месяц.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать DAU/MAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU делят на MAU и умножают на 100%. Например, при DAU 10 000 и MAU 50 000 показатель составляет 20%.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">DAU/MAU — это Retention?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Нет. DAU/MAU измеряет регулярность использования внутри периода, а Retention — возврат пользователей исходной когорты спустя заданное время.</p>
+</section>
+
+<section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает связать DAU, MAU и Stickiness с привлечением, активацией, Retention, Churn и другими продуктовыми метриками.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
+</section>
+</main>
+
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
+</body></html>
