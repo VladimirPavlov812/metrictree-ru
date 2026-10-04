@@ -17,5 +17,8 @@
   </url>
   <url>
     <loc>https://metrictree.ru/metrics/ltv/</loc>
-</url>
+  </url>
+  <url>
+  <loc>https://metrictree.ru/metrics/cac/</loc>
+  </url>
 </urlset>
