@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NPS: что это, формула и как рассчитать Net Promoter Score | MetricTree</title>
+<meta name="description" content="Что такое NPS (Net Promoter Score), как рассчитать индекс лояльности клиентов. Формула NPS, промоутеры, нейтралы и критики, пример расчёта и дерево метрик.">
+<link rel="canonical" href="https://metrictree.ru/metrics/nps/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"NPS: что это, формула и как рассчитать Net Promoter Score","description":"Что такое NPS, формула, группы респондентов, пример расчёта, интерпретация и место NPS в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/nps/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Продуктовые метрики","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"NPS","item":"https://metrictree.ru/metrics/nps/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
+</head>
+<body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
+
+<main style="max-width:900px;margin:0 auto;padding:64px 24px">
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">Продуктовые метрики</a><span style="margin:0 8px">→</span><span>NPS</span></div>
+
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">NPS: что это и как рассчитать Net Promoter Score</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">NPS (Net Promoter Score) — индекс, который строится на готовности клиентов рекомендовать продукт, компанию или сервис. Для расчёта респондентов делят на промоутеров, нейтралов и критиков, а затем из доли промоутеров вычитают долю критиков.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
+
+<section style="margin-top:72px;max-width:760px">
+<h2 style="font-size:30px">Что такое NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS расшифровывается как Net Promoter Score. Метрика основана на вопросе о том, насколько вероятно, что клиент порекомендует продукт, компанию или сервис другим людям.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Обычно ответ дают по шкале от 0 до 10. После опроса клиентов распределяют по трём группам в зависимости от оценки.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Промоутеры, нейтралы и критики</h2>
+<div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Оценка</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Группа</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Как учитывается</th></tr></thead>
+<tbody>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>9–10</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Промоутеры</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Увеличивают NPS</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>7–8</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Нейтралы</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">В разность не входят</td></tr>
+<tr><td style="padding:14px 16px"><strong>0–6</strong></td><td style="padding:14px 16px">Критики</td><td style="padding:14px 16px">Уменьшают NPS</td></tr>
+</tbody></table></div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Нейтралы участвуют в общем количестве ответивших и поэтому влияют на доли групп, но их доля напрямую не прибавляется и не вычитается в формуле NPS.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Формула NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Для расчёта определяют процент промоутеров и процент критиков среди всех респондентов.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">NPS = % промоутеров − % критиков</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS может принимать значения от −100 до +100. Это индекс, а не процент пользователей и не средняя оценка по шкале от 0 до 10.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Пример расчёта NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, на вопрос ответили 100 клиентов: 60 поставили 9–10, 25 поставили 7–8 и 15 поставили оценку от 0 до 6.</p>
+<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.8">
+Промоутеры = 60%<br>
+Нейтралы = 25%<br>
+Критики = 15%<br><br>
+<strong>NPS = 60 − 15 = 45</strong>
+</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">В этом примере Net Promoter Score равен 45.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Как интерпретировать NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Само значение NPS показывает баланс между промоутерами и критиками. Положительный NPS означает, что доля промоутеров выше доли критиков; отрицательный — наоборот.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">При этом универсального значения «хорошего NPS» для любого бизнеса нет. Результат зависит от отрасли, аудитории, рынка, момента опроса и методики сбора ответов. Полезнее отслеживать динамику NPS при сопоставимой методике и анализировать различия между сегментами.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Как правильно измерять NPS</h2>
+<ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
+<li>использовать одинаковую формулировку вопроса и шкалу при сравнении результатов во времени;</li>
+<li>фиксировать, на каком этапе клиентского пути проводится опрос;</li>
+<li>следить за составом выборки и каналом сбора ответов;</li>
+<li>сравнивать сопоставимые сегменты клиентов;</li>
+<li>дополнять оценку открытым вопросом о причине ответа.</li>
+</ul>
+<p style="font-size:18px;line-height:1.7;color:#374151">Комментарий клиента часто полезнее самого числа: он помогает понять, какие свойства продукта или сервиса формируют высокую или низкую готовность рекомендовать.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Ограничения NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS не стоит использовать как единственный показатель качества продукта. Это опросная метрика, которая отражает заявленное отношение респондентов, а не непосредственно их фактическое поведение.</p>
+<ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
+<li>NPS не объясняет причину оценки без дополнительной обратной связи;</li>
+<li>результат чувствителен к выборке и моменту проведения опроса;</li>
+<li>сравнение разных компаний может быть некорректным при различной методике;</li>
+<li>высокая готовность рекомендовать не гарантирует высокий Retention или выручку.</li>
+</ul>
+<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому NPS полезно анализировать вместе с поведенческими и бизнес-метриками.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">NPS, Retention и Churn</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS описывает отношение клиента к продукту через опрос, а Retention и Churn измеряют фактическое поведение пользователей. Эти показатели могут дополнять друг друга, но не являются взаимозаменяемыми.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Например, изменение NPS может быть сигналом для исследования причин удовлетворённости или недовольства, а динамика удержания покажет, изменилось ли реальное возвращение пользователей.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate</a> и <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn Rate</a>.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">NPS в дереве метрик</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">В дереве метрик NPS можно использовать как один из индикаторов клиентского опыта и лояльности. Его лучше не ставить единственной причиной финансового результата, а рассматривать вместе с поведением клиентов и другими показателями качества продукта.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Клиентский опыт
+├── NPS
+│   ├── Доля промоутеров
+│   └── Доля критиков
+├── Retention
+└── Churn</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Конкретная структура дерева зависит от продукта, бизнес-модели и того, какую гипотезу команда проверяет.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/product-metrics/" style="color:#111827;font-weight:600">продуктовые метрики</a>, <a href="/business-metrics/" style="color:#111827;font-weight:600">бизнес-метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
+</section>
+
+<section style="margin-top:56px;max-width:760px">
+<h2 style="font-size:30px">Частые вопросы о NPS</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Что означает NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS расшифровывается как Net Promoter Score — индекс, основанный на готовности клиентов рекомендовать продукт, компанию или сервис.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Из процента респондентов, поставивших 9–10, вычитают процент респондентов, поставивших 0–6.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Какой диапазон значений у NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS находится в диапазоне от −100 до +100.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Нейтралы учитываются в NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Оценки 7–8 относятся к нейтралам. Их долю не вычитают и не прибавляют в формуле, но эти ответы входят в общее количество респондентов, от которого рассчитываются доли групп.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">NPS — это средняя оценка?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Нет. NPS рассчитывается как разница между долей промоутеров и долей критиков, поэтому среднее арифметическое оценок от 0 до 10 не является NPS.</p>
+</section>
+
+<section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает связать NPS с клиентским опытом, Retention, Churn и другими продуктовыми и бизнес-метриками.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
+</section>
+</main>
+
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
+</body></html>
