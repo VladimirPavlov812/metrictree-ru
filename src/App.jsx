@@ -1124,6 +1124,11 @@ const handleGenerateExperiment = async () => {
   };
 
   const handleDownloadCsv = () => {
+    if (!session?.user?.id) {
+    setAuthModalReason("default");
+    setAuthModalOpen(true);
+    return;
+  }
   try {
     if (!nodes?.length) throw new Error("Нет узлов для экспорта");
     const exportNodes = nodes.filter((n) => !n.hidden);
@@ -1725,6 +1730,11 @@ try {
   };
 
   const handleDownloadSvg = async () => {
+    if (!session?.user?.id) {
+    setAuthModalReason("default");
+    setAuthModalOpen(true);
+    return;
+  }
   try {
     if (!nodes?.length) throw new Error("Нет узлов для экспорта");
 
@@ -1884,6 +1894,11 @@ ${nodeSvg}
 };
 
 const handleExportToMiro = async () => {
+  if (!session?.user?.id) {
+    setAuthModalReason("default");
+    setAuthModalOpen(true);
+    return;
+  }
   try {
     if (!treeData || !nodes?.length) {
       alert("Сначала сгенерируйте дерево");
