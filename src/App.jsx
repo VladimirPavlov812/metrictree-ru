@@ -3232,6 +3232,27 @@ const currentNextStepsCopy =
           </a>
           <span className="mx-2">·</span>
           <a
+          href="/efficiency-metrics/"
+          className="text-blue-600 hover:underline"
+          >
+          Метрики эффективности
+          </a>
+          <span className="mx-2">·</span>
+          <a
+          href="/sales-metrics/"
+          className="text-blue-600 hover:underline"
+          >
+          Метрики продаж
+          </a>
+          <span className="mx-2">·</span>
+          <a
+          href="/marketing-metrics/"
+          className="text-blue-600 hover:underline"
+          >
+          Метрики маркетинга
+          </a>
+          <span className="mx-2">·</span>
+          <a
           href="/derevo-metrik/"
           className="text-blue-600 hover:underline"
           >
