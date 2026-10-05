@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Метрики эффективности: ключевые показатели и примеры | MetricTree</title>
+
+  <meta
+    name="description"
+    content="Что такое метрики эффективности, какие показатели использовать для оценки бизнеса, продукта и процессов. Ключевые метрики эффективности, KPI и примеры декомпозиции."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.ru/efficiency-metrics/"
+  />
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) { return; }
+        }
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],
+        k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205', 'ym');
+
+    ym(112997205, 'init', {
+      ssr:true,
+      webvisor:true,
+      clickmap:true,
+      ecommerce:"dataLayer",
+      referrer:document.referrer,
+      url:location.href,
+      accurateTrackBounce:true,
+      trackLinks:true
+    });
+  </script>
+  <noscript>
+    <div>
+      <img
+        src="https://mc.yandex.ru/watch/112997205"
+        style="position:absolute; left:-9999px;"
+        alt=""
+      />
+    </div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+<header style="
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:16px 24px;
+">
+  <div style="
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  ">
+    <a href="/" style="text-decoration:none; color:#111827; font-weight:700; font-size:20px;">
+      MetricTree
+    </a>
+
+    <a
+      href="/"
+      style="
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:10px 18px;
+        border-radius:10px;
+        font-weight:600;
+      "
+    >
+      Построить дерево →
+    </a>
+  </div>
+</header>
+
+<main style="
+  max-width:900px;
+  margin:0 auto;
+  padding:64px 24px;
+">
+
+  <h1 style="
+    font-size:42px;
+    line-height:1.15;
+    margin:0 0 20px;
+    max-width:800px;
+  ">
+    Метрики эффективности: ключевые показатели и примеры
+  </h1>
+
+  <p style="
+    font-size:20px;
+    line-height:1.6;
+    color:#4b5563;
+    max-width:760px;
+    margin-bottom:32px;
+  ">
+    Разбираемся, что такое метрики эффективности, какие показатели
+    использовать для оценки бизнеса, продукта и процессов и как связать
+    отдельные KPI в единую систему метрик.
+  </p>
+
+  <a
+    href="/"
+    style="
+      display:inline-block;
+      background:#ffdd2d;
+      color:#111827;
+      text-decoration:none;
+      padding:14px 22px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:16px;
+    "
+  >
+    Построить дерево метрик эффективности с AI
+  </a>
+
+
+  <section style="margin-top:72px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Что такое метрики эффективности
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Метрики эффективности — это измеримые показатели, которые помогают
+      оценить, насколько успешно бизнес, продукт, команда или процесс
+      достигают поставленной цели. Они позволяют сравнивать фактический
+      результат с ожидаемым и понимать, какие факторы влияют на этот результат.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, цель «повысить эффективность продаж» сама по себе не даёт
+      способа измерить результат. Для оценки можно использовать конверсию
+      в покупку, средний чек, выручку на клиента, стоимость привлечения
+      и долю повторных покупок.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Какие бывают метрики эффективности
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Набор показателей зависит от объекта оценки и поставленной цели.
+      Поэтому универсального списка метрик эффективности не существует.
+      Однако их можно разделить на несколько основных групп.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Финансовые метрики эффективности
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Показывают экономический результат бизнеса: выручку, прибыль,
+      маржинальность, рентабельность, денежный поток и другие показатели,
+      связанные с доходами, расходами и использованием капитала.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики эффективности продаж
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Помогают оценивать результат продаж. К ним относятся конверсия
+      в покупку, количество заказов и сделок, средний чек, выручка,
+      стоимость привлечения клиента и повторные покупки.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики эффективности продукта
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Показывают, насколько продукт создаёт ценность для пользователей
+      и бизнеса. Например, activation rate, retention, churn,
+      DAU/MAU, конверсия и LTV.
+    </p>
+
+    <h3 style="font-size:21px; margin:32px 0 10px;">
+      Метрики эффективности процессов
+    </h3>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Используются для оценки работы отдельных процессов. Это могут быть
+      время выполнения операции, стоимость обработки заявки,
+      производительность, доля ошибок или процент успешно завершённых операций.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Ключевые метрики эффективности
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Конкретные ключевые показатели эффективности зависят от цели,
+      но в цифровых продуктах и бизнесе часто используются следующие метрики.
+    </p>
+
+    <div style="
+      margin:28px 0;
+      background:white;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      overflow-x:auto;
+    ">
+
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        font-size:17px;
+        line-height:1.5;
+      ">
+        <thead>
+          <tr style="background:#f3f4f6; text-align:left;">
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Метрика</th>
+            <th style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">Что помогает оценить</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <strong>Выручка</strong>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Общий финансовый результат продаж
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <a href="/metrics/conversion-rate/" style="color:#111827; font-weight:600;">
+                Conversion Rate
+              </a>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Долю пользователей, совершающих целевое действие
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <a href="/metrics/aov/" style="color:#111827; font-weight:600;">
+                Средний чек (AOV)
+              </a>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Среднюю сумму покупки или заказа
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <a href="/metrics/cac/" style="color:#111827; font-weight:600;">
+                CAC
+              </a>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Стоимость привлечения одного клиента
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <a href="/metrics/ltv/" style="color:#111827; font-weight:600;">
+                LTV
+              </a>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Ценность клиента за всё время отношений с бизнесом
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              <a href="/metrics/retention/" style="color:#111827; font-weight:600;">
+                Retention
+              </a>
+            </td>
+            <td style="padding:14px 16px; border-bottom:1px solid #e5e7eb;">
+              Способность продукта удерживать пользователей
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:14px 16px;">
+              <a href="/metrics/churn/" style="color:#111827; font-weight:600;">
+                Churn
+              </a>
+            </td>
+            <td style="padding:14px 16px;">
+              Долю пользователей или клиентов, которых теряет продукт
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Эти показатели не являются универсальным набором KPI.
+      Ключевыми становятся те метрики, которые непосредственно связаны
+      с конкретной целью и позволяют команде принимать решения.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Как выбрать метрики для оценки эффективности
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Чем больше показателей отслеживает команда, тем сложнее понять,
+      какие из них действительно важны. Поэтому выбор метрик лучше
+      начинать не со списка KPI, а с цели.
+    </p>
+
+    <ol style="
+      font-size:18px;
+      line-height:1.7;
+      color:#374151;
+      padding-left:24px;
+    ">
+      <li style="margin-bottom:14px;">
+        <strong>Определите цель.</strong>
+        Например, увеличить выручку, повысить удержание пользователей
+        или снизить стоимость привлечения клиента.
+      </li>
+
+      <li style="margin-bottom:14px;">
+        <strong>Выберите измеримый результат.</strong>
+        Определите показатель, который лучше всего отражает достижение цели.
+      </li>
+
+      <li style="margin-bottom:14px;">
+        <strong>Найдите драйверы результата.</strong>
+        Определите метрики, изменение которых может влиять
+        на верхнеуровневый показатель.
+      </li>
+
+      <li>
+        <strong>Добавьте контрметрики.</strong>
+        Они помогают убедиться, что улучшение одного показателя
+        не ухудшает другие важные характеристики продукта или бизнеса.
+      </li>
+    </ol>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Метрики эффективности бизнеса
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Для оценки эффективности бизнеса обычно недостаточно одного показателя.
+      Рост выручки, например, может сопровождаться ростом расходов
+      на привлечение клиентов или снижением маржинальности.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Поэтому финансовые показатели полезно рассматривать вместе
+      с клиентскими и продуктовыми метриками: выручкой, прибылью,
+      CAC, LTV, средним чеком, конверсией и удержанием.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Подробнее:
+      <a href="/business-metrics/" style="color:#111827; font-weight:600;">
+        бизнес-метрики и ключевые показатели бизнеса
+      </a>.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Метрики эффективности продукта
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Эффективность продукта можно оценивать через поведение пользователей
+      и его влияние на бизнес-результат. Для этого используют показатели
+      активации, вовлечённости, удержания, конверсии и монетизации.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, рост retention означает, что больше пользователей
+      продолжают пользоваться продуктом. Это может увеличить активную
+      аудиторию, число повторных покупок и LTV.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Подробнее:
+      <a href="/product-metrics/" style="color:#111827; font-weight:600;">
+        продуктовые метрики и основные показатели продукта
+      </a>.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Метрики эффективности процесса
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Для оценки эффективности процесса важно измерять не только итоговый
+      результат, но и ресурсы, необходимые для его достижения.
+      Поэтому часто используют время выполнения операции, стоимость процесса,
+      производительность, количество ошибок и долю успешно выполненных операций.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, для процесса обработки клиентских обращений можно одновременно
+      отслеживать среднее время ответа, стоимость обработки одного обращения,
+      долю решённых вопросов и удовлетворённость клиентов.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Метрики и KPI: в чём разница
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Метрика — это любой измеримый показатель, который описывает состояние
+      или изменение продукта, бизнеса или процесса. KPI — это показатель,
+      выбранный как ключевой для оценки достижения конкретной цели.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Поэтому не каждая метрика является KPI. Например, команда может
+      отслеживать десятки продуктовых показателей, но только несколько
+      из них использовать как ключевые показатели эффективности
+      на текущем этапе.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Пример декомпозиции метрики эффективности
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Представим интернет-магазин, который хочет повысить эффективность
+      продаж. Верхнеуровневым результатом может быть рост выручки,
+      но для управления этим показателем его нужно декомпозировать.
+    </p>
+
+    <div style="
+      background:#111827;
+      color:#f9fafb;
+      padding:28px;
+      border-radius:16px;
+      margin:28px 0;
+      overflow-x:auto;
+      font-family:monospace;
+      font-size:16px;
+      line-height:1.7;
+      white-space:pre;
+    ">Выручка
+├── Количество заказов
+│   ├── Посетители
+│   └── Конверсия в покупку
+└── Средний чек
+    ├── Товаров в заказе
+    └── Средняя цена товара</div>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Такая структура показывает, за счёт каких факторов может измениться
+      итоговый результат. Команда может работать с трафиком, конверсией,
+      количеством товаров в заказе или средним чеком и отслеживать,
+      как изменения влияют на выручку.
+    </p>
+
+  </section>
+
+
+  <section style="margin-top:56px; max-width:760px;">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 20px;">
+      Зачем связывать метрики эффективности в дерево
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Отдельный KPI показывает, что изменилось, но не всегда объясняет почему.
+      Дерево метрик связывает верхнеуровневый результат с показателями,
+      которые на него влияют, и помогает находить точки роста.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Например, снижение выручки можно последовательно разложить
+      на изменение числа заказов и среднего чека, а количество заказов —
+      на трафик и конверсию. Такая декомпозиция помогает перейти
+      от наблюдения за показателем к поиску причины изменения.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Подробнее о подходе:
+      <a href="/derevo-metrik/" style="color:#111827; font-weight:600;">
+        дерево метрик продукта: как построить и примеры
+      </a>.
+    </p>
+
+  </section>
+
+
+  <section style="
+    margin-top:64px;
+    max-width:760px;
+    padding:36px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+  ">
+
+    <h2 style="font-size:30px; line-height:1.25; margin:0 0 18px;">
+      Постройте дерево метрик эффективности с помощью AI
+    </h2>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      MetricTree помогает перейти от общей цели к системе связанных
+      бизнес-, продуктовых, прокси- и контрметрик. Опишите продукт,
+      аудиторию и бизнес-модель — AI предложит структуру дерева
+      и связи между показателями.
+    </p>
+
+    <p style="font-size:18px; line-height:1.7; color:#374151;">
+      Полученное дерево можно редактировать, анализировать отдельные метрики,
+      искать точки роста, приоритизировать показатели
+      и формировать идеи A/B-экспериментов.
+    </p>
+
+    <a
+      href="/"
+      style="
+        display:inline-block;
+        margin-top:12px;
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:14px 22px;
+        border-radius:12px;
+        font-weight:600;
+        font-size:17px;
+      "
+    >
+      Построить дерево метрик →
+    </a>
+
+  </section>
+
+</main>
+
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.
+</footer>
+
+</body>
+</html>
