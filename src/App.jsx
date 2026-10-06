@@ -3213,62 +3213,47 @@ const currentNextStepsCopy =
           Выбери метрику в дереве — здесь появятся действия.
           </div>
 
+          <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="text-xs font-semibold text-gray-500 mb-3">
+          Материалы о метриках
+          </div>
 
-
-
-          <div className="mt-6 pt-4 border-t border-gray-200 text-xs text-gray-400">
-          <a
-          href="/product-metrics/"
-          className="text-blue-600 hover:underline"
-          >
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+          <a href="/product-metrics/" className="text-blue-600 hover:underline">
           Продуктовые метрики
           </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/business-metrics/"
-          className="text-blue-600 hover:underline"
-          >
+
+          <a href="/business-metrics/" className="text-blue-600 hover:underline">
           Бизнес-метрики
           </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/efficiency-metrics/"
-          className="text-blue-600 hover:underline"
-          >
-          Метрики эффективности
-          </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/sales-metrics/"
-          className="text-blue-600 hover:underline"
-          >
-          Метрики продаж
-          </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/marketing-metrics/"
-          className="text-blue-600 hover:underline"
-          >
-          Метрики маркетинга
-          </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/derevo-metrik/"
-          className="text-blue-600 hover:underline"
-          >
-          Дерево метрик
-          </a>
-          <span className="mx-2">·</span>
-          <a
-          href="/payment-terms"
-          className="text-blue-600 hover:underline"
-          >
-          Оплата и условия
-          </a>
-          <span className="mx-2">·</span>
-          <span>© 2026 MetricTree</span>
-          </div>
-         
+
+        <a href="/efficiency-metrics/" className="text-blue-600 hover:underline">
+        Метрики эффективности
+        </a>
+
+        <a href="/sales-metrics/" className="text-blue-600 hover:underline">
+        Метрики продаж
+        </a>
+
+        <a href="/marketing-metrics/" className="text-blue-600 hover:underline">
+        Метрики маркетинга
+        </a>
+
+        <a href="/derevo-metrik/" className="text-blue-600 hover:underline">
+        Дерево метрик
+        </a>
+        </div>
+
+        <div className="mt-4 text-xs text-gray-400">
+        <a href="/payment-terms" className="hover:text-gray-600 hover:underline">
+        Оплата и условия
+        </a>
+        <span className="mx-2">·</span>
+        <span>© 2026 MetricTree</span>
+        </div>
+        </div>
+
+
           </div>
 
           )}
