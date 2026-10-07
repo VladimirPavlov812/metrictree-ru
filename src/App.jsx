@@ -2548,14 +2548,18 @@ const currentNextStepsCopy =
           </div>
 
           <div className="flex-1">
-          <h1 className="text-base font-semibold text-gray-900 mb-2">
+          <h1 className="text-base font-semibold text-gray-900 mb-1">
           AI-генератор дерева метрик продукта
           </h1>
+
+          <p className="text-sm text-gray-500 mb-2">
+          Опишите продукт или сервис в 1–3 предложениях — AI построит дерево метрик.
+          </p>
 
           <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Опиши продукт..."
+          placeholder="Например: маркетплейс для малого бизнеса, где компании закупают товары для офиса"
           className="w-full border border-gray-200 rounded-xl p-3 h-24 focus:ring-2 focus:ring-[#ffdd2d] outline-none resize-none text-base"
           />
           </div>
@@ -2866,6 +2870,19 @@ const currentNextStepsCopy =
           </button>
           )}
           
+          {!treeData && !loading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+          <div className="text-center bg-white/95 border border-gray-200 rounded-2xl shadow-sm px-8 py-6 max-w-md">
+          <div className="text-xl font-semibold text-gray-900 mb-2">
+          Начните с описания продукта ↑
+          </div>
+
+          <div className="text-sm text-gray-500">
+          Опишите продукт в поле сверху и нажмите «Сгенерировать»
+          </div>
+          </div>
+          </div>
+          )}
           
           <ReactFlow
           nodes={visibleNodes}
