@@ -1,132 +1,132 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AOV и средний чек: что это, формула и как рассчитать | MetricTree</title>
-<meta name="description" content="Что такое AOV и средний чек, как его рассчитать. Формула Average Order Value, пример расчёта, отличие от ARPU, факторы роста и дерево метрик.">
+<title>AOV Рё СЃСЂРµРґРЅРёР№ С‡РµРє: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ | MetricTree</title>
+<meta name="description" content="Р§С‚Рѕ С‚Р°РєРѕРµ AOV Рё СЃСЂРµРґРЅРёР№ С‡РµРє, РєР°Рє РµРіРѕ СЂР°СЃСЃС‡РёС‚Р°С‚СЊ. Р¤РѕСЂРјСѓР»Р° Average Order Value, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РѕС‚Р»РёС‡РёРµ РѕС‚ ARPU, С„Р°РєС‚РѕСЂС‹ СЂРѕСЃС‚Р° Рё РґРµСЂРµРІРѕ РјРµС‚СЂРёРє.">
 <link rel="canonical" href="https://metrictree.ru/metrics/aov/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AOV и средний чек: что это, формула и как рассчитать","description":"Что такое AOV, формула среднего чека, пример расчёта, отличие от ARPU и место в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/aov/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Бизнес-метрики","item":"https://metrictree.ru/business-metrics/"},{"@type":"ListItem","position":3,"name":"AOV / средний чек","item":"https://metrictree.ru/metrics/aov/"}]}</script>
-<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AOV Рё СЃСЂРµРґРЅРёР№ С‡РµРє: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ","description":"Р§С‚Рѕ С‚Р°РєРѕРµ AOV, С„РѕСЂРјСѓР»Р° СЃСЂРµРґРЅРµРіРѕ С‡РµРєР°, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РѕС‚Р»РёС‡РёРµ РѕС‚ ARPU Рё РјРµСЃС‚Рѕ РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/aov/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Р‘РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё","item":"https://metrictree.ru/business-metrics/"},{"@type":"ListItem","position":3,"name":"AOV / СЃСЂРµРґРЅРёР№ С‡РµРє","item":"https://metrictree.ru/metrics/aov/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205','ym');ym(112997205,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute;left:-9999px" alt=""></div></noscript>
 </head>
 <body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
-<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ в†’</a></div></header>
 
 <main style="max-width:900px;margin:0 auto;padding:64px 24px">
-<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/business-metrics/" style="color:#6b7280;text-decoration:none">Бизнес-метрики</a><span style="margin:0 8px">→</span><span>AOV / средний чек</span></div>
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">в†’</span><a href="/business-metrics/" style="color:#6b7280;text-decoration:none">Р‘РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё</a><span style="margin:0 8px">в†’</span><span>AOV / СЃСЂРµРґРЅРёР№ С‡РµРє</span></div>
 
-<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">AOV и средний чек: что это и как рассчитать</h1>
-<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">AOV (Average Order Value), или средний чек, показывает среднюю сумму одного заказа за выбранный период. Метрика помогает понять, сколько выручки в среднем приносит одна покупка и за счёт чего можно увеличивать выручку.</p>
-<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">AOV Рё СЃСЂРµРґРЅРёР№ С‡РµРє: С‡С‚Рѕ СЌС‚Рѕ Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">AOV (Average Order Value), РёР»Рё СЃСЂРµРґРЅРёР№ С‡РµРє, РїРѕРєР°Р·С‹РІР°РµС‚ СЃСЂРµРґРЅСЋСЋ СЃСѓРјРјСѓ РѕРґРЅРѕРіРѕ Р·Р°РєР°Р·Р° Р·Р° РІС‹Р±СЂР°РЅРЅС‹Р№ РїРµСЂРёРѕРґ. РњРµС‚СЂРёРєР° РїРѕРјРѕРіР°РµС‚ РїРѕРЅСЏС‚СЊ, СЃРєРѕР»СЊРєРѕ РІС‹СЂСѓС‡РєРё РІ СЃСЂРµРґРЅРµРј РїСЂРёРЅРѕСЃРёС‚ РѕРґРЅР° РїРѕРєСѓРїРєР° Рё Р·Р° СЃС‡С‘С‚ С‡РµРіРѕ РјРѕР¶РЅРѕ СѓРІРµР»РёС‡РёРІР°С‚СЊ РІС‹СЂСѓС‡РєСѓ.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ AI</a>
 
 <section style="margin-top:72px;max-width:760px">
-<h2 style="font-size:30px">Что такое AOV</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">AOV расшифровывается как Average Order Value. В русскоязычной аналитике показатель обычно называют средним чеком: он показывает среднюю стоимость одного заказа или покупки.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">AOV особенно полезен для e-commerce, маркетплейсов, доставки, розницы и других моделей, где выручка формируется через отдельные заказы.</p>
+<h2 style="font-size:30px">Р§С‚Рѕ С‚Р°РєРѕРµ AOV</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">AOV СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Average Order Value. Р’ СЂСѓСЃСЃРєРѕСЏР·С‹С‡РЅРѕР№ Р°РЅР°Р»РёС‚РёРєРµ РїРѕРєР°Р·Р°С‚РµР»СЊ РѕР±С‹С‡РЅРѕ РЅР°Р·С‹РІР°СЋС‚ СЃСЂРµРґРЅРёРј С‡РµРєРѕРј: РѕРЅ РїРѕРєР°Р·С‹РІР°РµС‚ СЃСЂРµРґРЅСЋСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ РѕРґРЅРѕРіРѕ Р·Р°РєР°Р·Р° РёР»Рё РїРѕРєСѓРїРєРё.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">AOV РѕСЃРѕР±РµРЅРЅРѕ РїРѕР»РµР·РµРЅ РґР»СЏ e-commerce, РјР°СЂРєРµС‚РїР»РµР№СЃРѕРІ, РґРѕСЃС‚Р°РІРєРё, СЂРѕР·РЅРёС†С‹ Рё РґСЂСѓРіРёС… РјРѕРґРµР»РµР№, РіРґРµ РІС‹СЂСѓС‡РєР° С„РѕСЂРјРёСЂСѓРµС‚СЃСЏ С‡РµСЂРµР· РѕС‚РґРµР»СЊРЅС‹Рµ Р·Р°РєР°Р·С‹.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Формула среднего чека</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Чтобы рассчитать AOV, выручку от заказов за период делят на количество заказов за тот же период.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">AOV = Выручка / Количество заказов</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Важно использовать сопоставимые данные: одинаковый период, одинаковый набор заказов и согласованное определение выручки.</p>
+<h2 style="font-size:30px">Р¤РѕСЂРјСѓР»Р° СЃСЂРµРґРЅРµРіРѕ С‡РµРєР°</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р§С‚РѕР±С‹ СЂР°СЃСЃС‡РёС‚Р°С‚СЊ AOV, РІС‹СЂСѓС‡РєСѓ РѕС‚ Р·Р°РєР°Р·РѕРІ Р·Р° РїРµСЂРёРѕРґ РґРµР»СЏС‚ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ Р·Р° С‚РѕС‚ Р¶Рµ РїРµСЂРёРѕРґ.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">AOV = Р’С‹СЂСѓС‡РєР° / РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’Р°Р¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРѕРїРѕСЃС‚Р°РІРёРјС‹Рµ РґР°РЅРЅС‹Рµ: РѕРґРёРЅР°РєРѕРІС‹Р№ РїРµСЂРёРѕРґ, РѕРґРёРЅР°РєРѕРІС‹Р№ РЅР°Р±РѕСЂ Р·Р°РєР°Р·РѕРІ Рё СЃРѕРіР»Р°СЃРѕРІР°РЅРЅРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ РІС‹СЂСѓС‡РєРё.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Пример расчёта AOV</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, интернет-магазин получил 3 000 000 ₽ выручки за месяц и выполнил 5 000 заказов.</p>
-<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.7"><strong>AOV = 3 000 000 / 5 000 = 600 ₽</strong></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Средний чек за месяц составляет 600 ₽.</p>
+<h2 style="font-size:30px">РџСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° AOV</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”РѕРїСѓСЃС‚РёРј, РёРЅС‚РµСЂРЅРµС‚-РјР°РіР°Р·РёРЅ РїРѕР»СѓС‡РёР» 3 000 000 в‚Ѕ РІС‹СЂСѓС‡РєРё Р·Р° РјРµСЃСЏС† Рё РІС‹РїРѕР»РЅРёР» 5 000 Р·Р°РєР°Р·РѕРІ.</p>
+<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.7"><strong>AOV = 3 000 000 / 5 000 = 600 в‚Ѕ</strong></div>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎСЂРµРґРЅРёР№ С‡РµРє Р·Р° РјРµСЃСЏС† СЃРѕСЃС‚Р°РІР»СЏРµС‚ 600 в‚Ѕ.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">AOV и ARPU — в чём разница</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">AOV и ARPU используют разные единицы анализа. AOV показывает выручку на один заказ, а ARPU — среднюю выручку на одного пользователя за период.</p>
+<h2 style="font-size:30px">AOV Рё ARPU вЂ” РІ С‡С‘Рј СЂР°Р·РЅРёС†Р°</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">AOV Рё ARPU РёСЃРїРѕР»СЊР·СѓСЋС‚ СЂР°Р·РЅС‹Рµ РµРґРёРЅРёС†С‹ Р°РЅР°Р»РёР·Р°. AOV РїРѕРєР°Р·С‹РІР°РµС‚ РІС‹СЂСѓС‡РєСѓ РЅР° РѕРґРёРЅ Р·Р°РєР°Р·, Р° ARPU вЂ” СЃСЂРµРґРЅСЋСЋ РІС‹СЂСѓС‡РєСѓ РЅР° РѕРґРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Р·Р° РїРµСЂРёРѕРґ.</p>
 <div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
-<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Метрика</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Формула</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Что измеряет</th></tr></thead>
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РњРµС‚СЂРёРєР°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р¤РѕСЂРјСѓР»Р°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р§С‚Рѕ РёР·РјРµСЂСЏРµС‚</th></tr></thead>
 <tbody>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>AOV</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Выручка / заказы</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Среднюю сумму заказа</td></tr>
-<tr><td style="padding:14px 16px"><strong>ARPU</strong></td><td style="padding:14px 16px">Выручка / пользователи</td><td style="padding:14px 16px">Среднюю выручку на пользователя</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>AOV</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р’С‹СЂСѓС‡РєР° / Р·Р°РєР°Р·С‹</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РЎСЂРµРґРЅСЋСЋ СЃСѓРјРјСѓ Р·Р°РєР°Р·Р°</td></tr>
+<tr><td style="padding:14px 16px"><strong>ARPU</strong></td><td style="padding:14px 16px">Р’С‹СЂСѓС‡РєР° / РїРѕР»СЊР·РѕРІР°С‚РµР»Рё</td><td style="padding:14px 16px">РЎСЂРµРґРЅСЋСЋ РІС‹СЂСѓС‡РєСѓ РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</td></tr>
 </tbody></table></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Если один пользователь совершает несколько заказов, его вклад в ARPU зависит и от среднего чека, и от частоты покупок.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/arpu/" style="color:#111827;font-weight:600">ARPU — средняя выручка на пользователя</a>.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р•СЃР»Рё РѕРґРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃРѕРІРµСЂС€Р°РµС‚ РЅРµСЃРєРѕР»СЊРєРѕ Р·Р°РєР°Р·РѕРІ, РµРіРѕ РІРєР»Р°Рґ РІ ARPU Р·Р°РІРёСЃРёС‚ Рё РѕС‚ СЃСЂРµРґРЅРµРіРѕ С‡РµРєР°, Рё РѕС‚ С‡Р°СЃС‚РѕС‚С‹ РїРѕРєСѓРїРѕРє.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/metrics/arpu/" style="color:#111827;font-weight:600">ARPU вЂ” СЃСЂРµРґРЅСЏСЏ РІС‹СЂСѓС‡РєР° РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Как AOV влияет на выручку</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">В модели с заказами выручку можно декомпозировать через количество заказов и средний чек.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">Выручка = Количество заказов × AOV</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Это означает, что рост выручки может происходить как за счёт большего числа заказов, так и за счёт увеличения средней суммы заказа. Для продуктового анализа полезно разделять эти два эффекта.</p>
+<h2 style="font-size:30px">РљР°Рє AOV РІР»РёСЏРµС‚ РЅР° РІС‹СЂСѓС‡РєСѓ</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ РјРѕРґРµР»Рё СЃ Р·Р°РєР°Р·Р°РјРё РІС‹СЂСѓС‡РєСѓ РјРѕР¶РЅРѕ РґРµРєРѕРјРїРѕР·РёСЂРѕРІР°С‚СЊ С‡РµСЂРµР· РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ Рё СЃСЂРµРґРЅРёР№ С‡РµРє.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">Р’С‹СЂСѓС‡РєР° = РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ Г— AOV</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р­С‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЂРѕСЃС‚ РІС‹СЂСѓС‡РєРё РјРѕР¶РµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РєР°Рє Р·Р° СЃС‡С‘С‚ Р±РѕР»СЊС€РµРіРѕ С‡РёСЃР»Р° Р·Р°РєР°Р·РѕРІ, С‚Р°Рє Рё Р·Р° СЃС‡С‘С‚ СѓРІРµР»РёС‡РµРЅРёСЏ СЃСЂРµРґРЅРµР№ СЃСѓРјРјС‹ Р·Р°РєР°Р·Р°. Р”Р»СЏ РїСЂРѕРґСѓРєС‚РѕРІРѕРіРѕ Р°РЅР°Р»РёР·Р° РїРѕР»РµР·РЅРѕ СЂР°Р·РґРµР»СЏС‚СЊ СЌС‚Рё РґРІР° СЌС„С„РµРєС‚Р°.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Что влияет на средний чек</h2>
+<h2 style="font-size:30px">Р§С‚Рѕ РІР»РёСЏРµС‚ РЅР° СЃСЂРµРґРЅРёР№ С‡РµРє</h2>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>цены товаров или услуг;</li>
-<li>количество позиций в заказе;</li>
-<li>структура ассортимента;</li>
-<li>доля более дорогих товаров и тарифов;</li>
-<li>скидки и промоакции;</li>
-<li>допродажи и кросс-продажи;</li>
-<li>минимальная сумма заказа и условия бесплатной доставки;</li>
-<li>состав и поведение разных клиентских сегментов.</li>
+<li>С†РµРЅС‹ С‚РѕРІР°СЂРѕРІ РёР»Рё СѓСЃР»СѓРі;</li>
+<li>РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР·РёС†РёР№ РІ Р·Р°РєР°Р·Рµ;</li>
+<li>СЃС‚СЂСѓРєС‚СѓСЂР° Р°СЃСЃРѕСЂС‚РёРјРµРЅС‚Р°;</li>
+<li>РґРѕР»СЏ Р±РѕР»РµРµ РґРѕСЂРѕРіРёС… С‚РѕРІР°СЂРѕРІ Рё С‚Р°СЂРёС„РѕРІ;</li>
+<li>СЃРєРёРґРєРё Рё РїСЂРѕРјРѕР°РєС†РёРё;</li>
+<li>РґРѕРїСЂРѕРґР°Р¶Рё Рё РєСЂРѕСЃСЃ-РїСЂРѕРґР°Р¶Рё;</li>
+<li>РјРёРЅРёРјР°Р»СЊРЅР°СЏ СЃСѓРјРјР° Р·Р°РєР°Р·Р° Рё СѓСЃР»РѕРІРёСЏ Р±РµСЃРїР»Р°С‚РЅРѕР№ РґРѕСЃС‚Р°РІРєРё;</li>
+<li>СЃРѕСЃС‚Р°РІ Рё РїРѕРІРµРґРµРЅРёРµ СЂР°Р·РЅС‹С… РєР»РёРµРЅС‚СЃРєРёС… СЃРµРіРјРµРЅС‚РѕРІ.</li>
 </ul>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Как увеличить AOV</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Рост среднего чека имеет смысл только вместе с контролем конверсии, маржинальности и повторных покупок. Механика, увеличившая AOV, может одновременно снизить число заказов или ухудшить экономику.</p>
+<h2 style="font-size:30px">РљР°Рє СѓРІРµР»РёС‡РёС‚СЊ AOV</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р РѕСЃС‚ СЃСЂРµРґРЅРµРіРѕ С‡РµРєР° РёРјРµРµС‚ СЃРјС‹СЃР» С‚РѕР»СЊРєРѕ РІРјРµСЃС‚Рµ СЃ РєРѕРЅС‚СЂРѕР»РµРј РєРѕРЅРІРµСЂСЃРёРё, РјР°СЂР¶РёРЅР°Р»СЊРЅРѕСЃС‚Рё Рё РїРѕРІС‚РѕСЂРЅС‹С… РїРѕРєСѓРїРѕРє. РњРµС…Р°РЅРёРєР°, СѓРІРµР»РёС‡РёРІС€Р°СЏ AOV, РјРѕР¶РµС‚ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ СЃРЅРёР·РёС‚СЊ С‡РёСЃР»Рѕ Р·Р°РєР°Р·РѕРІ РёР»Рё СѓС…СѓРґС€РёС‚СЊ СЌРєРѕРЅРѕРјРёРєСѓ.</p>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>предлагать релевантные дополнительные товары или услуги;</li>
-<li>создавать наборы и комплекты;</li>
-<li>использовать порог бесплатной доставки, если экономика это позволяет;</li>
-<li>улучшать рекомендации и персонализацию;</li>
-<li>развивать более дорогие тарифы или продуктовые пакеты;</li>
-<li>тестировать изменения и оценивать их влияние не только на AOV, но и на итоговую прибыль.</li>
+<li>РїСЂРµРґР»Р°РіР°С‚СЊ СЂРµР»РµРІР°РЅС‚РЅС‹Рµ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ С‚РѕРІР°СЂС‹ РёР»Рё СѓСЃР»СѓРіРё;</li>
+<li>СЃРѕР·РґР°РІР°С‚СЊ РЅР°Р±РѕСЂС‹ Рё РєРѕРјРїР»РµРєС‚С‹;</li>
+<li>РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїРѕСЂРѕРі Р±РµСЃРїР»Р°С‚РЅРѕР№ РґРѕСЃС‚Р°РІРєРё, РµСЃР»Рё СЌРєРѕРЅРѕРјРёРєР° СЌС‚Рѕ РїРѕР·РІРѕР»СЏРµС‚;</li>
+<li>СѓР»СѓС‡С€Р°С‚СЊ СЂРµРєРѕРјРµРЅРґР°С†РёРё Рё РїРµСЂСЃРѕРЅР°Р»РёР·Р°С†РёСЋ;</li>
+<li>СЂР°Р·РІРёРІР°С‚СЊ Р±РѕР»РµРµ РґРѕСЂРѕРіРёРµ С‚Р°СЂРёС„С‹ РёР»Рё РїСЂРѕРґСѓРєС‚РѕРІС‹Рµ РїР°РєРµС‚С‹;</li>
+<li>С‚РµСЃС‚РёСЂРѕРІР°С‚СЊ РёР·РјРµРЅРµРЅРёСЏ Рё РѕС†РµРЅРёРІР°С‚СЊ РёС… РІР»РёСЏРЅРёРµ РЅРµ С‚РѕР»СЊРєРѕ РЅР° AOV, РЅРѕ Рё РЅР° РёС‚РѕРіРѕРІСѓСЋ РїСЂРёР±С‹Р»СЊ.</li>
 </ul>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">AOV, Conversion Rate и LTV</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Средний чек нельзя оптимизировать изолированно. Повышение цены или порога заказа может увеличить AOV, но одновременно снизить конверсию в покупку. Поэтому эффект стоит оценивать на уровне выручки, маржинальности и прибыли.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">AOV также может влиять на ценность клиента: при прочих равных более высокий средний чек увеличивает выручку, которую клиент приносит за время отношений с продуктом.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Связанные метрики: <a href="/metrics/conversion-rate/" style="color:#111827;font-weight:600">Conversion Rate</a> и <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a>.</p>
+<h2 style="font-size:30px">AOV, Conversion Rate Рё LTV</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎСЂРµРґРЅРёР№ С‡РµРє РЅРµР»СЊР·СЏ РѕРїС‚РёРјРёР·РёСЂРѕРІР°С‚СЊ РёР·РѕР»РёСЂРѕРІР°РЅРЅРѕ. РџРѕРІС‹С€РµРЅРёРµ С†РµРЅС‹ РёР»Рё РїРѕСЂРѕРіР° Р·Р°РєР°Р·Р° РјРѕР¶РµС‚ СѓРІРµР»РёС‡РёС‚СЊ AOV, РЅРѕ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ СЃРЅРёР·РёС‚СЊ РєРѕРЅРІРµСЂСЃРёСЋ РІ РїРѕРєСѓРїРєСѓ. РџРѕСЌС‚РѕРјСѓ СЌС„С„РµРєС‚ СЃС‚РѕРёС‚ РѕС†РµРЅРёРІР°С‚СЊ РЅР° СѓСЂРѕРІРЅРµ РІС‹СЂСѓС‡РєРё, РјР°СЂР¶РёРЅР°Р»СЊРЅРѕСЃС‚Рё Рё РїСЂРёР±С‹Р»Рё.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">AOV С‚Р°РєР¶Рµ РјРѕР¶РµС‚ РІР»РёСЏС‚СЊ РЅР° С†РµРЅРЅРѕСЃС‚СЊ РєР»РёРµРЅС‚Р°: РїСЂРё РїСЂРѕС‡РёС… СЂР°РІРЅС‹С… Р±РѕР»РµРµ РІС‹СЃРѕРєРёР№ СЃСЂРµРґРЅРёР№ С‡РµРє СѓРІРµР»РёС‡РёРІР°РµС‚ РІС‹СЂСѓС‡РєСѓ, РєРѕС‚РѕСЂСѓСЋ РєР»РёРµРЅС‚ РїСЂРёРЅРѕСЃРёС‚ Р·Р° РІСЂРµРјСЏ РѕС‚РЅРѕС€РµРЅРёР№ СЃ РїСЂРѕРґСѓРєС‚РѕРј.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎРІСЏР·Р°РЅРЅС‹Рµ РјРµС‚СЂРёРєРё: <a href="/metrics/conversion-rate/" style="color:#111827;font-weight:600">Conversion Rate</a> Рё <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">AOV в дереве метрик</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Средний чек удобно использовать при декомпозиции выручки. Затем сам AOV можно разложить на количество товаров в заказе и среднюю цену позиции или на другие факторы, подходящие конкретному бизнесу.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Выручка
-├── Количество заказов
-│   ├── Покупатели
-│   └── Частота заказов
-└── AOV / средний чек
-    ├── Количество позиций в заказе
-    └── Средняя цена позиции</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Декомпозиция помогает понять, изменился ли средний чек из-за количества товаров, цены, продуктового микса или поведения отдельных сегментов.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/business-metrics/" style="color:#111827;font-weight:600">бизнес-метрики</a>, <a href="/product-metrics/" style="color:#111827;font-weight:600">продуктовые метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
+<h2 style="font-size:30px">AOV РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎСЂРµРґРЅРёР№ С‡РµРє СѓРґРѕР±РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїСЂРё РґРµРєРѕРјРїРѕР·РёС†РёРё РІС‹СЂСѓС‡РєРё. Р—Р°С‚РµРј СЃР°Рј AOV РјРѕР¶РЅРѕ СЂР°Р·Р»РѕР¶РёС‚СЊ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ РІ Р·Р°РєР°Р·Рµ Рё СЃСЂРµРґРЅСЋСЋ С†РµРЅСѓ РїРѕР·РёС†РёРё РёР»Рё РЅР° РґСЂСѓРіРёРµ С„Р°РєС‚РѕСЂС‹, РїРѕРґС…РѕРґСЏС‰РёРµ РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ Р±РёР·РЅРµСЃСѓ.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Р’С‹СЂСѓС‡РєР°
+в”њв”Ђв”Ђ РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ
+в”‚   в”њв”Ђв”Ђ РџРѕРєСѓРїР°С‚РµР»Рё
+в”‚   в””в”Ђв”Ђ Р§Р°СЃС‚РѕС‚Р° Р·Р°РєР°Р·РѕРІ
+в””в”Ђв”Ђ AOV / СЃСЂРµРґРЅРёР№ С‡РµРє
+    в”њв”Ђв”Ђ РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР·РёС†РёР№ РІ Р·Р°РєР°Р·Рµ
+    в””в”Ђв”Ђ РЎСЂРµРґРЅСЏСЏ С†РµРЅР° РїРѕР·РёС†РёРё</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”РµРєРѕРјРїРѕР·РёС†РёСЏ РїРѕРјРѕРіР°РµС‚ РїРѕРЅСЏС‚СЊ, РёР·РјРµРЅРёР»СЃСЏ Р»Рё СЃСЂРµРґРЅРёР№ С‡РµРє РёР·-Р·Р° РєРѕР»РёС‡РµСЃС‚РІР° С‚РѕРІР°СЂРѕРІ, С†РµРЅС‹, РїСЂРѕРґСѓРєС‚РѕРІРѕРіРѕ РјРёРєСЃР° РёР»Рё РїРѕРІРµРґРµРЅРёСЏ РѕС‚РґРµР»СЊРЅС‹С… СЃРµРіРјРµРЅС‚РѕРІ.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/business-metrics/" style="color:#111827;font-weight:600">Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё</a>, <a href="/product-metrics/" style="color:#111827;font-weight:600">РїСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё</a> Рё <a href="/derevo-metrik/" style="color:#111827;font-weight:600">РєР°Рє РїРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Частые вопросы об AOV и среднем чеке</h2>
-<h3 style="font-size:21px;margin:32px 0 10px">Что означает AOV?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">AOV расшифровывается как Average Order Value — средняя стоимость одного заказа.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать средний чек?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Выручку за выбранный период делят на количество заказов за тот же период.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Средний чек и ARPU — это одно и то же?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Нет. Средний чек рассчитывается на заказ, а ARPU — на пользователя. Один пользователь может совершить несколько заказов.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Всегда ли рост AOV полезен?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Нет. Рост AOV стоит оценивать вместе с конверсией, количеством заказов, маржинальностью и прибылью. Например, повышение цен может увеличить средний чек, но сократить число покупок.</p>
+<h2 style="font-size:30px">Р§Р°СЃС‚С‹Рµ РІРѕРїСЂРѕСЃС‹ РѕР± AOV Рё СЃСЂРµРґРЅРµРј С‡РµРєРµ</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ AOV?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">AOV СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Average Order Value вЂ” СЃСЂРµРґРЅСЏСЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РѕРґРЅРѕРіРѕ Р·Р°РєР°Р·Р°.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РљР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ СЃСЂРµРґРЅРёР№ С‡РµРє?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’С‹СЂСѓС‡РєСѓ Р·Р° РІС‹Р±СЂР°РЅРЅС‹Р№ РїРµСЂРёРѕРґ РґРµР»СЏС‚ РЅР° РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ Р·Р° С‚РѕС‚ Р¶Рµ РїРµСЂРёРѕРґ.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РЎСЂРµРґРЅРёР№ С‡РµРє Рё ARPU вЂ” СЌС‚Рѕ РѕРґРЅРѕ Рё С‚Рѕ Р¶Рµ?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќРµС‚. РЎСЂРµРґРЅРёР№ С‡РµРє СЂР°СЃСЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РЅР° Р·Р°РєР°Р·, Р° ARPU вЂ” РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. РћРґРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РјРѕР¶РµС‚ СЃРѕРІРµСЂС€РёС‚СЊ РЅРµСЃРєРѕР»СЊРєРѕ Р·Р°РєР°Р·РѕРІ.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Р’СЃРµРіРґР° Р»Рё СЂРѕСЃС‚ AOV РїРѕР»РµР·РµРЅ?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќРµС‚. Р РѕСЃС‚ AOV СЃС‚РѕРёС‚ РѕС†РµРЅРёРІР°С‚СЊ РІРјРµСЃС‚Рµ СЃ РєРѕРЅРІРµСЂСЃРёРµР№, РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·Р°РєР°Р·РѕРІ, РјР°СЂР¶РёРЅР°Р»СЊРЅРѕСЃС‚СЊСЋ Рё РїСЂРёР±С‹Р»СЊСЋ. РќР°РїСЂРёРјРµСЂ, РїРѕРІС‹С€РµРЅРёРµ С†РµРЅ РјРѕР¶РµС‚ СѓРІРµР»РёС‡РёС‚СЊ СЃСЂРµРґРЅРёР№ С‡РµРє, РЅРѕ СЃРѕРєСЂР°С‚РёС‚СЊ С‡РёСЃР»Рѕ РїРѕРєСѓРїРѕРє.</p>
 </section>
 
 <section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
-<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает связать AOV с количеством заказов, Conversion Rate, ARPU, LTV и другими продуктовыми и бизнес-метриками.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
-<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">РџРѕСЃС‚СЂРѕР№С‚Рµ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ РїРѕРјРѕС‰СЊСЋ AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree РїРѕРјРѕРіР°РµС‚ СЃРІСЏР·Р°С‚СЊ AOV СЃ РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·Р°РєР°Р·РѕРІ, Conversion Rate, ARPU, LTV Рё РґСЂСѓРіРёРјРё РїСЂРѕРґСѓРєС‚РѕРІС‹РјРё Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєР°РјРё.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РћРїРёС€РёС‚Рµ РїСЂРѕРґСѓРєС‚, Р°СѓРґРёС‚РѕСЂРёСЋ Рё Р±РёР·РЅРµСЃ-РјРѕРґРµР»СЊ вЂ” AI РїСЂРµРґР»РѕР¶РёС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРµСЂРµРІР° РјРµС‚СЂРёРє, РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ РїРѕРёСЃРєР° С‚РѕС‡РµРє СЂРѕСЃС‚Р°.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє в†’</a>
 </section>
 </main>
 
-<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree вЂ” AI-РёРЅСЃС‚СЂСѓРјРµРЅС‚ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ Рё Р°РЅР°Р»РёР·Р° РґРµСЂРµРІР° РїСЂРѕРґСѓРєС‚РѕРІС‹С… Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРє.</footer>
 </body></html>

@@ -1,144 +1,144 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ROI: что это, формула и как рассчитать окупаемость инвестиций | MetricTree</title>
-<meta name="description" content="Что такое ROI и как рассчитать окупаемость инвестиций. Формула ROI, пример расчёта, отличие от ROMI и ROAS, интерпретация и дерево метрик.">
+<title>ROI: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ РѕРєСѓРїР°РµРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёР№ | MetricTree</title>
+<meta name="description" content="Р§С‚Рѕ С‚Р°РєРѕРµ ROI Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ РѕРєСѓРїР°РµРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёР№. Р¤РѕСЂРјСѓР»Р° ROI, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РѕС‚Р»РёС‡РёРµ РѕС‚ ROMI Рё ROAS, РёРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЏ Рё РґРµСЂРµРІРѕ РјРµС‚СЂРёРє.">
 <link rel="canonical" href="https://metrictree.ru/metrics/roi/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ROI: что это, формула и как рассчитать окупаемость инвестиций","description":"Что такое ROI, формула окупаемости инвестиций, пример расчёта, отличие от ROMI и ROAS и место ROI в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/roi/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Бизнес-метрики","item":"https://metrictree.ru/business-metrics/"},{"@type":"ListItem","position":3,"name":"ROI","item":"https://metrictree.ru/metrics/roi/"}]}</script>
-<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ROI: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ РѕРєСѓРїР°РµРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёР№","description":"Р§С‚Рѕ С‚Р°РєРѕРµ ROI, С„РѕСЂРјСѓР»Р° РѕРєСѓРїР°РµРјРѕСЃС‚Рё РёРЅРІРµСЃС‚РёС†РёР№, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РѕС‚Р»РёС‡РёРµ РѕС‚ ROMI Рё ROAS Рё РјРµСЃС‚Рѕ ROI РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/roi/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Р‘РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё","item":"https://metrictree.ru/business-metrics/"},{"@type":"ListItem","position":3,"name":"ROI","item":"https://metrictree.ru/metrics/roi/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205','ym');ym(112997205,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute;left:-9999px" alt=""></div></noscript>
 </head>
 <body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
-<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ в†’</a></div></header>
 
 <main style="max-width:900px;margin:0 auto;padding:64px 24px">
-<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/business-metrics/" style="color:#6b7280;text-decoration:none">Бизнес-метрики</a><span style="margin:0 8px">→</span><span>ROI</span></div>
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">в†’</span><a href="/business-metrics/" style="color:#6b7280;text-decoration:none">Р‘РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё</a><span style="margin:0 8px">в†’</span><span>ROI</span></div>
 
-<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">ROI: что это и как рассчитать окупаемость инвестиций</h1>
-<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">ROI (Return on Investment) показывает доходность вложений относительно их стоимости. Метрика помогает оценить, окупились ли инвестиции в проект, продукт, инициативу или другое направление и какой результат они принесли.</p>
-<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">ROI: С‡С‚Рѕ СЌС‚Рѕ Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ РѕРєСѓРїР°РµРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёР№</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">ROI (Return on Investment) РїРѕРєР°Р·С‹РІР°РµС‚ РґРѕС…РѕРґРЅРѕСЃС‚СЊ РІР»РѕР¶РµРЅРёР№ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РёС… СЃС‚РѕРёРјРѕСЃС‚Рё. РњРµС‚СЂРёРєР° РїРѕРјРѕРіР°РµС‚ РѕС†РµРЅРёС‚СЊ, РѕРєСѓРїРёР»РёСЃСЊ Р»Рё РёРЅРІРµСЃС‚РёС†РёРё РІ РїСЂРѕРµРєС‚, РїСЂРѕРґСѓРєС‚, РёРЅРёС†РёР°С‚РёРІСѓ РёР»Рё РґСЂСѓРіРѕРµ РЅР°РїСЂР°РІР»РµРЅРёРµ Рё РєР°РєРѕР№ СЂРµР·СѓР»СЊС‚Р°С‚ РѕРЅРё РїСЂРёРЅРµСЃР»Рё.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ AI</a>
 
 <section style="margin-top:72px;max-width:760px">
-<h2 style="font-size:30px">Что такое ROI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">ROI расшифровывается как Return on Investment — возврат на инвестиции. Показатель сопоставляет финансовый результат от вложения с размером самого вложения.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">ROI можно использовать для оценки отдельных проектов и инициатив, если их затраты и финансовый эффект можно достаточно корректно определить. При сравнении вариантов важно использовать одинаковый подход к составу доходов, расходов и периоду расчёта.</p>
+<h2 style="font-size:30px">Р§С‚Рѕ С‚Р°РєРѕРµ ROI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">ROI СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Return on Investment вЂ” РІРѕР·РІСЂР°С‚ РЅР° РёРЅРІРµСЃС‚РёС†РёРё. РџРѕРєР°Р·Р°С‚РµР»СЊ СЃРѕРїРѕСЃС‚Р°РІР»СЏРµС‚ С„РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РѕС‚ РІР»РѕР¶РµРЅРёСЏ СЃ СЂР°Р·РјРµСЂРѕРј СЃР°РјРѕРіРѕ РІР»РѕР¶РµРЅРёСЏ.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">ROI РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ РѕС†РµРЅРєРё РѕС‚РґРµР»СЊРЅС‹С… РїСЂРѕРµРєС‚РѕРІ Рё РёРЅРёС†РёР°С‚РёРІ, РµСЃР»Рё РёС… Р·Р°С‚СЂР°С‚С‹ Рё С„РёРЅР°РЅСЃРѕРІС‹Р№ СЌС„С„РµРєС‚ РјРѕР¶РЅРѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РєРѕСЂСЂРµРєС‚РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ. РџСЂРё СЃСЂР°РІРЅРµРЅРёРё РІР°СЂРёР°РЅС‚РѕРІ РІР°Р¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РѕРґРёРЅР°РєРѕРІС‹Р№ РїРѕРґС…РѕРґ Рє СЃРѕСЃС‚Р°РІСѓ РґРѕС…РѕРґРѕРІ, СЂР°СЃС…РѕРґРѕРІ Рё РїРµСЂРёРѕРґСѓ СЂР°СЃС‡С‘С‚Р°.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Формула ROI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">В базовом варианте из дохода от инвестиции вычитают стоимость инвестиции, а полученный результат делят на стоимость инвестиции.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">ROI = (Доход − Инвестиции) / Инвестиции × 100%</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">В практическом расчёте важно заранее определить, что именно относится к доходу и инвестиционным затратам. Иначе одинаковый проект можно оценить по-разному.</p>
+<h2 style="font-size:30px">Р¤РѕСЂРјСѓР»Р° ROI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ Р±Р°Р·РѕРІРѕРј РІР°СЂРёР°РЅС‚Рµ РёР· РґРѕС…РѕРґР° РѕС‚ РёРЅРІРµСЃС‚РёС†РёРё РІС‹С‡РёС‚Р°СЋС‚ СЃС‚РѕРёРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёРё, Р° РїРѕР»СѓС‡РµРЅРЅС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РґРµР»СЏС‚ РЅР° СЃС‚РѕРёРјРѕСЃС‚СЊ РёРЅРІРµСЃС‚РёС†РёРё.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">ROI = (Р”РѕС…РѕРґ в€’ РРЅРІРµСЃС‚РёС†РёРё) / РРЅРІРµСЃС‚РёС†РёРё Г— 100%</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ РїСЂР°РєС‚РёС‡РµСЃРєРѕРј СЂР°СЃС‡С‘С‚Рµ РІР°Р¶РЅРѕ Р·Р°СЂР°РЅРµРµ РѕРїСЂРµРґРµР»РёС‚СЊ, С‡С‚Рѕ РёРјРµРЅРЅРѕ РѕС‚РЅРѕСЃРёС‚СЃСЏ Рє РґРѕС…РѕРґСѓ Рё РёРЅРІРµСЃС‚РёС†РёРѕРЅРЅС‹Рј Р·Р°С‚СЂР°С‚Р°Рј. РРЅР°С‡Рµ РѕРґРёРЅР°РєРѕРІС‹Р№ РїСЂРѕРµРєС‚ РјРѕР¶РЅРѕ РѕС†РµРЅРёС‚СЊ РїРѕ-СЂР°Р·РЅРѕРјСѓ.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Пример расчёта ROI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, компания вложила в проект 1 000 000 ₽, а финансовый результат, относимый к проекту, составил 1 300 000 ₽.</p>
+<h2 style="font-size:30px">РџСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° ROI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”РѕРїСѓСЃС‚РёРј, РєРѕРјРїР°РЅРёСЏ РІР»РѕР¶РёР»Р° РІ РїСЂРѕРµРєС‚ 1 000 000 в‚Ѕ, Р° С„РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚, РѕС‚РЅРѕСЃРёРјС‹Р№ Рє РїСЂРѕРµРєС‚Сѓ, СЃРѕСЃС‚Р°РІРёР» 1 300 000 в‚Ѕ.</p>
 <div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.8">
-<strong>ROI = (1 300 000 − 1 000 000) / 1 000 000 × 100% = 30%</strong>
+<strong>ROI = (1 300 000 в€’ 1 000 000) / 1 000 000 Г— 100% = 30%</strong>
 </div>
-<p style="font-size:18px;line-height:1.7;color:#374151">При таком способе расчёта ROI составляет 30%: результат превышает размер вложения на 30% от первоначальных инвестиций.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџСЂРё С‚Р°РєРѕРј СЃРїРѕСЃРѕР±Рµ СЂР°СЃС‡С‘С‚Р° ROI СЃРѕСЃС‚Р°РІР»СЏРµС‚ 30%: СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРµРІС‹С€Р°РµС‚ СЂР°Р·РјРµСЂ РІР»РѕР¶РµРЅРёСЏ РЅР° 30% РѕС‚ РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅС‹С… РёРЅРІРµСЃС‚РёС†РёР№.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Как интерпретировать ROI</h2>
+<h2 style="font-size:30px">РљР°Рє РёРЅС‚РµСЂРїСЂРµС‚РёСЂРѕРІР°С‚СЊ ROI</h2>
 <div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
-<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">ROI</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Интерпретация в базовом расчёте</th></tr></thead>
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">ROI</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЏ РІ Р±Р°Р·РѕРІРѕРј СЂР°СЃС‡С‘С‚Рµ</th></tr></thead>
 <tbody>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>&gt; 0%</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Результат превышает вложенные средства</td></tr>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>= 0%</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Результат равен размеру вложения</td></tr>
-<tr><td style="padding:14px 16px"><strong>&lt; 0%</strong></td><td style="padding:14px 16px">Результат ниже размера вложения</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>&gt; 0%</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р РµР·СѓР»СЊС‚Р°С‚ РїСЂРµРІС‹С€Р°РµС‚ РІР»РѕР¶РµРЅРЅС‹Рµ СЃСЂРµРґСЃС‚РІР°</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>= 0%</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р РµР·СѓР»СЊС‚Р°С‚ СЂР°РІРµРЅ СЂР°Р·РјРµСЂСѓ РІР»РѕР¶РµРЅРёСЏ</td></tr>
+<tr><td style="padding:14px 16px"><strong>&lt; 0%</strong></td><td style="padding:14px 16px">Р РµР·СѓР»СЊС‚Р°С‚ РЅРёР¶Рµ СЂР°Р·РјРµСЂР° РІР»РѕР¶РµРЅРёСЏ</td></tr>
 </tbody></table></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Положительный ROI сам по себе не означает, что инвестиция оптимальна. Для решения также могут быть важны срок получения результата, риск, стоимость капитала, альтернативные варианты и абсолютный размер эффекта.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№ ROI СЃР°Рј РїРѕ СЃРµР±Рµ РЅРµ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РёРЅРІРµСЃС‚РёС†РёСЏ РѕРїС‚РёРјР°Р»СЊРЅР°. Р”Р»СЏ СЂРµС€РµРЅРёСЏ С‚Р°РєР¶Рµ РјРѕРіСѓС‚ Р±С‹С‚СЊ РІР°Р¶РЅС‹ СЃСЂРѕРє РїРѕР»СѓС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р°, СЂРёСЃРє, СЃС‚РѕРёРјРѕСЃС‚СЊ РєР°РїРёС‚Р°Р»Р°, Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹Рµ РІР°СЂРёР°РЅС‚С‹ Рё Р°Р±СЃРѕР»СЋС‚РЅС‹Р№ СЂР°Р·РјРµСЂ СЌС„С„РµРєС‚Р°.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">ROI, ROMI и ROAS — в чём разница</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">ROI — общий показатель возврата на инвестиции. В маркетинге и рекламе часто используют более специализированные показатели ROMI и ROAS.</p>
+<h2 style="font-size:30px">ROI, ROMI Рё ROAS вЂ” РІ С‡С‘Рј СЂР°Р·РЅРёС†Р°</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">ROI вЂ” РѕР±С‰РёР№ РїРѕРєР°Р·Р°С‚РµР»СЊ РІРѕР·РІСЂР°С‚Р° РЅР° РёРЅРІРµСЃС‚РёС†РёРё. Р’ РјР°СЂРєРµС‚РёРЅРіРµ Рё СЂРµРєР»Р°РјРµ С‡Р°СЃС‚Рѕ РёСЃРїРѕР»СЊР·СѓСЋС‚ Р±РѕР»РµРµ СЃРїРµС†РёР°Р»РёР·РёСЂРѕРІР°РЅРЅС‹Рµ РїРѕРєР°Р·Р°С‚РµР»Рё ROMI Рё ROAS.</p>
 <div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
-<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Метрика</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Что оценивает</th></tr></thead>
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РњРµС‚СЂРёРєР°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р§С‚Рѕ РѕС†РµРЅРёРІР°РµС‚</th></tr></thead>
 <tbody>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>ROI</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Возврат на инвестиции в широком смысле</td></tr>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>ROMI</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Возврат на маркетинговые инвестиции</td></tr>
-<tr><td style="padding:14px 16px"><strong>ROAS</strong></td><td style="padding:14px 16px">Отношение результата от рекламы к рекламным расходам</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>ROI</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р’РѕР·РІСЂР°С‚ РЅР° РёРЅРІРµСЃС‚РёС†РёРё РІ С€РёСЂРѕРєРѕРј СЃРјС‹СЃР»Рµ</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>ROMI</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р’РѕР·РІСЂР°С‚ РЅР° РјР°СЂРєРµС‚РёРЅРіРѕРІС‹Рµ РёРЅРІРµСЃС‚РёС†РёРё</td></tr>
+<tr><td style="padding:14px 16px"><strong>ROAS</strong></td><td style="padding:14px 16px">РћС‚РЅРѕС€РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° РѕС‚ СЂРµРєР»Р°РјС‹ Рє СЂРµРєР»Р°РјРЅС‹Рј СЂР°СЃС…РѕРґР°Рј</td></tr>
 </tbody></table></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">При использовании этих показателей важно явно фиксировать формулу и состав затрат: в компаниях определения и правила атрибуции могут отличаться.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџСЂРё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРё СЌС‚РёС… РїРѕРєР°Р·Р°С‚РµР»РµР№ РІР°Р¶РЅРѕ СЏРІРЅРѕ С„РёРєСЃРёСЂРѕРІР°С‚СЊ С„РѕСЂРјСѓР»Сѓ Рё СЃРѕСЃС‚Р°РІ Р·Р°С‚СЂР°С‚: РІ РєРѕРјРїР°РЅРёСЏС… РѕРїСЂРµРґРµР»РµРЅРёСЏ Рё РїСЂР°РІРёР»Р° Р°С‚СЂРёР±СѓС†РёРё РјРѕРіСѓС‚ РѕС‚Р»РёС‡Р°С‚СЊСЃСЏ.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Ограничения ROI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">ROI удобен своей простотой, но одного показателя недостаточно для оценки сложных или долгосрочных инвестиций.</p>
+<h2 style="font-size:30px">РћРіСЂР°РЅРёС‡РµРЅРёСЏ ROI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">ROI СѓРґРѕР±РµРЅ СЃРІРѕРµР№ РїСЂРѕСЃС‚РѕС‚РѕР№, РЅРѕ РѕРґРЅРѕРіРѕ РїРѕРєР°Р·Р°С‚РµР»СЏ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР»СЏ РѕС†РµРЅРєРё СЃР»РѕР¶РЅС‹С… РёР»Рё РґРѕР»РіРѕСЃСЂРѕС‡РЅС‹С… РёРЅРІРµСЃС‚РёС†РёР№.</p>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>базовая формула не отражает различия во времени получения результата;</li>
-<li>результат зависит от того, какие доходы и расходы включены в расчёт;</li>
-<li>не всегда можно точно отделить эффект одной инициативы от других факторов;</li>
-<li>ROI не показывает абсолютный масштаб прибыли;</li>
-<li>в показателе напрямую не отражён риск инвестиции.</li>
+<li>Р±Р°Р·РѕРІР°СЏ С„РѕСЂРјСѓР»Р° РЅРµ РѕС‚СЂР°Р¶Р°РµС‚ СЂР°Р·Р»РёС‡РёСЏ РІРѕ РІСЂРµРјРµРЅРё РїРѕР»СѓС‡РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р°;</li>
+<li>СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р°РІРёСЃРёС‚ РѕС‚ С‚РѕРіРѕ, РєР°РєРёРµ РґРѕС…РѕРґС‹ Рё СЂР°СЃС…РѕРґС‹ РІРєР»СЋС‡РµРЅС‹ РІ СЂР°СЃС‡С‘С‚;</li>
+<li>РЅРµ РІСЃРµРіРґР° РјРѕР¶РЅРѕ С‚РѕС‡РЅРѕ РѕС‚РґРµР»РёС‚СЊ СЌС„С„РµРєС‚ РѕРґРЅРѕР№ РёРЅРёС†РёР°С‚РёРІС‹ РѕС‚ РґСЂСѓРіРёС… С„Р°РєС‚РѕСЂРѕРІ;</li>
+<li>ROI РЅРµ РїРѕРєР°Р·С‹РІР°РµС‚ Р°Р±СЃРѕР»СЋС‚РЅС‹Р№ РјР°СЃС€С‚Р°Р± РїСЂРёР±С‹Р»Рё;</li>
+<li>РІ РїРѕРєР°Р·Р°С‚РµР»Рµ РЅР°РїСЂСЏРјСѓСЋ РЅРµ РѕС‚СЂР°Р¶С‘РЅ СЂРёСЃРє РёРЅРІРµСЃС‚РёС†РёРё.</li>
 </ul>
-<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому для крупных инвестиционных решений ROI обычно рассматривают вместе с другими финансовыми показателями и контекстом проекта.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕСЌС‚РѕРјСѓ РґР»СЏ РєСЂСѓРїРЅС‹С… РёРЅРІРµСЃС‚РёС†РёРѕРЅРЅС‹С… СЂРµС€РµРЅРёР№ ROI РѕР±С‹С‡РЅРѕ СЂР°СЃСЃРјР°С‚СЂРёРІР°СЋС‚ РІРјРµСЃС‚Рµ СЃ РґСЂСѓРіРёРјРё С„РёРЅР°РЅСЃРѕРІС‹РјРё РїРѕРєР°Р·Р°С‚РµР»СЏРјРё Рё РєРѕРЅС‚РµРєСЃС‚РѕРј РїСЂРѕРµРєС‚Р°.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">ROI, LTV и CAC</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Для продуктового бизнеса ROI можно анализировать через факторы, которые формируют доходы и затраты. Например, ценность привлечённых клиентов зависит от LTV, а стоимость их привлечения — от CAC.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">При этом отношение LTV/CAC и ROI — не одна и та же метрика. LTV/CAC сравнивает ценность клиента со стоимостью его привлечения, а ROI рассчитывается относительно выбранной инвестиции и её финансового результата.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a> и <a href="/metrics/cac/" style="color:#111827;font-weight:600">CAC</a>.</p>
+<h2 style="font-size:30px">ROI, LTV Рё CAC</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”Р»СЏ РїСЂРѕРґСѓРєС‚РѕРІРѕРіРѕ Р±РёР·РЅРµСЃР° ROI РјРѕР¶РЅРѕ Р°РЅР°Р»РёР·РёСЂРѕРІР°С‚СЊ С‡РµСЂРµР· С„Р°РєС‚РѕСЂС‹, РєРѕС‚РѕСЂС‹Рµ С„РѕСЂРјРёСЂСѓСЋС‚ РґРѕС…РѕРґС‹ Рё Р·Р°С‚СЂР°С‚С‹. РќР°РїСЂРёРјРµСЂ, С†РµРЅРЅРѕСЃС‚СЊ РїСЂРёРІР»РµС‡С‘РЅРЅС‹С… РєР»РёРµРЅС‚РѕРІ Р·Р°РІРёСЃРёС‚ РѕС‚ LTV, Р° СЃС‚РѕРёРјРѕСЃС‚СЊ РёС… РїСЂРёРІР»РµС‡РµРЅРёСЏ вЂ” РѕС‚ CAC.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџСЂРё СЌС‚РѕРј РѕС‚РЅРѕС€РµРЅРёРµ LTV/CAC Рё ROI вЂ” РЅРµ РѕРґРЅР° Рё С‚Р° Р¶Рµ РјРµС‚СЂРёРєР°. LTV/CAC СЃСЂР°РІРЅРёРІР°РµС‚ С†РµРЅРЅРѕСЃС‚СЊ РєР»РёРµРЅС‚Р° СЃРѕ СЃС‚РѕРёРјРѕСЃС‚СЊСЋ РµРіРѕ РїСЂРёРІР»РµС‡РµРЅРёСЏ, Р° ROI СЂР°СЃСЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РІС‹Р±СЂР°РЅРЅРѕР№ РёРЅРІРµСЃС‚РёС†РёРё Рё РµС‘ С„РёРЅР°РЅСЃРѕРІРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a> Рё <a href="/metrics/cac/" style="color:#111827;font-weight:600">CAC</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Что влияет на ROI</h2>
+<h2 style="font-size:30px">Р§С‚Рѕ РІР»РёСЏРµС‚ РЅР° ROI</h2>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>размер первоначальных и последующих затрат;</li>
-<li>выручка и маржинальность результата;</li>
-<li>количество клиентов или заказов;</li>
-<li>средний чек и частота покупок;</li>
-<li>стоимость привлечения клиентов;</li>
-<li>удержание и срок жизни клиента;</li>
-<li>операционные расходы, связанные с инициативой.</li>
+<li>СЂР°Р·РјРµСЂ РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅС‹С… Рё РїРѕСЃР»РµРґСѓСЋС‰РёС… Р·Р°С‚СЂР°С‚;</li>
+<li>РІС‹СЂСѓС‡РєР° Рё РјР°СЂР¶РёРЅР°Р»СЊРЅРѕСЃС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚Р°;</li>
+<li>РєРѕР»РёС‡РµСЃС‚РІРѕ РєР»РёРµРЅС‚РѕРІ РёР»Рё Р·Р°РєР°Р·РѕРІ;</li>
+<li>СЃСЂРµРґРЅРёР№ С‡РµРє Рё С‡Р°СЃС‚РѕС‚Р° РїРѕРєСѓРїРѕРє;</li>
+<li>СЃС‚РѕРёРјРѕСЃС‚СЊ РїСЂРёРІР»РµС‡РµРЅРёСЏ РєР»РёРµРЅС‚РѕРІ;</li>
+<li>СѓРґРµСЂР¶Р°РЅРёРµ Рё СЃСЂРѕРє Р¶РёР·РЅРё РєР»РёРµРЅС‚Р°;</li>
+<li>РѕРїРµСЂР°С†РёРѕРЅРЅС‹Рµ СЂР°СЃС…РѕРґС‹, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РёРЅРёС†РёР°С‚РёРІРѕР№.</li>
 </ul>
-<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому изменение ROI лучше исследовать через декомпозицию, а не только через наблюдение за итоговым процентом.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕСЌС‚РѕРјСѓ РёР·РјРµРЅРµРЅРёРµ ROI Р»СѓС‡С€Рµ РёСЃСЃР»РµРґРѕРІР°С‚СЊ С‡РµСЂРµР· РґРµРєРѕРјРїРѕР·РёС†РёСЋ, Р° РЅРµ С‚РѕР»СЊРєРѕ С‡РµСЂРµР· РЅР°Р±Р»СЋРґРµРЅРёРµ Р·Р° РёС‚РѕРіРѕРІС‹Рј РїСЂРѕС†РµРЅС‚РѕРј.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">ROI в дереве метрик</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">В дереве метрик ROI можно разложить на финансовый результат и инвестиции, а затем связать результат с драйверами выручки и затрат. Конкретная структура зависит от того, окупаемость какой инициативы анализируется.</p>
+<h2 style="font-size:30px">ROI РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ РґРµСЂРµРІРµ РјРµС‚СЂРёРє ROI РјРѕР¶РЅРѕ СЂР°Р·Р»РѕР¶РёС‚СЊ РЅР° С„РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ Рё РёРЅРІРµСЃС‚РёС†РёРё, Р° Р·Р°С‚РµРј СЃРІСЏР·Р°С‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚ СЃ РґСЂР°Р№РІРµСЂР°РјРё РІС‹СЂСѓС‡РєРё Рё Р·Р°С‚СЂР°С‚. РљРѕРЅРєСЂРµС‚РЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° Р·Р°РІРёСЃРёС‚ РѕС‚ С‚РѕРіРѕ, РѕРєСѓРїР°РµРјРѕСЃС‚СЊ РєР°РєРѕР№ РёРЅРёС†РёР°С‚РёРІС‹ Р°РЅР°Р»РёР·РёСЂСѓРµС‚СЃСЏ.</p>
 <div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">ROI
-├── Финансовый результат
-│   ├── Выручка
-│   │   ├── Количество заказов
-│   │   └── AOV / средний чек
-│   └── Маржинальность
-└── Инвестиции и затраты
-    ├── CAC
-    └── Прочие затраты</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Такая декомпозиция помогает понять, за счёт чего меняется окупаемость: роста результата, снижения затрат или изменения сразу нескольких факторов.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Связанные метрики: <a href="/metrics/aov/" style="color:#111827;font-weight:600">AOV / средний чек</a>, <a href="/metrics/cac/" style="color:#111827;font-weight:600">CAC</a> и <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a>.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/business-metrics/" style="color:#111827;font-weight:600">бизнес-метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
+в”њв”Ђв”Ђ Р¤РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚
+в”‚   в”њв”Ђв”Ђ Р’С‹СЂСѓС‡РєР°
+в”‚   в”‚   в”њв”Ђв”Ђ РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РєР°Р·РѕРІ
+в”‚   в”‚   в””в”Ђв”Ђ AOV / СЃСЂРµРґРЅРёР№ С‡РµРє
+в”‚   в””в”Ђв”Ђ РњР°СЂР¶РёРЅР°Р»СЊРЅРѕСЃС‚СЊ
+в””в”Ђв”Ђ РРЅРІРµСЃС‚РёС†РёРё Рё Р·Р°С‚СЂР°С‚С‹
+    в”њв”Ђв”Ђ CAC
+    в””в”Ђв”Ђ РџСЂРѕС‡РёРµ Р·Р°С‚СЂР°С‚С‹</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">РўР°РєР°СЏ РґРµРєРѕРјРїРѕР·РёС†РёСЏ РїРѕРјРѕРіР°РµС‚ РїРѕРЅСЏС‚СЊ, Р·Р° СЃС‡С‘С‚ С‡РµРіРѕ РјРµРЅСЏРµС‚СЃСЏ РѕРєСѓРїР°РµРјРѕСЃС‚СЊ: СЂРѕСЃС‚Р° СЂРµР·СѓР»СЊС‚Р°С‚Р°, СЃРЅРёР¶РµРЅРёСЏ Р·Р°С‚СЂР°С‚ РёР»Рё РёР·РјРµРЅРµРЅРёСЏ СЃСЂР°Р·Сѓ РЅРµСЃРєРѕР»СЊРєРёС… С„Р°РєС‚РѕСЂРѕРІ.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎРІСЏР·Р°РЅРЅС‹Рµ РјРµС‚СЂРёРєРё: <a href="/metrics/aov/" style="color:#111827;font-weight:600">AOV / СЃСЂРµРґРЅРёР№ С‡РµРє</a>, <a href="/metrics/cac/" style="color:#111827;font-weight:600">CAC</a> Рё <a href="/metrics/ltv/" style="color:#111827;font-weight:600">LTV</a>.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/business-metrics/" style="color:#111827;font-weight:600">Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё</a> Рё <a href="/derevo-metrik/" style="color:#111827;font-weight:600">РєР°Рє РїРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Частые вопросы о ROI</h2>
-<h3 style="font-size:21px;margin:32px 0 10px">Что означает ROI?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">ROI расшифровывается как Return on Investment — возврат на инвестиции.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать ROI?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">В базовом варианте из дохода от инвестиции вычитают размер инвестиции, делят результат на размер инвестиции и умножают на 100%.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Что означает ROI 30%?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">В базовой формуле это означает, что результат за вычетом первоначального вложения составляет 30% от размера инвестиции.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">ROI и ROAS — одно и то же?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Нет. ROI — более общий показатель возврата на инвестиции, а ROAS используют для оценки результата относительно рекламных расходов.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Можно ли сравнивать ROI разных проектов?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Можно, если расчёты сделаны сопоставимо, но одного ROI может быть недостаточно: проекты могут отличаться сроком, риском, масштабом и характером денежных потоков.</p>
+<h2 style="font-size:30px">Р§Р°СЃС‚С‹Рµ РІРѕРїСЂРѕСЃС‹ Рѕ ROI</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ ROI?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">ROI СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Return on Investment вЂ” РІРѕР·РІСЂР°С‚ РЅР° РёРЅРІРµСЃС‚РёС†РёРё.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РљР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ ROI?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ Р±Р°Р·РѕРІРѕРј РІР°СЂРёР°РЅС‚Рµ РёР· РґРѕС…РѕРґР° РѕС‚ РёРЅРІРµСЃС‚РёС†РёРё РІС‹С‡РёС‚Р°СЋС‚ СЂР°Р·РјРµСЂ РёРЅРІРµСЃС‚РёС†РёРё, РґРµР»СЏС‚ СЂРµР·СѓР»СЊС‚Р°С‚ РЅР° СЂР°Р·РјРµСЂ РёРЅРІРµСЃС‚РёС†РёРё Рё СѓРјРЅРѕР¶Р°СЋС‚ РЅР° 100%.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ ROI 30%?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ Р±Р°Р·РѕРІРѕР№ С„РѕСЂРјСѓР»Рµ СЌС‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р° РІС‹С‡РµС‚РѕРј РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅРѕРіРѕ РІР»РѕР¶РµРЅРёСЏ СЃРѕСЃС‚Р°РІР»СЏРµС‚ 30% РѕС‚ СЂР°Р·РјРµСЂР° РёРЅРІРµСЃС‚РёС†РёРё.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">ROI Рё ROAS вЂ” РѕРґРЅРѕ Рё С‚Рѕ Р¶Рµ?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќРµС‚. ROI вЂ” Р±РѕР»РµРµ РѕР±С‰РёР№ РїРѕРєР°Р·Р°С‚РµР»СЊ РІРѕР·РІСЂР°С‚Р° РЅР° РёРЅРІРµСЃС‚РёС†РёРё, Р° ROAS РёСЃРїРѕР»СЊР·СѓСЋС‚ РґР»СЏ РѕС†РµРЅРєРё СЂРµР·СѓР»СЊС‚Р°С‚Р° РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СЂРµРєР»Р°РјРЅС‹С… СЂР°СЃС…РѕРґРѕРІ.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РњРѕР¶РЅРѕ Р»Рё СЃСЂР°РІРЅРёРІР°С‚СЊ ROI СЂР°Р·РЅС‹С… РїСЂРѕРµРєС‚РѕРІ?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РњРѕР¶РЅРѕ, РµСЃР»Рё СЂР°СЃС‡С‘С‚С‹ СЃРґРµР»Р°РЅС‹ СЃРѕРїРѕСЃС‚Р°РІРёРјРѕ, РЅРѕ РѕРґРЅРѕРіРѕ ROI РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ: РїСЂРѕРµРєС‚С‹ РјРѕРіСѓС‚ РѕС‚Р»РёС‡Р°С‚СЊСЃСЏ СЃСЂРѕРєРѕРј, СЂРёСЃРєРѕРј, РјР°СЃС€С‚Р°Р±РѕРј Рё С…Р°СЂР°РєС‚РµСЂРѕРј РґРµРЅРµР¶РЅС‹С… РїРѕС‚РѕРєРѕРІ.</p>
 </section>
 
 <section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
-<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает разложить ROI на финансовый результат, затраты и их драйверы — от AOV и количества заказов до CAC и LTV.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
-<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">РџРѕСЃС‚СЂРѕР№С‚Рµ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ РїРѕРјРѕС‰СЊСЋ AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree РїРѕРјРѕРіР°РµС‚ СЂР°Р·Р»РѕР¶РёС‚СЊ ROI РЅР° С„РёРЅР°РЅСЃРѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚, Р·Р°С‚СЂР°С‚С‹ Рё РёС… РґСЂР°Р№РІРµСЂС‹ вЂ” РѕС‚ AOV Рё РєРѕР»РёС‡РµСЃС‚РІР° Р·Р°РєР°Р·РѕРІ РґРѕ CAC Рё LTV.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РћРїРёС€РёС‚Рµ РїСЂРѕРґСѓРєС‚, Р°СѓРґРёС‚РѕСЂРёСЋ Рё Р±РёР·РЅРµСЃ-РјРѕРґРµР»СЊ вЂ” AI РїСЂРµРґР»РѕР¶РёС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРµСЂРµРІР° РјРµС‚СЂРёРє, РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ РїРѕРёСЃРєР° С‚РѕС‡РµРє СЂРѕСЃС‚Р°.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє в†’</a>
 </section>
 </main>
 
-<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree вЂ” AI-РёРЅСЃС‚СЂСѓРјРµРЅС‚ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ Рё Р°РЅР°Р»РёР·Р° РґРµСЂРµРІР° РїСЂРѕРґСѓРєС‚РѕРІС‹С… Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРє.</footer>
 </body></html>

@@ -1,133 +1,133 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NPS: что это, формула и как рассчитать Net Promoter Score | MetricTree</title>
-<meta name="description" content="Что такое NPS (Net Promoter Score), как рассчитать индекс лояльности клиентов. Формула NPS, промоутеры, нейтралы и критики, пример расчёта и дерево метрик.">
+<title>NPS: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ Net Promoter Score | MetricTree</title>
+<meta name="description" content="Р§С‚Рѕ С‚Р°РєРѕРµ NPS (Net Promoter Score), РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ РёРЅРґРµРєСЃ Р»РѕСЏР»СЊРЅРѕСЃС‚Рё РєР»РёРµРЅС‚РѕРІ. Р¤РѕСЂРјСѓР»Р° NPS, РїСЂРѕРјРѕСѓС‚РµСЂС‹, РЅРµР№С‚СЂР°Р»С‹ Рё РєСЂРёС‚РёРєРё, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° Рё РґРµСЂРµРІРѕ РјРµС‚СЂРёРє.">
 <link rel="canonical" href="https://metrictree.ru/metrics/nps/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"NPS: что это, формула и как рассчитать Net Promoter Score","description":"Что такое NPS, формула, группы респондентов, пример расчёта, интерпретация и место NPS в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/nps/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Продуктовые метрики","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"NPS","item":"https://metrictree.ru/metrics/nps/"}]}</script>
-<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"NPS: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»Р° Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ Net Promoter Score","description":"Р§С‚Рѕ С‚Р°РєРѕРµ NPS, С„РѕСЂРјСѓР»Р°, РіСЂСѓРїРїС‹ СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РёРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЏ Рё РјРµСЃС‚Рѕ NPS РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/nps/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"РџСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"NPS","item":"https://metrictree.ru/metrics/nps/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205','ym');ym(112997205,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute;left:-9999px" alt=""></div></noscript>
 </head>
 <body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
-<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ в†’</a></div></header>
 
 <main style="max-width:900px;margin:0 auto;padding:64px 24px">
-<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">Продуктовые метрики</a><span style="margin:0 8px">→</span><span>NPS</span></div>
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">в†’</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">РџСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё</a><span style="margin:0 8px">в†’</span><span>NPS</span></div>
 
-<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">NPS: что это и как рассчитать Net Promoter Score</h1>
-<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">NPS (Net Promoter Score) — индекс, который строится на готовности клиентов рекомендовать продукт, компанию или сервис. Для расчёта респондентов делят на промоутеров, нейтралов и критиков, а затем из доли промоутеров вычитают долю критиков.</p>
-<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">NPS: С‡С‚Рѕ СЌС‚Рѕ Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ Net Promoter Score</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">NPS (Net Promoter Score) вЂ” РёРЅРґРµРєСЃ, РєРѕС‚РѕСЂС‹Р№ СЃС‚СЂРѕРёС‚СЃСЏ РЅР° РіРѕС‚РѕРІРЅРѕСЃС‚Рё РєР»РёРµРЅС‚РѕРІ СЂРµРєРѕРјРµРЅРґРѕРІР°С‚СЊ РїСЂРѕРґСѓРєС‚, РєРѕРјРїР°РЅРёСЋ РёР»Рё СЃРµСЂРІРёСЃ. Р”Р»СЏ СЂР°СЃС‡С‘С‚Р° СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ РґРµР»СЏС‚ РЅР° РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ, РЅРµР№С‚СЂР°Р»РѕРІ Рё РєСЂРёС‚РёРєРѕРІ, Р° Р·Р°С‚РµРј РёР· РґРѕР»Рё РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ РІС‹С‡РёС‚Р°СЋС‚ РґРѕР»СЋ РєСЂРёС‚РёРєРѕРІ.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ AI</a>
 
 <section style="margin-top:72px;max-width:760px">
-<h2 style="font-size:30px">Что такое NPS</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS расшифровывается как Net Promoter Score. Метрика основана на вопросе о том, насколько вероятно, что клиент порекомендует продукт, компанию или сервис другим людям.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Обычно ответ дают по шкале от 0 до 10. После опроса клиентов распределяют по трём группам в зависимости от оценки.</p>
+<h2 style="font-size:30px">Р§С‚Рѕ С‚Р°РєРѕРµ NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Net Promoter Score. РњРµС‚СЂРёРєР° РѕСЃРЅРѕРІР°РЅР° РЅР° РІРѕРїСЂРѕСЃРµ Рѕ С‚РѕРј, РЅР°СЃРєРѕР»СЊРєРѕ РІРµСЂРѕСЏС‚РЅРѕ, С‡С‚Рѕ РєР»РёРµРЅС‚ РїРѕСЂРµРєРѕРјРµРЅРґСѓРµС‚ РїСЂРѕРґСѓРєС‚, РєРѕРјРїР°РЅРёСЋ РёР»Рё СЃРµСЂРІРёСЃ РґСЂСѓРіРёРј Р»СЋРґСЏРј.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РћР±С‹С‡РЅРѕ РѕС‚РІРµС‚ РґР°СЋС‚ РїРѕ С€РєР°Р»Рµ РѕС‚ 0 РґРѕ 10. РџРѕСЃР»Рµ РѕРїСЂРѕСЃР° РєР»РёРµРЅС‚РѕРІ СЂР°СЃРїСЂРµРґРµР»СЏСЋС‚ РїРѕ С‚СЂС‘Рј РіСЂСѓРїРїР°Рј РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РѕС†РµРЅРєРё.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Промоутеры, нейтралы и критики</h2>
+<h2 style="font-size:30px">РџСЂРѕРјРѕСѓС‚РµСЂС‹, РЅРµР№С‚СЂР°Р»С‹ Рё РєСЂРёС‚РёРєРё</h2>
 <div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
-<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Оценка</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Группа</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Как учитывается</th></tr></thead>
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РћС†РµРЅРєР°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р“СЂСѓРїРїР°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РљР°Рє СѓС‡РёС‚С‹РІР°РµС‚СЃСЏ</th></tr></thead>
 <tbody>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>9–10</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Промоутеры</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Увеличивают NPS</td></tr>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>7–8</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Нейтралы</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">В разность не входят</td></tr>
-<tr><td style="padding:14px 16px"><strong>0–6</strong></td><td style="padding:14px 16px">Критики</td><td style="padding:14px 16px">Уменьшают NPS</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>9вЂ“10</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РџСЂРѕРјРѕСѓС‚РµСЂС‹</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РЈРІРµР»РёС‡РёРІР°СЋС‚ NPS</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>7вЂ“8</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РќРµР№С‚СЂР°Р»С‹</td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р’ СЂР°Р·РЅРѕСЃС‚СЊ РЅРµ РІС…РѕРґСЏС‚</td></tr>
+<tr><td style="padding:14px 16px"><strong>0вЂ“6</strong></td><td style="padding:14px 16px">РљСЂРёС‚РёРєРё</td><td style="padding:14px 16px">РЈРјРµРЅСЊС€Р°СЋС‚ NPS</td></tr>
 </tbody></table></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Нейтралы участвуют в общем количестве ответивших и поэтому влияют на доли групп, но их доля напрямую не прибавляется и не вычитается в формуле NPS.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќРµР№С‚СЂР°Р»С‹ СѓС‡Р°СЃС‚РІСѓСЋС‚ РІ РѕР±С‰РµРј РєРѕР»РёС‡РµСЃС‚РІРµ РѕС‚РІРµС‚РёРІС€РёС… Рё РїРѕСЌС‚РѕРјСѓ РІР»РёСЏСЋС‚ РЅР° РґРѕР»Рё РіСЂСѓРїРї, РЅРѕ РёС… РґРѕР»СЏ РЅР°РїСЂСЏРјСѓСЋ РЅРµ РїСЂРёР±Р°РІР»СЏРµС‚СЃСЏ Рё РЅРµ РІС‹С‡РёС‚Р°РµС‚СЃСЏ РІ С„РѕСЂРјСѓР»Рµ NPS.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Формула NPS</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Для расчёта определяют процент промоутеров и процент критиков среди всех респондентов.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">NPS = % промоутеров − % критиков</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS может принимать значения от −100 до +100. Это индекс, а не процент пользователей и не средняя оценка по шкале от 0 до 10.</p>
+<h2 style="font-size:30px">Р¤РѕСЂРјСѓР»Р° NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”Р»СЏ СЂР°СЃС‡С‘С‚Р° РѕРїСЂРµРґРµР»СЏСЋС‚ РїСЂРѕС†РµРЅС‚ РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ Рё РїСЂРѕС†РµРЅС‚ РєСЂРёС‚РёРєРѕРІ СЃСЂРµРґРё РІСЃРµС… СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">NPS = % РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ в€’ % РєСЂРёС‚РёРєРѕРІ</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS РјРѕР¶РµС‚ РїСЂРёРЅРёРјР°С‚СЊ Р·РЅР°С‡РµРЅРёСЏ РѕС‚ в€’100 РґРѕ +100. Р­С‚Рѕ РёРЅРґРµРєСЃ, Р° РЅРµ РїСЂРѕС†РµРЅС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Рё РЅРµ СЃСЂРµРґРЅСЏСЏ РѕС†РµРЅРєР° РїРѕ С€РєР°Р»Рµ РѕС‚ 0 РґРѕ 10.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Пример расчёта NPS</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, на вопрос ответили 100 клиентов: 60 поставили 9–10, 25 поставили 7–8 и 15 поставили оценку от 0 до 6.</p>
+<h2 style="font-size:30px">РџСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р”РѕРїСѓСЃС‚РёРј, РЅР° РІРѕРїСЂРѕСЃ РѕС‚РІРµС‚РёР»Рё 100 РєР»РёРµРЅС‚РѕРІ: 60 РїРѕСЃС‚Р°РІРёР»Рё 9вЂ“10, 25 РїРѕСЃС‚Р°РІРёР»Рё 7вЂ“8 Рё 15 РїРѕСЃС‚Р°РІРёР»Рё РѕС†РµРЅРєСѓ РѕС‚ 0 РґРѕ 6.</p>
 <div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.8">
-Промоутеры = 60%<br>
-Нейтралы = 25%<br>
-Критики = 15%<br><br>
-<strong>NPS = 60 − 15 = 45</strong>
+РџСЂРѕРјРѕСѓС‚РµСЂС‹ = 60%<br>
+РќРµР№С‚СЂР°Р»С‹ = 25%<br>
+РљСЂРёС‚РёРєРё = 15%<br><br>
+<strong>NPS = 60 в€’ 15 = 45</strong>
 </div>
-<p style="font-size:18px;line-height:1.7;color:#374151">В этом примере Net Promoter Score равен 45.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ СЌС‚РѕРј РїСЂРёРјРµСЂРµ Net Promoter Score СЂР°РІРµРЅ 45.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Как интерпретировать NPS</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Само значение NPS показывает баланс между промоутерами и критиками. Положительный NPS означает, что доля промоутеров выше доли критиков; отрицательный — наоборот.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">При этом универсального значения «хорошего NPS» для любого бизнеса нет. Результат зависит от отрасли, аудитории, рынка, момента опроса и методики сбора ответов. Полезнее отслеживать динамику NPS при сопоставимой методике и анализировать различия между сегментами.</p>
+<h2 style="font-size:30px">РљР°Рє РёРЅС‚РµСЂРїСЂРµС‚РёСЂРѕРІР°С‚СЊ NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">РЎР°РјРѕ Р·РЅР°С‡РµРЅРёРµ NPS РїРѕРєР°Р·С‹РІР°РµС‚ Р±Р°Р»Р°РЅСЃ РјРµР¶РґСѓ РїСЂРѕРјРѕСѓС‚РµСЂР°РјРё Рё РєСЂРёС‚РёРєР°РјРё. РџРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№ NPS РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РґРѕР»СЏ РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ РІС‹С€Рµ РґРѕР»Рё РєСЂРёС‚РёРєРѕРІ; РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Р№ вЂ” РЅР°РѕР±РѕСЂРѕС‚.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџСЂРё СЌС‚РѕРј СѓРЅРёРІРµСЂСЃР°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ В«С…РѕСЂРѕС€РµРіРѕ NPSВ» РґР»СЏ Р»СЋР±РѕРіРѕ Р±РёР·РЅРµСЃР° РЅРµС‚. Р РµР·СѓР»СЊС‚Р°С‚ Р·Р°РІРёСЃРёС‚ РѕС‚ РѕС‚СЂР°СЃР»Рё, Р°СѓРґРёС‚РѕСЂРёРё, СЂС‹РЅРєР°, РјРѕРјРµРЅС‚Р° РѕРїСЂРѕСЃР° Рё РјРµС‚РѕРґРёРєРё СЃР±РѕСЂР° РѕС‚РІРµС‚РѕРІ. РџРѕР»РµР·РЅРµРµ РѕС‚СЃР»РµР¶РёРІР°С‚СЊ РґРёРЅР°РјРёРєСѓ NPS РїСЂРё СЃРѕРїРѕСЃС‚Р°РІРёРјРѕР№ РјРµС‚РѕРґРёРєРµ Рё Р°РЅР°Р»РёР·РёСЂРѕРІР°С‚СЊ СЂР°Р·Р»РёС‡РёСЏ РјРµР¶РґСѓ СЃРµРіРјРµРЅС‚Р°РјРё.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Как правильно измерять NPS</h2>
+<h2 style="font-size:30px">РљР°Рє РїСЂР°РІРёР»СЊРЅРѕ РёР·РјРµСЂСЏС‚СЊ NPS</h2>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>использовать одинаковую формулировку вопроса и шкалу при сравнении результатов во времени;</li>
-<li>фиксировать, на каком этапе клиентского пути проводится опрос;</li>
-<li>следить за составом выборки и каналом сбора ответов;</li>
-<li>сравнивать сопоставимые сегменты клиентов;</li>
-<li>дополнять оценку открытым вопросом о причине ответа.</li>
+<li>РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РѕРґРёРЅР°РєРѕРІСѓСЋ С„РѕСЂРјСѓР»РёСЂРѕРІРєСѓ РІРѕРїСЂРѕСЃР° Рё С€РєР°Р»Сѓ РїСЂРё СЃСЂР°РІРЅРµРЅРёРё СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РІРѕ РІСЂРµРјРµРЅРё;</li>
+<li>С„РёРєСЃРёСЂРѕРІР°С‚СЊ, РЅР° РєР°РєРѕРј СЌС‚Р°РїРµ РєР»РёРµРЅС‚СЃРєРѕРіРѕ РїСѓС‚Рё РїСЂРѕРІРѕРґРёС‚СЃСЏ РѕРїСЂРѕСЃ;</li>
+<li>СЃР»РµРґРёС‚СЊ Р·Р° СЃРѕСЃС‚Р°РІРѕРј РІС‹Р±РѕСЂРєРё Рё РєР°РЅР°Р»РѕРј СЃР±РѕСЂР° РѕС‚РІРµС‚РѕРІ;</li>
+<li>СЃСЂР°РІРЅРёРІР°С‚СЊ СЃРѕРїРѕСЃС‚Р°РІРёРјС‹Рµ СЃРµРіРјРµРЅС‚С‹ РєР»РёРµРЅС‚РѕРІ;</li>
+<li>РґРѕРїРѕР»РЅСЏС‚СЊ РѕС†РµРЅРєСѓ РѕС‚РєСЂС‹С‚С‹Рј РІРѕРїСЂРѕСЃРѕРј Рѕ РїСЂРёС‡РёРЅРµ РѕС‚РІРµС‚Р°.</li>
 </ul>
-<p style="font-size:18px;line-height:1.7;color:#374151">Комментарий клиента часто полезнее самого числа: он помогает понять, какие свойства продукта или сервиса формируют высокую или низкую готовность рекомендовать.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РљРѕРјРјРµРЅС‚Р°СЂРёР№ РєР»РёРµРЅС‚Р° С‡Р°СЃС‚Рѕ РїРѕР»РµР·РЅРµРµ СЃР°РјРѕРіРѕ С‡РёСЃР»Р°: РѕРЅ РїРѕРјРѕРіР°РµС‚ РїРѕРЅСЏС‚СЊ, РєР°РєРёРµ СЃРІРѕР№СЃС‚РІР° РїСЂРѕРґСѓРєС‚Р° РёР»Рё СЃРµСЂРІРёСЃР° С„РѕСЂРјРёСЂСѓСЋС‚ РІС‹СЃРѕРєСѓСЋ РёР»Рё РЅРёР·РєСѓСЋ РіРѕС‚РѕРІРЅРѕСЃС‚СЊ СЂРµРєРѕРјРµРЅРґРѕРІР°С‚СЊ.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Ограничения NPS</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS не стоит использовать как единственный показатель качества продукта. Это опросная метрика, которая отражает заявленное отношение респондентов, а не непосредственно их фактическое поведение.</p>
+<h2 style="font-size:30px">РћРіСЂР°РЅРёС‡РµРЅРёСЏ NPS</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS РЅРµ СЃС‚РѕРёС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєР°Рє РµРґРёРЅСЃС‚РІРµРЅРЅС‹Р№ РїРѕРєР°Р·Р°С‚РµР»СЊ РєР°С‡РµСЃС‚РІР° РїСЂРѕРґСѓРєС‚Р°. Р­С‚Рѕ РѕРїСЂРѕСЃРЅР°СЏ РјРµС‚СЂРёРєР°, РєРѕС‚РѕСЂР°СЏ РѕС‚СЂР°Р¶Р°РµС‚ Р·Р°СЏРІР»РµРЅРЅРѕРµ РѕС‚РЅРѕС€РµРЅРёРµ СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ, Р° РЅРµ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РёС… С„Р°РєС‚РёС‡РµСЃРєРѕРµ РїРѕРІРµРґРµРЅРёРµ.</p>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>NPS не объясняет причину оценки без дополнительной обратной связи;</li>
-<li>результат чувствителен к выборке и моменту проведения опроса;</li>
-<li>сравнение разных компаний может быть некорректным при различной методике;</li>
-<li>высокая готовность рекомендовать не гарантирует высокий Retention или выручку.</li>
+<li>NPS РЅРµ РѕР±СЉСЏСЃРЅСЏРµС‚ РїСЂРёС‡РёРЅСѓ РѕС†РµРЅРєРё Р±РµР· РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕР№ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё;</li>
+<li>СЂРµР·СѓР»СЊС‚Р°С‚ С‡СѓРІСЃС‚РІРёС‚РµР»РµРЅ Рє РІС‹Р±РѕСЂРєРµ Рё РјРѕРјРµРЅС‚Сѓ РїСЂРѕРІРµРґРµРЅРёСЏ РѕРїСЂРѕСЃР°;</li>
+<li>СЃСЂР°РІРЅРµРЅРёРµ СЂР°Р·РЅС‹С… РєРѕРјРїР°РЅРёР№ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Рј РїСЂРё СЂР°Р·Р»РёС‡РЅРѕР№ РјРµС‚РѕРґРёРєРµ;</li>
+<li>РІС‹СЃРѕРєР°СЏ РіРѕС‚РѕРІРЅРѕСЃС‚СЊ СЂРµРєРѕРјРµРЅРґРѕРІР°С‚СЊ РЅРµ РіР°СЂР°РЅС‚РёСЂСѓРµС‚ РІС‹СЃРѕРєРёР№ Retention РёР»Рё РІС‹СЂСѓС‡РєСѓ.</li>
 </ul>
-<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому NPS полезно анализировать вместе с поведенческими и бизнес-метриками.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕСЌС‚РѕРјСѓ NPS РїРѕР»РµР·РЅРѕ Р°РЅР°Р»РёР·РёСЂРѕРІР°С‚СЊ РІРјРµСЃС‚Рµ СЃ РїРѕРІРµРґРµРЅС‡РµСЃРєРёРјРё Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєР°РјРё.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">NPS, Retention и Churn</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS описывает отношение клиента к продукту через опрос, а Retention и Churn измеряют фактическое поведение пользователей. Эти показатели могут дополнять друг друга, но не являются взаимозаменяемыми.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Например, изменение NPS может быть сигналом для исследования причин удовлетворённости или недовольства, а динамика удержания покажет, изменилось ли реальное возвращение пользователей.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate</a> и <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn Rate</a>.</p>
+<h2 style="font-size:30px">NPS, Retention Рё Churn</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS РѕРїРёСЃС‹РІР°РµС‚ РѕС‚РЅРѕС€РµРЅРёРµ РєР»РёРµРЅС‚Р° Рє РїСЂРѕРґСѓРєС‚Сѓ С‡РµСЂРµР· РѕРїСЂРѕСЃ, Р° Retention Рё Churn РёР·РјРµСЂСЏСЋС‚ С„Р°РєС‚РёС‡РµСЃРєРѕРµ РїРѕРІРµРґРµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№. Р­С‚Рё РїРѕРєР°Р·Р°С‚РµР»Рё РјРѕРіСѓС‚ РґРѕРїРѕР»РЅСЏС‚СЊ РґСЂСѓРі РґСЂСѓРіР°, РЅРѕ РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РІР·Р°РёРјРѕР·Р°РјРµРЅСЏРµРјС‹РјРё.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќР°РїСЂРёРјРµСЂ, РёР·РјРµРЅРµРЅРёРµ NPS РјРѕР¶РµС‚ Р±С‹С‚СЊ СЃРёРіРЅР°Р»РѕРј РґР»СЏ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ РїСЂРёС‡РёРЅ СѓРґРѕРІР»РµС‚РІРѕСЂС‘РЅРЅРѕСЃС‚Рё РёР»Рё РЅРµРґРѕРІРѕР»СЊСЃС‚РІР°, Р° РґРёРЅР°РјРёРєР° СѓРґРµСЂР¶Р°РЅРёСЏ РїРѕРєР°Р¶РµС‚, РёР·РјРµРЅРёР»РѕСЃСЊ Р»Рё СЂРµР°Р»СЊРЅРѕРµ РІРѕР·РІСЂР°С‰РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate</a> Рё <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn Rate</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">NPS в дереве метрик</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">В дереве метрик NPS можно использовать как один из индикаторов клиентского опыта и лояльности. Его лучше не ставить единственной причиной финансового результата, а рассматривать вместе с поведением клиентов и другими показателями качества продукта.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Клиентский опыт
-├── NPS
-│   ├── Доля промоутеров
-│   └── Доля критиков
-├── Retention
-└── Churn</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Конкретная структура дерева зависит от продукта, бизнес-модели и того, какую гипотезу команда проверяет.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/product-metrics/" style="color:#111827;font-weight:600">продуктовые метрики</a>, <a href="/business-metrics/" style="color:#111827;font-weight:600">бизнес-метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
+<h2 style="font-size:30px">NPS РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Р’ РґРµСЂРµРІРµ РјРµС‚СЂРёРє NPS РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєР°Рє РѕРґРёРЅ РёР· РёРЅРґРёРєР°С‚РѕСЂРѕРІ РєР»РёРµРЅС‚СЃРєРѕРіРѕ РѕРїС‹С‚Р° Рё Р»РѕСЏР»СЊРЅРѕСЃС‚Рё. Р•РіРѕ Р»СѓС‡С€Рµ РЅРµ СЃС‚Р°РІРёС‚СЊ РµРґРёРЅСЃС‚РІРµРЅРЅРѕР№ РїСЂРёС‡РёРЅРѕР№ С„РёРЅР°РЅСЃРѕРІРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°, Р° СЂР°СЃСЃРјР°С‚СЂРёРІР°С‚СЊ РІРјРµСЃС‚Рµ СЃ РїРѕРІРµРґРµРЅРёРµРј РєР»РёРµРЅС‚РѕРІ Рё РґСЂСѓРіРёРјРё РїРѕРєР°Р·Р°С‚РµР»СЏРјРё РєР°С‡РµСЃС‚РІР° РїСЂРѕРґСѓРєС‚Р°.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">РљР»РёРµРЅС‚СЃРєРёР№ РѕРїС‹С‚
+в”њв”Ђв”Ђ NPS
+в”‚   в”њв”Ђв”Ђ Р”РѕР»СЏ РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ
+в”‚   в””в”Ђв”Ђ Р”РѕР»СЏ РєСЂРёС‚РёРєРѕРІ
+в”њв”Ђв”Ђ Retention
+в””в”Ђв”Ђ Churn</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">РљРѕРЅРєСЂРµС‚РЅР°СЏ СЃС‚СЂСѓРєС‚СѓСЂР° РґРµСЂРµРІР° Р·Р°РІРёСЃРёС‚ РѕС‚ РїСЂРѕРґСѓРєС‚Р°, Р±РёР·РЅРµСЃ-РјРѕРґРµР»Рё Рё С‚РѕРіРѕ, РєР°РєСѓСЋ РіРёРїРѕС‚РµР·Сѓ РєРѕРјР°РЅРґР° РїСЂРѕРІРµСЂСЏРµС‚.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/product-metrics/" style="color:#111827;font-weight:600">РїСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё</a>, <a href="/business-metrics/" style="color:#111827;font-weight:600">Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєРё</a> Рё <a href="/derevo-metrik/" style="color:#111827;font-weight:600">РєР°Рє РїРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Частые вопросы о NPS</h2>
-<h3 style="font-size:21px;margin:32px 0 10px">Что означает NPS?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS расшифровывается как Net Promoter Score — индекс, основанный на готовности клиентов рекомендовать продукт, компанию или сервис.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать NPS?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Из процента респондентов, поставивших 9–10, вычитают процент респондентов, поставивших 0–6.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Какой диапазон значений у NPS?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">NPS находится в диапазоне от −100 до +100.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Нейтралы учитываются в NPS?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Оценки 7–8 относятся к нейтралам. Их долю не вычитают и не прибавляют в формуле, но эти ответы входят в общее количество респондентов, от которого рассчитываются доли групп.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">NPS — это средняя оценка?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">Нет. NPS рассчитывается как разница между долей промоутеров и долей критиков, поэтому среднее арифметическое оценок от 0 до 10 не является NPS.</p>
+<h2 style="font-size:30px">Р§Р°СЃС‚С‹Рµ РІРѕРїСЂРѕСЃС‹ Рѕ NPS</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS СЂР°СЃС€РёС„СЂРѕРІС‹РІР°РµС‚СЃСЏ РєР°Рє Net Promoter Score вЂ” РёРЅРґРµРєСЃ, РѕСЃРЅРѕРІР°РЅРЅС‹Р№ РЅР° РіРѕС‚РѕРІРЅРѕСЃС‚Рё РєР»РёРµРЅС‚РѕРІ СЂРµРєРѕРјРµРЅРґРѕРІР°С‚СЊ РїСЂРѕРґСѓРєС‚, РєРѕРјРїР°РЅРёСЋ РёР»Рё СЃРµСЂРІРёСЃ.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РљР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РР· РїСЂРѕС†РµРЅС‚Р° СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ, РїРѕСЃС‚Р°РІРёРІС€РёС… 9вЂ“10, РІС‹С‡РёС‚Р°СЋС‚ РїСЂРѕС†РµРЅС‚ СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ, РїРѕСЃС‚Р°РІРёРІС€РёС… 0вЂ“6.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РљР°РєРѕР№ РґРёР°РїР°Р·РѕРЅ Р·РЅР°С‡РµРЅРёР№ Сѓ NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">NPS РЅР°С…РѕРґРёС‚СЃСЏ РІ РґРёР°РїР°Р·РѕРЅРµ РѕС‚ в€’100 РґРѕ +100.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">РќРµР№С‚СЂР°Р»С‹ СѓС‡РёС‚С‹РІР°СЋС‚СЃСЏ РІ NPS?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РћС†РµРЅРєРё 7вЂ“8 РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє РЅРµР№С‚СЂР°Р»Р°Рј. РС… РґРѕР»СЋ РЅРµ РІС‹С‡РёС‚Р°СЋС‚ Рё РЅРµ РїСЂРёР±Р°РІР»СЏСЋС‚ РІ С„РѕСЂРјСѓР»Рµ, РЅРѕ СЌС‚Рё РѕС‚РІРµС‚С‹ РІС…РѕРґСЏС‚ РІ РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЂРµСЃРїРѕРЅРґРµРЅС‚РѕРІ, РѕС‚ РєРѕС‚РѕСЂРѕРіРѕ СЂР°СЃСЃС‡РёС‚С‹РІР°СЋС‚СЃСЏ РґРѕР»Рё РіСЂСѓРїРї.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">NPS вЂ” СЌС‚Рѕ СЃСЂРµРґРЅСЏСЏ РѕС†РµРЅРєР°?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">РќРµС‚. NPS СЂР°СЃСЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РєР°Рє СЂР°Р·РЅРёС†Р° РјРµР¶РґСѓ РґРѕР»РµР№ РїСЂРѕРјРѕСѓС‚РµСЂРѕРІ Рё РґРѕР»РµР№ РєСЂРёС‚РёРєРѕРІ, РїРѕСЌС‚РѕРјСѓ СЃСЂРµРґРЅРµРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РѕС†РµРЅРѕРє РѕС‚ 0 РґРѕ 10 РЅРµ СЏРІР»СЏРµС‚СЃСЏ NPS.</p>
 </section>
 
 <section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
-<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает связать NPS с клиентским опытом, Retention, Churn и другими продуктовыми и бизнес-метриками.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
-<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">РџРѕСЃС‚СЂРѕР№С‚Рµ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ РїРѕРјРѕС‰СЊСЋ AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree РїРѕРјРѕРіР°РµС‚ СЃРІСЏР·Р°С‚СЊ NPS СЃ РєР»РёРµРЅС‚СЃРєРёРј РѕРїС‹С‚РѕРј, Retention, Churn Рё РґСЂСѓРіРёРјРё РїСЂРѕРґСѓРєС‚РѕРІС‹РјРё Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРєР°РјРё.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">РћРїРёС€РёС‚Рµ РїСЂРѕРґСѓРєС‚, Р°СѓРґРёС‚РѕСЂРёСЋ Рё Р±РёР·РЅРµСЃ-РјРѕРґРµР»СЊ вЂ” AI РїСЂРµРґР»РѕР¶РёС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРµСЂРµРІР° РјРµС‚СЂРёРє, РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ РїРѕРёСЃРєР° С‚РѕС‡РµРє СЂРѕСЃС‚Р°.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє в†’</a>
 </section>
 </main>
 
-<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree вЂ” AI-РёРЅСЃС‚СЂСѓРјРµРЅС‚ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ Рё Р°РЅР°Р»РёР·Р° РґРµСЂРµРІР° РїСЂРѕРґСѓРєС‚РѕРІС‹С… Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРє.</footer>
 </body></html>
