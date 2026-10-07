@@ -92,6 +92,13 @@
     </div>
   </noscript>
   <!-- /Yandex.Metrika counter -->
+   <style>
+  @media (max-width: 700px) {
+    .seo-brand-tagline {
+      display: none;
+    }
+  }
+</style>
 </head>
 
 <body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
@@ -99,7 +106,7 @@
 <header style="
   background:white;
   border-bottom:1px solid #e5e7eb;
-  padding:16px 24px;
+  padding:14px 24px;
 ">
   <div style="
     max-width:900px;
@@ -107,9 +114,40 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:24px;
   ">
-    <a href="/" style="text-decoration:none; color:#111827; font-weight:700; font-size:20px;">
-      MetricTree
+
+    <a
+      href="/"
+      style="
+        display:flex;
+        align-items:center;
+        gap:16px;
+        text-decoration:none;
+        color:#111827;
+        min-width:0;
+      "
+    >
+      <img
+        src="/metrictree-logo.png"
+        alt="MetricTree"
+        style="
+          height:48px;
+          width:auto;
+          display:block;
+        "
+      />
+
+      <span class="seo-brand-tagline" style="
+        font-size:15px;
+        font-weight:600;
+        color:#374151;
+        border-left:1px solid #e5e7eb;
+        padding-left:16px;
+        white-space:nowrap;
+      ">
+        AI-генератор дерева метрик
+      </span>
     </a>
 
     <a
@@ -118,13 +156,15 @@
         background:#ffdd2d;
         color:#111827;
         text-decoration:none;
-        padding:10px 18px;
+        padding:11px 18px;
         border-radius:10px;
         font-weight:600;
+        white-space:nowrap;
       "
     >
       Построить дерево →
     </a>
+
   </div>
 </header>
 
