@@ -1,125 +1,125 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DAU, WAU Рё MAU: С‡С‚Рѕ СЌС‚Рѕ, С„РѕСЂРјСѓР»С‹ Рё DAU/MAU Stickiness | MetricTree</title>
-<meta name="description" content="Р§С‚Рѕ С‚Р°РєРѕРµ DAU, WAU Рё MAU, РєР°Рє СЃС‡РёС‚Р°С‚СЊ Р°РєС‚РёРІРЅСѓСЋ Р°СѓРґРёС‚РѕСЂРёСЋ Рё DAU/MAU Stickiness. Р¤РѕСЂРјСѓР»С‹, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р°, РёРЅС‚РµСЂРїСЂРµС‚Р°С†РёСЏ Рё РґРµСЂРµРІРѕ РјРµС‚СЂРёРє.">
+<title>DAU, WAU и MAU: что это, формулы и DAU/MAU Stickiness | MetricTree</title>
+<meta name="description" content="Что такое DAU, WAU и MAU, как считать активную аудиторию и DAU/MAU Stickiness. Формулы, пример расчёта, интерпретация и дерево метрик.">
 <link rel="canonical" href="https://metrictree.ru/metrics/dau-mau/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DAU, WAU Рё MAU: С‡С‚Рѕ СЌС‚Рѕ Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ DAU/MAU Stickiness","description":"DAU, WAU, MAU, С„РѕСЂРјСѓР»Р° DAU/MAU, РїСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° Рё РјРµСЃС‚Рѕ РјРµС‚СЂРёРє Р°РєС‚РёРІРЅРѕСЃС‚Рё РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/dau-mau/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"РџСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"DAU / MAU","item":"https://metrictree.ru/metrics/dau-mau/"}]}</script>
-<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205','ym');ym(112997205,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute;left:-9999px" alt=""></div></noscript>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DAU, WAU и MAU: что это и как рассчитать DAU/MAU Stickiness","description":"DAU, WAU, MAU, формула DAU/MAU, пример расчёта и место метрик активности в дереве метрик.","inLanguage":"ru","mainEntityOfPage":"https://metrictree.ru/metrics/dau-mau/","publisher":{"@type":"Organization","name":"MetricTree","url":"https://metrictree.ru/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"MetricTree","item":"https://metrictree.ru/"},{"@type":"ListItem","position":2,"name":"Продуктовые метрики","item":"https://metrictree.ru/product-metrics/"},{"@type":"ListItem","position":3,"name":"DAU / MAU","item":"https://metrictree.ru/metrics/dau-mau/"}]}</script>
+<script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=105378247','ym');ym(105378247,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105378247" style="position:absolute;left:-9999px" alt=""></div></noscript>
 </head>
 <body style="margin:0;font-family:Arial,sans-serif;background:#f9fafb;color:#111827">
-<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ в†’</a></div></header>
+<header style="background:white;border-bottom:1px solid #e5e7eb;padding:16px 24px"><div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between"><a href="/" style="text-decoration:none;color:#111827;font-weight:700;font-size:20px">MetricTree</a><a href="/" style="background:#ffdd2d;color:#111827;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600">Построить дерево →</a></div></header>
 
 <main style="max-width:900px;margin:0 auto;padding:64px 24px">
-<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">в†’</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">РџСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё</a><span style="margin:0 8px">в†’</span><span>DAU / MAU</span></div>
+<div style="font-size:14px;color:#6b7280;margin-bottom:22px"><a href="/" style="color:#6b7280;text-decoration:none">MetricTree</a><span style="margin:0 8px">→</span><a href="/product-metrics/" style="color:#6b7280;text-decoration:none">Продуктовые метрики</a><span style="margin:0 8px">→</span><span>DAU / MAU</span></div>
 
-<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">DAU, WAU Рё MAU: С‡С‚Рѕ СЌС‚Рѕ Рё РєР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ DAU/MAU</h1>
-<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">DAU, WAU Рё MAU РїРѕРєР°Р·С‹РІР°СЋС‚ СЂР°Р·РјРµСЂ Р°РєС‚РёРІРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё РїСЂРѕРґСѓРєС‚Р° Р·Р° РґРµРЅСЊ, РЅРµРґРµР»СЋ Рё РјРµСЃСЏС†. РћС‚РЅРѕС€РµРЅРёРµ DAU Рє MAU С‡Р°СЃС‚Рѕ РёСЃРїРѕР»СЊР·СѓСЋС‚ РєР°Рє РїРѕРєР°Р·Р°С‚РµР»СЊ СЂРµРіСѓР»СЏСЂРЅРѕСЃС‚Рё РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РїСЂРѕРґСѓРєС‚Р° вЂ” Stickiness.</p>
-<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ AI</a>
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:820px">DAU, WAU и MAU: что это и как рассчитать DAU/MAU</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:780px;margin-bottom:32px">DAU, WAU и MAU показывают размер активной аудитории продукта за день, неделю и месяц. Отношение DAU к MAU часто используют как показатель регулярности использования продукта — Stickiness.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево метрик с AI</a>
 
 <section style="margin-top:72px;max-width:760px">
-<h2 style="font-size:30px">Р§С‚Рѕ С‚Р°РєРѕРµ DAU, WAU Рё MAU</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">РњРµС‚СЂРёРєРё Р°РєС‚РёРІРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё СЃС‡РёС‚Р°СЋС‚ СѓРЅРёРєР°Р»СЊРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, РєРѕС‚РѕСЂС‹Рµ СЃРѕРІРµСЂС€РёР»Рё РѕРїСЂРµРґРµР»С‘РЅРЅРѕРµ Р°РєС‚РёРІРЅРѕРµ РґРµР№СЃС‚РІРёРµ РІ РїСЂРѕРґСѓРєС‚Рµ Р·Р° РІС‹Р±СЂР°РЅРЅС‹Р№ РїРµСЂРёРѕРґ.</p>
+<h2 style="font-size:30px">Что такое DAU, WAU и MAU</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Метрики активной аудитории считают уникальных пользователей, которые совершили определённое активное действие в продукте за выбранный период.</p>
 <div style="overflow-x:auto;margin:28px 0"><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #e5e7eb">
-<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РњРµС‚СЂРёРєР°</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Р§С‚Рѕ РїРѕРєР°Р·С‹РІР°РµС‚</th></tr></thead>
+<thead><tr style="background:#f3f4f6;text-align:left"><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Метрика</th><th style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Что показывает</th></tr></thead>
 <tbody>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>DAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р° РґРµРЅСЊ</td></tr>
-<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>WAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р° РЅРµРґРµР»СЋ</td></tr>
-<tr><td style="padding:14px 16px"><strong>MAU</strong></td><td style="padding:14px 16px">РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р° РјРµСЃСЏС†</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>DAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Количество активных пользователей за день</td></tr>
+<tr><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb"><strong>WAU</strong></td><td style="padding:14px 16px;border-bottom:1px solid #e5e7eb">Количество активных пользователей за неделю</td></tr>
+<tr><td style="padding:14px 16px"><strong>MAU</strong></td><td style="padding:14px 16px">Количество активных пользователей за месяц</td></tr>
 </tbody></table></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">РљР»СЋС‡РµРІРѕР№ РІРѕРїСЂРѕСЃ вЂ” С‡С‚Рѕ СЃС‡РёС‚Р°С‚СЊ Р°РєС‚РёРІРЅРѕСЃС‚СЊСЋ. Р”Р»СЏ РјРµСЃСЃРµРЅРґР¶РµСЂР° СЌС‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ, РґР»СЏ РјР°СЂРєРµС‚РїР»РµР№СЃР° вЂ” РїСЂРѕСЃРјРѕС‚СЂ С‚РѕРІР°СЂРѕРІ РёР»Рё РїРѕРєСѓРїРєР°, РґР»СЏ B2B-СЃРµСЂРІРёСЃР° вЂ” РІС‹РїРѕР»РЅРµРЅРёРµ РєР»СЋС‡РµРІРѕРіРѕ СЂР°Р±РѕС‡РµРіРѕ СЃС†РµРЅР°СЂРёСЏ. РџСЂРѕСЃС‚РѕРіРѕ РѕС‚РєСЂС‹С‚РёСЏ РїСЂРёР»РѕР¶РµРЅРёСЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Ключевой вопрос — что считать активностью. Для мессенджера это может быть отправка сообщения, для маркетплейса — просмотр товаров или покупка, для B2B-сервиса — выполнение ключевого рабочего сценария. Простого открытия приложения может быть недостаточно.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Р§С‚Рѕ С‚Р°РєРѕРµ DAU/MAU Stickiness</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU РїРѕРєР°Р·С‹РІР°РµС‚, РєР°РєР°СЏ РґРѕР»СЏ РјРµСЃСЏС‡РЅРѕР№ Р°РєС‚РёРІРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё РїРѕР»СЊР·СѓРµС‚СЃСЏ РїСЂРѕРґСѓРєС‚РѕРј РІ С‚РёРїРёС‡РЅС‹Р№ РґРµРЅСЊ. Р§РµРј РІС‹С€Рµ РѕС‚РЅРѕС€РµРЅРёРµ, С‚РµРј С‡Р°С‰Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё РІРѕР·РІСЂР°С‰Р°СЋС‚СЃСЏ Рє РїСЂРѕРґСѓРєС‚Сѓ РІ С‚РµС‡РµРЅРёРµ РјРµСЃСЏС†Р°.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">DAU / MAU = DAU / MAU Г— 100%</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРєР°Р·Р°С‚РµР»СЊ С‚Р°РєР¶Рµ РЅР°Р·С‹РІР°СЋС‚ Stickiness. РћРЅ РѕС‚СЂР°Р¶Р°РµС‚ С‡Р°СЃС‚РѕС‚Сѓ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ, РЅРѕ РЅРµ Р·Р°РјРµРЅСЏРµС‚ Retention: СЌС‚Рё РјРµС‚СЂРёРєРё РѕС‚РІРµС‡Р°СЋС‚ РЅР° СЂР°Р·РЅС‹Рµ РІРѕРїСЂРѕСЃС‹.</p>
+<h2 style="font-size:30px">Что такое DAU/MAU Stickiness</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU показывает, какая доля месячной активной аудитории пользуется продуктом в типичный день. Чем выше отношение, тем чаще пользователи возвращаются к продукту в течение месяца.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:18px">DAU / MAU = DAU / MAU × 100%</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Показатель также называют Stickiness. Он отражает частоту использования, но не заменяет Retention: эти метрики отвечают на разные вопросы.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">РџСЂРёРјРµСЂ СЂР°СЃС‡С‘С‚Р° DAU/MAU</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">Р”РѕРїСѓСЃС‚РёРј, Сѓ РїСЂРѕРґСѓРєС‚Р° 50 000 Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р° РјРµСЃСЏС†, Р° РІ СЃСЂРµРґРЅРµРј Р·Р° РґРµРЅСЊ РїСЂРѕРґСѓРєС‚РѕРј РїРѕР»СЊР·СѓСЋС‚СЃСЏ 10 000 Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.</p>
-<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.7"><strong>DAU/MAU = 10 000 / 50 000 Г— 100% = 20%</strong></div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Р­С‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЃСЂРµРґРЅСЏСЏ РґРЅРµРІРЅР°СЏ Р°РєС‚РёРІРЅР°СЏ Р°СѓРґРёС‚РѕСЂРёСЏ СЃРѕСЃС‚Р°РІР»СЏРµС‚ 20% РјРµСЃСЏС‡РЅРѕР№ Р°РєС‚РёРІРЅРѕР№ Р°СѓРґРёС‚РѕСЂРёРё.</p>
+<h2 style="font-size:30px">Пример расчёта DAU/MAU</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Допустим, у продукта 50 000 активных пользователей за месяц, а в среднем за день продуктом пользуются 10 000 активных пользователей.</p>
+<div style="margin:28px 0;background:white;border:1px solid #e5e7eb;border-radius:16px;padding:24px;font-size:18px;line-height:1.7"><strong>DAU/MAU = 10 000 / 50 000 × 100% = 20%</strong></div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Это означает, что средняя дневная активная аудитория составляет 20% месячной активной аудитории.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">DAU/MAU Рё Retention вЂ” РІ С‡С‘Рј СЂР°Р·РЅРёС†Р°</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU С…Р°СЂР°РєС‚РµСЂРёР·СѓРµС‚ СЂРµРіСѓР»СЏСЂРЅРѕСЃС‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РїСЂРѕРґСѓРєС‚Р° РІРЅСѓС‚СЂРё РїРµСЂРёРѕРґР°. Retention РїРѕРєР°Р·С‹РІР°РµС‚, РєР°РєР°СЏ РґРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РёСЃС…РѕРґРЅРѕР№ РєРѕРіРѕСЂС‚С‹ РІРµСЂРЅСѓР»Р°СЃСЊ С‡РµСЂРµР· РѕРїСЂРµРґРµР»С‘РЅРЅРѕРµ РІСЂРµРјСЏ.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РќР°РїСЂРёРјРµСЂ, РїСЂРѕРґСѓРєС‚ РјРѕР¶РµС‚ РёРјРµС‚СЊ С…РѕСЂРѕС€РёР№ РјРµСЃСЏС‡РЅС‹Р№ Retention, РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ С‚РѕР»СЊРєРѕ РЅРµСЃРєРѕР»СЊРєРѕ СЂР°Р· РІ РјРµСЃСЏС†. Р”Р»СЏ С‚Р°РєРѕРіРѕ РїСЂРѕРґСѓРєС‚Р° DAU/MAU Р±СѓРґРµС‚ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РЅРµРІС‹СЃРѕРєРёРј вЂ” Рё СЌС‚Рѕ РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РїСЂРѕР±Р»РµРјР°, РµСЃР»Рё С‚Р°РєР°СЏ С‡Р°СЃС‚РѕС‚Р° СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РµСЃС‚РµСЃС‚РІРµРЅРЅРѕРјСѓ СЃС†РµРЅР°СЂРёСЋ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate вЂ” СѓРґРµСЂР¶Р°РЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№</a>.</p>
+<h2 style="font-size:30px">DAU/MAU и Retention — в чём разница</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU/MAU характеризует регулярность использования продукта внутри периода. Retention показывает, какая доля пользователей исходной когорты вернулась через определённое время.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Например, продукт может иметь хороший месячный Retention, но использоваться только несколько раз в месяц. Для такого продукта DAU/MAU будет относительно невысоким — и это не обязательно проблема, если такая частота соответствует естественному сценарию использования.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention Rate — удержание пользователей</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">РљР°Рє РїСЂР°РІРёР»СЊРЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ Р°РєС‚РёРІРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">РћРїСЂРµРґРµР»РµРЅРёРµ Р°РєС‚РёРІРЅРѕСЃС‚Рё РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ СЃРІСЏР·Р°РЅРѕ СЃ РїРѕР»СѓС‡РµРЅРёРµРј С†РµРЅРЅРѕСЃС‚Рё РѕС‚ РїСЂРѕРґСѓРєС‚Р°. РРЅР°С‡Рµ СЂРѕСЃС‚ DAU РёР»Рё MAU РјРѕР¶РµС‚ РІС‹РіР»СЏРґРµС‚СЊ РїРѕР·РёС‚РёРІРЅРѕ, С…РѕС‚СЏ СЂРµР°Р»СЊРЅРѕРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РєР»СЋС‡РµРІС‹С… С„СѓРЅРєС†РёР№ РЅРµ РјРµРЅСЏРµС‚СЃСЏ.</p>
+<h2 style="font-size:30px">Как правильно определить активного пользователя</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Определение активности должно быть связано с получением ценности от продукта. Иначе рост DAU или MAU может выглядеть позитивно, хотя реальное использование ключевых функций не меняется.</p>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>РІС‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ, РѕС‚СЂР°Р¶Р°СЋС‰РµРµ СЂРµР°Р»СЊРЅРѕРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°;</li>
-<li>РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РѕРґРёРЅР°РєРѕРІРѕРµ РѕРїСЂРµРґРµР»РµРЅРёРµ Р°РєС‚РёРІРЅРѕСЃС‚Рё РґР»СЏ DAU, WAU Рё MAU;</li>
-<li>РёСЃРєР»СЋС‡Р°Р№С‚Рµ С‚РµС…РЅРёС‡РµСЃРєРёРµ СЃРѕР±С‹С‚РёСЏ Рё СЃР»СѓС‡Р°Р№РЅС‹Рµ РѕС‚РєСЂС‹С‚РёСЏ, РµСЃР»Рё РѕРЅРё РЅРµ РѕС‚СЂР°Р¶Р°СЋС‚ С†РµРЅРЅРѕСЃС‚СЊ;</li>
-<li>РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё СЃС‡РёС‚Р°Р№С‚Рµ Р°РєС‚РёРІРЅРѕСЃС‚СЊ РѕС‚РґРµР»СЊРЅРѕ РґР»СЏ СЂР°Р·РЅС‹С… СЃРµРіРјРµРЅС‚РѕРІ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№.</li>
+<li>выберите действие, отражающее реальное использование продукта;</li>
+<li>используйте одинаковое определение активности для DAU, WAU и MAU;</li>
+<li>исключайте технические события и случайные открытия, если они не отражают ценность;</li>
+<li>при необходимости считайте активность отдельно для разных сегментов пользователей.</li>
 </ul>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">РљР°РєРѕР№ DAU/MAU СЃС‡РёС‚Р°РµС‚СЃСЏ С…РѕСЂРѕС€РёРј</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">РЈРЅРёРІРµСЂСЃР°Р»СЊРЅРѕРіРѕ С…РѕСЂРѕС€РµРіРѕ Р·РЅР°С‡РµРЅРёСЏ DAU/MAU РЅРµС‚. РџРѕРєР°Р·Р°С‚РµР»СЊ Р·Р°РІРёСЃРёС‚ РѕС‚ РµСЃС‚РµСЃС‚РІРµРЅРЅРѕР№ С‡Р°СЃС‚РѕС‚С‹ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РїСЂРѕРґСѓРєС‚Р°. Р”Р»СЏ РјРµСЃСЃРµРЅРґР¶РµСЂР° РёР»Рё СЃРѕС†РёР°Р»СЊРЅРѕР№ СЃРµС‚Рё РµР¶РµРґРЅРµРІРЅРѕРµ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕР¶РёРґР°РµРјС‹Рј, Р° РґР»СЏ СЃРµСЂРІРёСЃР° РїСѓС‚РµС€РµСЃС‚РІРёР№, РЅРµРґРІРёР¶РёРјРѕСЃС‚Рё РёР»Рё РєСЂСѓРїРЅС‹С… РїРѕРєСѓРїРѕРє вЂ” РЅРµС‚.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕСЌС‚РѕРјСѓ DAU/MAU РїРѕР»РµР·РЅРµРµ СЃСЂР°РІРЅРёРІР°С‚СЊ СЃ СЃРѕР±СЃС‚РІРµРЅРЅРѕР№ РґРёРЅР°РјРёРєРѕР№, РїСЂРѕРґСѓРєС‚РѕРІС‹РјРё СЃРµРіРјРµРЅС‚Р°РјРё Рё РѕР¶РёРґР°РµРјРѕР№ С‡Р°СЃС‚РѕС‚РѕР№ РєР»СЋС‡РµРІРѕРіРѕ СЃС†РµРЅР°СЂРёСЏ, Р° РЅРµ СЃ Р°Р±СЃС‚СЂР°РєС‚РЅС‹Рј РѕС‚СЂР°СЃР»РµРІС‹Рј РѕСЂРёРµРЅС‚РёСЂРѕРј.</p>
+<h2 style="font-size:30px">Какой DAU/MAU считается хорошим</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Универсального хорошего значения DAU/MAU нет. Показатель зависит от естественной частоты использования продукта. Для мессенджера или социальной сети ежедневное использование может быть ожидаемым, а для сервиса путешествий, недвижимости или крупных покупок — нет.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Поэтому DAU/MAU полезнее сравнивать с собственной динамикой, продуктовыми сегментами и ожидаемой частотой ключевого сценария, а не с абстрактным отраслевым ориентиром.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Р§С‚Рѕ РІР»РёСЏРµС‚ РЅР° DAU Рё MAU</h2>
+<h2 style="font-size:30px">Что влияет на DAU и MAU</h2>
 <ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px">
-<li>СЂР°Р·РјРµСЂ РЅРѕРІРѕР№ Р°СѓРґРёС‚РѕСЂРёРё Рё РєР°С‡РµСЃС‚РІРѕ РїСЂРёРІР»РµС‡РµРЅРёСЏ;</li>
-<li>Р°РєС‚РёРІР°С†РёСЏ РЅРѕРІС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№;</li>
-<li>СѓРґРµСЂР¶Р°РЅРёРµ Рё РѕС‚С‚РѕРє;</li>
-<li>С‡Р°СЃС‚РѕС‚Р° РІРѕР·РЅРёРєРЅРѕРІРµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕР№ РїРѕС‚СЂРµР±РЅРѕСЃС‚Рё;</li>
-<li>РєР°С‡РµСЃС‚РІРѕ РѕСЃРЅРѕРІРЅРѕРіРѕ СЃС†РµРЅР°СЂРёСЏ РїСЂРѕРґСѓРєС‚Р°;</li>
-<li>СѓРІРµРґРѕРјР»РµРЅРёСЏ, РєРѕРЅС‚РµРЅС‚ Рё РґСЂСѓРіРёРµ РјРµС…Р°РЅРёРєРё РІРѕР·РІСЂР°С‚Р°;</li>
-<li>СЃРµР·РѕРЅРЅРѕСЃС‚СЊ Рё РёР·РјРµРЅРµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРіРѕ РїРѕРІРµРґРµРЅРёСЏ.</li>
+<li>размер новой аудитории и качество привлечения;</li>
+<li>активация новых пользователей;</li>
+<li>удержание и отток;</li>
+<li>частота возникновения пользовательской потребности;</li>
+<li>качество основного сценария продукта;</li>
+<li>уведомления, контент и другие механики возврата;</li>
+<li>сезонность и изменения пользовательского поведения.</li>
 </ul>
-<p style="font-size:18px;line-height:1.7;color:#374151">Р РѕСЃС‚ MAU СЃР°Рј РїРѕ СЃРµР±Рµ РЅРµ РїРѕРєР°Р·С‹РІР°РµС‚ РёСЃС‚РѕС‡РЅРёРє РёР·РјРµРЅРµРЅРёСЏ: Р°СѓРґРёС‚РѕСЂРёСЏ РјРѕР¶РµС‚ СѓРІРµР»РёС‡РёРІР°С‚СЊСЃСЏ РєР°Рє Р·Р° СЃС‡С‘С‚ РїСЂРёРІР»РµС‡РµРЅРёСЏ РЅРѕРІС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, С‚Р°Рє Рё Р·Р° СЃС‡С‘С‚ Р»СѓС‡С€РµРіРѕ СѓРґРµСЂР¶Р°РЅРёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС….</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Рост MAU сам по себе не показывает источник изменения: аудитория может увеличиваться как за счёт привлечения новых пользователей, так и за счёт лучшего удержания существующих.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">DAU Рё MAU РІ РґРµСЂРµРІРµ РјРµС‚СЂРёРє</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">РђРєС‚РёРІРЅСѓСЋ Р°СѓРґРёС‚РѕСЂРёСЋ РјРѕР¶РЅРѕ РґРµРєРѕРјРїРѕР·РёСЂРѕРІР°С‚СЊ С‡РµСЂРµР· РїСЂРёС‚РѕРє РЅРѕРІС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, Р°РєС‚РёРІР°С†РёСЋ, СѓРґРµСЂР¶Р°РЅРёРµ Рё С‡Р°СЃС‚РѕС‚Сѓ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ. Р­С‚Рѕ РїРѕРјРѕРіР°РµС‚ РїРµСЂРµР№С‚Рё РѕС‚ РЅР°Р±Р»СЋРґРµРЅРёСЏ Р·Р° MAU Рє РїСЂРёС‡РёРЅР°Рј РµРіРѕ РёР·РјРµРЅРµРЅРёСЏ.</p>
-<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">РђРєС‚РёРІРЅР°СЏ Р°СѓРґРёС‚РѕСЂРёСЏ
-в”њв”Ђв”Ђ MAU
-в”‚   в”њв”Ђв”Ђ РќРѕРІС‹Рµ Р°РєС‚РёРІРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё
-в”‚   в””в”Ђв”Ђ РЈРґРµСЂР¶Р°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»Рё
-в”‚       в”њв”Ђв”Ђ Retention
-в”‚       в””в”Ђв”Ђ Churn
-в””в”Ђв”Ђ Р§Р°СЃС‚РѕС‚Р° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
-    в””в”Ђв”Ђ DAU / MAU</div>
-<p style="font-size:18px;line-height:1.7;color:#374151">Р”Р»СЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РїСЂРѕРґСѓРєС‚Р° РґРµСЂРµРІРѕ СЃС‚РѕРёС‚ Р°РґР°РїС‚РёСЂРѕРІР°С‚СЊ РїРѕРґ РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ С†РёРєР» Рё РѕРїСЂРµРґРµР»РµРЅРёРµ Р°РєС‚РёРІРЅРѕСЃС‚Рё.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РЎРІСЏР·Р°РЅРЅС‹Рµ РјРµС‚СЂРёРєРё: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention</a>, <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn</a> Рё <a href="/metrics/conversion-rate/" style="color:#111827;font-weight:600">Conversion Rate</a>.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РџРѕРґСЂРѕР±РЅРµРµ: <a href="/product-metrics/" style="color:#111827;font-weight:600">РїСЂРѕРґСѓРєС‚РѕРІС‹Рµ РјРµС‚СЂРёРєРё</a> Рё <a href="/derevo-metrik/" style="color:#111827;font-weight:600">РєР°Рє РїРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє</a>.</p>
+<h2 style="font-size:30px">DAU и MAU в дереве метрик</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">Активную аудиторию можно декомпозировать через приток новых пользователей, активацию, удержание и частоту использования. Это помогает перейти от наблюдения за MAU к причинам его изменения.</p>
+<div style="background:#111827;color:#f9fafb;padding:28px;border-radius:16px;margin:28px 0;font-family:monospace;font-size:16px;white-space:pre">Активная аудитория
+├── MAU
+│   ├── Новые активные пользователи
+│   └── Удержанные пользователи
+│       ├── Retention
+│       └── Churn
+└── Частота использования
+    └── DAU / MAU</div>
+<p style="font-size:18px;line-height:1.7;color:#374151">Для конкретного продукта дерево стоит адаптировать под его пользовательский цикл и определение активности.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Связанные метрики: <a href="/metrics/retention/" style="color:#111827;font-weight:600">Retention</a>, <a href="/metrics/churn/" style="color:#111827;font-weight:600">Churn</a> и <a href="/metrics/conversion-rate/" style="color:#111827;font-weight:600">Conversion Rate</a>.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Подробнее: <a href="/product-metrics/" style="color:#111827;font-weight:600">продуктовые метрики</a> и <a href="/derevo-metrik/" style="color:#111827;font-weight:600">как построить дерево метрик</a>.</p>
 </section>
 
 <section style="margin-top:56px;max-width:760px">
-<h2 style="font-size:30px">Р§Р°СЃС‚С‹Рµ РІРѕРїСЂРѕСЃС‹ Рѕ DAU Рё MAU</h2>
-<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ DAU?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">DAU вЂ” Daily Active Users, РєРѕР»РёС‡РµСЃС‚РІРѕ СѓРЅРёРєР°Р»СЊРЅС‹С… Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РїСЂРѕРґСѓРєС‚Р° Р·Р° РґРµРЅСЊ.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">Р§С‚Рѕ РѕР·РЅР°С‡Р°РµС‚ MAU?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">MAU вЂ” Monthly Active Users, РєРѕР»РёС‡РµСЃС‚РІРѕ СѓРЅРёРєР°Р»СЊРЅС‹С… Р°РєС‚РёРІРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р° РјРµСЃСЏС†.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">РљР°Рє СЂР°СЃСЃС‡РёС‚Р°С‚СЊ DAU/MAU?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">DAU РґРµР»СЏС‚ РЅР° MAU Рё СѓРјРЅРѕР¶Р°СЋС‚ РЅР° 100%. РќР°РїСЂРёРјРµСЂ, РїСЂРё DAU 10 000 Рё MAU 50 000 РїРѕРєР°Р·Р°С‚РµР»СЊ СЃРѕСЃС‚Р°РІР»СЏРµС‚ 20%.</p>
-<h3 style="font-size:21px;margin:32px 0 10px">DAU/MAU вЂ” СЌС‚Рѕ Retention?</h3>
-<p style="font-size:18px;line-height:1.7;color:#374151">РќРµС‚. DAU/MAU РёР·РјРµСЂСЏРµС‚ СЂРµРіСѓР»СЏСЂРЅРѕСЃС‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІРЅСѓС‚СЂРё РїРµСЂРёРѕРґР°, Р° Retention вЂ” РІРѕР·РІСЂР°С‚ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РёСЃС…РѕРґРЅРѕР№ РєРѕРіРѕСЂС‚С‹ СЃРїСѓСЃС‚СЏ Р·Р°РґР°РЅРЅРѕРµ РІСЂРµРјСЏ.</p>
+<h2 style="font-size:30px">Частые вопросы о DAU и MAU</h2>
+<h3 style="font-size:21px;margin:32px 0 10px">Что означает DAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU — Daily Active Users, количество уникальных активных пользователей продукта за день.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Что означает MAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">MAU — Monthly Active Users, количество уникальных активных пользователей за месяц.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">Как рассчитать DAU/MAU?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">DAU делят на MAU и умножают на 100%. Например, при DAU 10 000 и MAU 50 000 показатель составляет 20%.</p>
+<h3 style="font-size:21px;margin:32px 0 10px">DAU/MAU — это Retention?</h3>
+<p style="font-size:18px;line-height:1.7;color:#374151">Нет. DAU/MAU измеряет регулярность использования внутри периода, а Retention — возврат пользователей исходной когорты спустя заданное время.</p>
 </section>
 
 <section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px">
-<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">РџРѕСЃС‚СЂРѕР№С‚Рµ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє СЃ РїРѕРјРѕС‰СЊСЋ AI</h2>
-<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree РїРѕРјРѕРіР°РµС‚ СЃРІСЏР·Р°С‚СЊ DAU, MAU Рё Stickiness СЃ РїСЂРёРІР»РµС‡РµРЅРёРµРј, Р°РєС‚РёРІР°С†РёРµР№, Retention, Churn Рё РґСЂСѓРіРёРјРё РїСЂРѕРґСѓРєС‚РѕРІС‹РјРё РјРµС‚СЂРёРєР°РјРё.</p>
-<p style="font-size:18px;line-height:1.7;color:#374151">РћРїРёС€РёС‚Рµ РїСЂРѕРґСѓРєС‚, Р°СѓРґРёС‚РѕСЂРёСЋ Рё Р±РёР·РЅРµСЃ-РјРѕРґРµР»СЊ вЂ” AI РїСЂРµРґР»РѕР¶РёС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРµСЂРµРІР° РјРµС‚СЂРёРє, РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР»СЏ РїРѕРёСЃРєР° С‚РѕС‡РµРє СЂРѕСЃС‚Р°.</p>
-<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">РџРѕСЃС‚СЂРѕРёС‚СЊ РґРµСЂРµРІРѕ РјРµС‚СЂРёРє в†’</a>
+<h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево метрик с помощью AI</h2>
+<p style="font-size:18px;line-height:1.7;color:#374151">MetricTree помогает связать DAU, MAU и Stickiness с привлечением, активацией, Retention, Churn и другими продуктовыми метриками.</p>
+<p style="font-size:18px;line-height:1.7;color:#374151">Опишите продукт, аудиторию и бизнес-модель — AI предложит структуру дерева метрик, которую можно редактировать и использовать для поиска точек роста.</p>
+<a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево метрик →</a>
 </section>
 </main>
 
-<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree вЂ” AI-РёРЅСЃС‚СЂСѓРјРµРЅС‚ РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ Рё Р°РЅР°Р»РёР·Р° РґРµСЂРµРІР° РїСЂРѕРґСѓРєС‚РѕРІС‹С… Рё Р±РёР·РЅРµСЃ-РјРµС‚СЂРёРє.</footer>
+<footer style="max-width:900px;margin:0 auto;padding:24px 24px 48px;color:#6b7280;font-size:14px">MetricTree — AI-инструмент для построения и анализа дерева продуктовых и бизнес-метрик.</footer>
 </body></html>
