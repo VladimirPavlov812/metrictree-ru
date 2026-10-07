@@ -1586,28 +1586,33 @@ if (session?.user?.id) {
   answers,
 });
 
-let briefRes;
+let b;
 
 try {
-  briefRes = await normalizeProductBrief(
+  const briefRes = await normalizeProductBrief(
     { productDescription: description, answers },
     model,
     {
-    signal: controller.signal,
-    generationId: generationIdRef.current,
+      signal: controller.signal,
+      generationId: generationIdRef.current,
     }
   );
-} catch (err) {
-  console.error("Ошибка на шаге normalizeProductBrief:", err);
 
-  throw new Error(
-    `Ошибка нормализации Product Brief: ${
-      err?.message || String(err)
-    }`
+  b = briefRes?.brief;
+} catch (err) {
+  if (err?.name === "AbortError") throw err;
+
+  console.warn(
+    "normalizeProductBrief failed, using raw product context:",
+    err
   );
+
+  b = {
+    productDescription: description,
+    answers,
+  };
 }
 
-const b = briefRes.brief;
 setBrief(b);
 
 console.log("GPT step 2: generateMetricTree", {
