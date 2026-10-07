@@ -2548,18 +2548,14 @@ const currentNextStepsCopy =
           </div>
 
           <div className="flex-1">
-          <h1 className="text-base font-semibold text-gray-900 mb-1">
+          <h1 className="text-base font-semibold text-gray-900 mb-2">
           AI-генератор дерева метрик продукта
           </h1>
-
-          <p className="text-sm text-gray-500 mb-2">
-          Опишите продукт или сервис в 1–3 предложениях — AI построит дерево метрик.
-          </p>
 
           <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Например: маркетплейс для малого бизнеса, где компании закупают товары для офиса"
+          placeholder={`Опишите продукт или сервис. Например: маркетплейс для малого бизнеса, где компании закупают товары для офиса`}
           className="w-full border border-gray-200 rounded-xl p-3 h-24 focus:ring-2 focus:ring-[#ffdd2d] outline-none resize-none text-base"
           />
           </div>
