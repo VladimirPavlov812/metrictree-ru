@@ -206,7 +206,7 @@ const handleRunPrioritization = async () => {
   if (!treeData) return;
 
   if (!session?.user?.id) {
-  setAuthModalReason("default");
+  setAuthModalReason("prioritization");
   setAuthModalOpen(true);
   return;
   }
@@ -349,7 +349,7 @@ const updateFeedbackField = (field, value) => {
 const handleGenerateExperiment = async () => {
   if (!selectedMetric) return;
   if (!session?.user?.id) {
-  setAuthModalReason("default");
+  setAuthModalReason("experiment");
   setAuthModalOpen(true);
   return;
   }
@@ -810,8 +810,9 @@ const handleGenerateExperiment = async () => {
 
   const handleSaveToCloud = async ({ forceNew = false } = {}) => {
   if (!session?.user?.id) {
-    setAuthModalOpen(true);
-    return;
+  setAuthModalReason("save_project");
+  setAuthModalOpen(true);
+  return;
   }
 
   if (!treeData && (!nodes?.length || !edges?.length)) {
@@ -1125,10 +1126,11 @@ const handleGenerateExperiment = async () => {
 
   const handleDownloadCsv = () => {
     if (!session?.user?.id) {
-    setAuthModalReason("default");
-    setAuthModalOpen(true);
-    return;
+  setAuthModalReason("export_csv");
+  setAuthModalOpen(true);
+  return;
   }
+  
   try {
     if (!nodes?.length) throw new Error("Нет узлов для экспорта");
     const exportNodes = nodes.filter((n) => !n.hidden);
@@ -1691,7 +1693,7 @@ try {
     if (!selectedMetric) return;
 
     if (!session?.user?.id) {
-    setAuthModalReason("default");
+    setAuthModalReason("suggestion");
     setAuthModalOpen(true);
     return;
     }
@@ -1736,10 +1738,11 @@ try {
 
   const handleDownloadSvg = async () => {
     if (!session?.user?.id) {
-    setAuthModalReason("default");
-    setAuthModalOpen(true);
-    return;
+  setAuthModalReason("export_svg");
+  setAuthModalOpen(true);
+  return;
   }
+  
   try {
     if (!nodes?.length) throw new Error("Нет узлов для экспорта");
 
@@ -1900,9 +1903,9 @@ ${nodeSvg}
 
 const handleExportToMiro = async () => {
   if (!session?.user?.id) {
-    setAuthModalReason("default");
-    setAuthModalOpen(true);
-    return;
+  setAuthModalReason("export_miro");
+  setAuthModalOpen(true);
+  return;
   }
   try {
     if (!treeData || !nodes?.length) {
@@ -2194,7 +2197,7 @@ const handleGetInsight = async (metricArg) => {
   if (!rfMetric) return;
 
   if (!session?.user?.id) {
-  setAuthModalReason("default");
+  setAuthModalReason("insight");
   setAuthModalOpen(true);
   return;
   }

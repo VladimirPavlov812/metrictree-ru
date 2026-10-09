@@ -1,11 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const AUTH_REASONS = {
+  default: "Войдите, чтобы сохранять проекты и продолжать работу.",
+  generation_limit: "Бесплатное дерево уже создано. Создайте аккаунт, чтобы продолжить работу.",
+  export_csv: "Создайте бесплатный аккаунт, чтобы скачать дерево метрик в CSV.",
+  export_svg: "Создайте бесплатный аккаунт, чтобы скачать дерево метрик в SVG.",
+  export_miro: "Создайте бесплатный аккаунт, чтобы экспортировать дерево в Miro.",
+  insight: "Создайте бесплатный аккаунт, чтобы получить AI-анализ выбранной метрики.",
+  experiment: "Создайте бесплатный аккаунт, чтобы сформировать гипотезу A/B-эксперимента.",
+  prioritization: "Создайте бесплатный аккаунт, чтобы приоритизировать метрики дерева.",
+  suggestion: "Создайте бесплатный аккаунт, чтобы получить AI-подсказки по метрикам.",
+  save_project: "Создайте бесплатный аккаунт, чтобы сохранить дерево и вернуться к нему позже.",
+};
 
 export default function AuthModal({ open, onClose, onAuth, reason = "default" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState("login");
+  const [mode, setMode] = useState(
+  reason === "default" ? "login" : "register"
+  );
+
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+  if (open) {
+    setMode(reason === "default" ? "login" : "register");
+    setMessage("");
+  }
+  }, [open, reason]);  
 
   if (!open) return null;
 
@@ -86,9 +109,7 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
               </h3>
 
             <p className="text-sm text-gray-500">
-            {reason === "generation_limit"
-            ? "Бесплатное дерево уже создано. Зарегистрируйтесь или войдите, чтобы продолжить работу и сохранять проекты."
-            : "Вход нужен для сохранения и синхронизации проектов."}
+            {AUTH_REASONS[reason] || AUTH_REASONS.default}
             </p>
           </div>
 
