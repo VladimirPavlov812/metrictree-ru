@@ -101,16 +101,31 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
-              {mode === "forgot"
-              ? "Восстановление пароля"
-              : mode === "login"
-              ? "Вход"
-              : "Регистрация"}
-              </h3>
+            {mode === "forgot"
+            ? "Восстановление пароля"
+            : mode === "login"
+            ? "Вход"
+            : reason === "default"
+            ? "Регистрация"
+            : "Сохраните результат работы"}
+            </h3>
 
             <p className="text-sm text-gray-500">
             {AUTH_REASONS[reason] || AUTH_REASONS.default}
             </p>
+            {mode === "register" && reason !== "default" && (
+            <div className="mt-4 space-y-2">
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+            <span className="text-green-600 font-semibold">✓</span>
+            <span>Ваше дерево останется доступным</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+            <span className="text-green-600 font-semibold">✓</span>
+            <span>Сможете продолжить работу позже</span>
+            </div>
+            </div>
+            )}
           </div>
 
           <button
@@ -165,7 +180,7 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         ? "Отправить ссылку"
         : mode === "login"
         ? "Войти"
-        : "Создать аккаунт"}
+        : "Создать бесплатный аккаунт"}
         </button>
 
         {mode === "login" && (
