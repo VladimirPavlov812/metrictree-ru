@@ -85,7 +85,7 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         throw new Error(data?.error || "Ошибка авторизации");
       }
 
-      onAuth?.(data.user);
+      onAuth?.(data.user, mode === "register");
       onClose();
     } catch (e) {
       alert(e?.message || "Ошибка авторизации");

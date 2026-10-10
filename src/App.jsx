@@ -808,6 +808,72 @@ const handleGenerateExperiment = async () => {
   return creditsLeft >= cost;
   };
 
+  useEffect(() => {
+  if (!session?.user?.id) return;
+
+  const pending = sessionStorage.getItem("metrictree_pending_autosave");
+  if (pending !== "1") return;
+
+  if (!treeData && nodes.length === 0) {
+    sessionStorage.removeItem("metrictree_pending_autosave");
+    return;
+  }
+
+  // Убираем флаг до запроса, чтобы избежать повторного сохранения
+  sessionStorage.removeItem("metrictree_pending_autosave");
+
+  const autoSave = async () => {
+    try {
+      setSaveStatus("saving");
+
+      const payload = {
+        description,
+        nodes,
+        edges,
+        treeData,
+        brief: brief || null,
+        model,
+        savedAt: new Date().toISOString(),
+      };
+
+      const name = description.trim().slice(0, 80) || "Моё дерево метрик";
+
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          data: payload,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Не удалось автоматически сохранить дерево");
+      }
+
+      const created = await res.json();
+
+      setActiveProjectId(created?.id || null);
+      setSaveStatus("saved");
+
+      const projectsRes = await fetch("/api/projects");
+      if (projectsRes.ok) {
+      const projects = await projectsRes.json();
+      setCloudProjects(projects || []);
+      }
+
+    } catch (err) {
+      console.error("Auto-save error:", err);
+      setSaveStatus("error");
+    }
+  };
+
+  autoSave();
+  }, [session?.user?.id]);
+
+
   const handleSaveToCloud = async ({ forceNew = false } = {}) => {
   if (!session?.user?.id) {
   setAuthModalReason("save_project");
@@ -4344,11 +4410,16 @@ const currentNextStepsCopy =
     setAuthModalOpen(false);
     setAuthModalReason("default");
   }}
-  onAuth={(user) => {
-    setSession({ user });
-    setAuthModalOpen(false);
-    setAuthModalReason("default");
-  }}
+  onAuth={(user, isNewRegistration) => {
+  setSession({ user });
+
+  if (isNewRegistration && (treeData || nodes.length > 0)) {
+    sessionStorage.setItem("metrictree_pending_autosave", "1");
+  }
+
+  setAuthModalOpen(false);
+  setAuthModalReason("default");
+}}
 />
 
 {/* Автор (фиксированно снизу на мобильной версии) */}
