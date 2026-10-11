@@ -369,7 +369,7 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 // QUOTAS
 // -----------------------
 
-const PRO_PRICE_RUB = 5;
+const PRO_PRICE_RUB = 490;
 
 const PAID_PACKAGE_CREDITS = 300;
 
@@ -573,24 +573,8 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
 
     const invId = result.rows[0].id;
 
-    const receipt = {
-    sno: "usn_income",
-    items: [
-    {
-      name: "MetricTree — пакет 300 AI-кредитов",
-      quantity: 1,
-      sum: PRO_PRICE_RUB,
-      payment_method: "full_prepayment",
-      payment_object: "service",
-      tax: "none",
-    },
-    ],
-    };
-
-const receiptEncoded = encodeURIComponent(JSON.stringify(receipt));
-
     const signature = robokassaMd5(
-    `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${receiptEncoded}:${ROBOKASSA_PASSWORD_1}`
+      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${ROBOKASSA_PASSWORD_1}`
     );
 
     const params = new URLSearchParams({
@@ -602,8 +586,6 @@ const receiptEncoded = encodeURIComponent(JSON.stringify(receipt));
       Culture: "ru",
       Encoding: "utf-8",
     });
-
-    params.set("Receipt", JSON.stringify(receipt));
 
     if (ROBOKASSA_TEST_MODE) {
       params.set("IsTest", "1");
@@ -1390,8 +1372,6 @@ app.post("/api/miro/export", async (req, res) => {
 });
 
 
-const PORT = Number(process.env.PORT || 3001);
-
-app.listen(PORT, "127.0.0.1", () => {
-  console.log(`MetricTree backend listening on 127.0.0.1:${PORT}`);
+app.listen(3001, "127.0.0.1", () => {
+  console.log("MetricTree backend listening on 127.0.0.1:3001");
 });
