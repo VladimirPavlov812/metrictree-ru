@@ -573,8 +573,24 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
 
     const invId = result.rows[0].id;
 
+    const receipt = {
+    sno: "usn_income",
+    items: [
+    {
+      name: "MetricTree — пакет 300 AI-кредитов",
+      quantity: 1,
+      sum: PRO_PRICE_RUB,
+      payment_method: "full_prepayment",
+      payment_object: "service",
+      tax: "none",
+    },
+    ],
+    };
+
+const receiptEncoded = encodeURIComponent(JSON.stringify(receipt));
+
     const signature = robokassaMd5(
-      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${ROBOKASSA_PASSWORD_1}`
+    `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${receiptEncoded}:${ROBOKASSA_PASSWORD_1}`
     );
 
     const params = new URLSearchParams({
@@ -586,6 +602,8 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
       Culture: "ru",
       Encoding: "utf-8",
     });
+
+    params.set("Receipt", JSON.stringify(receipt));
 
     if (ROBOKASSA_TEST_MODE) {
       params.set("IsTest", "1");
