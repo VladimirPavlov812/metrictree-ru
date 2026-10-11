@@ -769,18 +769,35 @@ const handleGenerateExperiment = async () => {
     if (!res.ok) {
       throw new Error(data?.error || "Не удалось создать платёж");
     }
-
-    if (!data.paymentUrl) {
-      throw new Error("Не получена ссылка на оплату");
+    if (!data.paymentForm?.action || !data.paymentForm?.fields) {
+      throw new Error("Не получены параметры оплаты");
     }
 
-    
     if (!data.paymentId) {
-    throw new Error("Не получен номер платежа");
+      throw new Error("Не получен номер платежа");
     }
 
-    sessionStorage.setItem("metrictree_pending_payment_id", String(data.paymentId));
-    window.location.href = data.paymentUrl;
+    sessionStorage.setItem(
+      "metrictree_pending_payment_id",
+      String(data.paymentId)
+    );
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = data.paymentForm.action;
+    form.style.display = "none";
+
+    for (const [name, value] of Object.entries(data.paymentForm.fields)) {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      input.value = String(value);
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
 
 
   } catch (err) {

@@ -572,29 +572,52 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
     );
 
     const invId = result.rows[0].id;
+    const receipt = {
+      sno: "usn_income",
+      items: [
+        {
+          name: "MetricTree - 300 AI credits",
+          quantity: 1,
+          sum: PRO_PRICE_RUB,
+          payment_method: "full_prepayment",
+          payment_object: "service",
+          tax: "none",
+        },
+      ],
+    };
+
+    const receiptEncoded = encodeURIComponent(JSON.stringify(receipt));
 
     const signature = robokassaMd5(
-      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${ROBOKASSA_PASSWORD_1}`
+      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${receiptEncoded}:${ROBOKASSA_PASSWORD_1}`
     );
 
-    const params = new URLSearchParams({
+    const paymentFields = {
       MerchantLogin: ROBOKASSA_MERCHANT_LOGIN,
       OutSum: amount,
       InvId: String(invId),
-      Description: "MetricTree: пакет из 300 AI-кредитов",
+      Description: "MetricTree - 300 AI credits",
       SignatureValue: signature,
       Culture: "ru",
       Encoding: "utf-8",
-    });
+      Receipt: receiptEncoded,
+    };
 
     if (ROBOKASSA_TEST_MODE) {
-      params.set("IsTest", "1");
+      paymentFields.IsTest = "1";
     }
 
     return res.json({
       paymentId: invId,
-      paymentUrl: `https://auth.robokassa.ru/Merchant/Index.aspx?${params.toString()}`,
+      paymentForm: {
+        action: "https://auth.robokassa.ru/Merchant/Index.aspx",
+        method: "POST",
+        fields: paymentFields,
+      },
     });
+
+
+
   } catch (err) {
     console.error("Create Pro payment error:", err);
     return res.status(500).json({ error: "Internal server error" });
