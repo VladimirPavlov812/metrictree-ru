@@ -3059,7 +3059,7 @@ const currentNextStepsCopy =
 
       {/* === Правая панель === */}
 {!isMobile && !isFullscreen && (
- <aside className="w-80 shrink-0 border-l border-gray-200 bg-white p-5 flex flex-col shadow-sm">
+ <aside className="w-80 min-w-0 shrink-0 border-l border-gray-200 bg-white p-5 flex flex-col shadow-sm">
 
     {/* Авторизация — всегда над вкладками */}
     <div className="mb-4 p-3 rounded-xl border border-gray-200 bg-gray-50">
