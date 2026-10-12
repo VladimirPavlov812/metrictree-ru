@@ -3438,7 +3438,7 @@ const currentNextStepsCopy =
     )}
 
     {rightTab === "cloud" && (
-    <div className="flex flex-col gap-3">
+     <div className="flex flex-col gap-3 min-w-0 w-full overflow-x-hidden">
 
           <button
         onClick={handleSaveToCloud}
