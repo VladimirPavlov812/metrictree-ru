@@ -2785,7 +2785,7 @@ const currentNextStepsCopy =
         setShowBenefitsModal(true);
         ymEvent("benefits_open");
       }}
-      className="bg-blue-50 text-blue-700 px-3 py-3 rounded-xl hover:bg-blue-100 font-medium transition text-sm"
+      className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-3 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
     >
       Как это работает
     </button>
@@ -3061,48 +3061,7 @@ const currentNextStepsCopy =
 {!isMobile && !isFullscreen && (
   <aside className="w-80 border-l border-gray-200 bg-white p-5 flex flex-col shadow-sm">
 
-    {/* Tabs: Метрика / Лимиты */}
-    <div className="flex gap-2 mb-4">
-      <button
-        onClick={() => setRightTab("metric")}
-        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
-          rightTab === "metric"
-            ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
-            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-        }`}
-      >
-        Метрика
-      </button>
-
-      <button
-        onClick={() => {
-          refreshQuotaView();
-          setRightTab("quota");
-        }}
-        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
-          rightTab === "quota"
-            ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
-            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-        }`}
-      >
-        Лимиты
-      </button>
-
-      <button
-    onClick={() => {
-    setRightTab("cloud");
-    fetchCloudProjects();
-    }}
-    className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
-    rightTab === "cloud"
-      ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
-      : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
-    }`}
-    >
-    Облако
-    </button>
-    </div>
-
+    {/* Авторизация — всегда над вкладками */}
     <div className="mb-4 p-3 rounded-xl border border-gray-200 bg-gray-50">
     {session ? (
     <div className="flex items-center justify-between gap-2">
@@ -3145,13 +3104,61 @@ const currentNextStepsCopy =
       </button>
     </div>
     )}
-    </div>
+    </div>  
+
+
+    {/* Tabs: Инструменты / Лимиты */}
+    <div className="flex gap-2 mb-4">
+      <button
+        onClick={() => setRightTab("metric")}
+        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+          rightTab === "metric"
+            ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
+            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+        }`}
+      >
+        Инструменты
+      </button>
+
+        <button
+    onClick={() => {
+    setRightTab("cloud");
+    fetchCloudProjects();
+    }}
+    className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+    rightTab === "cloud"
+      ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
+      : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+    }`}
+    >
+    Проекты
+    </button>
+
+
+      <button
+        onClick={() => {
+          refreshQuotaView();
+          setRightTab("quota");
+        }}
+        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+          rightTab === "quota"
+            ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
+            : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+        }`}
+      >
+        Аккаунт
+      </button>
+
       
+    </div>
+    {rightTab === "metric" && (
+    <>
+
     {/* Верхние действия */}
     <div className="grid grid-cols-2 gap-2 mb-3">
       <button
         onClick={() => setIsFullscreen(true)}
-        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-black text-white px-3 py-2 rounded-xl hover:bg-gray-800 font-medium transition text-sm"
+        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
       >
         ⛶ На весь экран
       </button>
@@ -3161,7 +3168,7 @@ const currentNextStepsCopy =
           setShowBenefitsModal(true);
           ymEvent("benefits_open");
         }}
-        className="bg-blue-50 text-blue-700 px-3 py-3 rounded-xl hover:bg-blue-100 font-medium transition text-sm"
+        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-3 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
         title="Как это работает"
       >
         Как это работает
@@ -3170,7 +3177,7 @@ const currentNextStepsCopy =
       <button
         onClick={handleOpenPrioritization}
         disabled={!treeData || priorLoading}
-        className="col-span-2 bg-green-50 text-green-700 px-3 py-2 rounded-xl hover:bg-green-100 disabled:opacity-50 font-medium transition text-sm"
+        className="col-span-2 bg-[#FFDF2B] text-gray-900 px-3 py-2 rounded-xl hover:brightness-95 disabled:bg-gray-100 disabled:text-gray-400 disabled:opacity-100 font-medium transition text-sm"
         title="Приоритизировать метрики"
       >
         Приоритизировать метрики
@@ -3179,37 +3186,18 @@ const currentNextStepsCopy =
 
     {/* Экспорт/импорт */}
     <div className="flex flex-wrap gap-2 mb-5">
-      
-      <button
-      onClick={handleSaveToCloud}
-      disabled={!treeData && (!nodes?.length || !edges?.length)}
-      className="w-full mb-4 bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition text-sm font-medium"
-      title={!session ? "Войдите, чтобы сохранять в облако" : "Сохранить проект"}
-      >
-      💾 Сохранить в облако
-      </button>
-
-      <button
-      onClick={() => handleSaveToCloud({ forceNew: true })}
-      disabled={!treeData && (!nodes?.length || !edges?.length)}
-      className="px-3 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-100 disabled:opacity-50 transition text-sm font-medium"
-      title="Сохранить как новый проект"
-      >
-      ➕
-      </button>
-           
+          
       <button
         onClick={handleDownloadSvg}
         disabled={!treeData}
-        className="bg-purple-50 text-purple-700 px-3 py-2 rounded-xl hover:bg-purple-100 disabled:opacity-50 font-medium transition text-sm"
-      >
+        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"      >
         Скачать SVG
       </button>
 
       <button
         onClick={handleExportToMiro}
         disabled={!treeData}
-        className="bg-yellow-50 text-yellow-800 px-3 py-2 rounded-xl hover:bg-yellow-100 disabled:opacity-50 font-medium transition text-sm"
+        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
       >
         Экспорт в Miro
       </button>
@@ -3217,19 +3205,20 @@ const currentNextStepsCopy =
       <button
         onClick={handleDownloadCsv}
         disabled={!treeData}
-        className="bg-indigo-50 text-indigo-700 px-3 py-2 rounded-xl hover:bg-indigo-100 disabled:opacity-50 font-medium transition text-sm"
+        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
       >
         Скачать CSV
       </button>
 
       <button
         onClick={handleClear}
-        className="bg-red-50 text-red-700 px-3 py-2 rounded-xl hover:bg-red-100 font-medium transition text-sm"
+        className="bg-white text-red-600 border border-gray-200 px-3 py-2 rounded-xl hover:bg-red-50 font-medium transition text-sm"
       >
         Очистить
       </button>
     </div>
-
+    </>
+    )}
     {/* === TAB: МЕТРИКА === */}
     {rightTab === "metric" && (
       <>
@@ -3450,6 +3439,26 @@ const currentNextStepsCopy =
 
     {rightTab === "cloud" && (
     <div className="flex flex-col gap-3">
+
+          <button
+        onClick={handleSaveToCloud}
+        disabled={!treeData && (!nodes?.length || !edges?.length)}
+        className="w-full bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition text-sm font-medium"
+        title={!session ? "Войдите, чтобы сохранять в облако" : "Сохранить проект"}
+      >
+        💾 Сохранить в облако
+      </button>
+
+      <button
+        onClick={() => handleSaveToCloud({ forceNew: true })}
+        disabled={!treeData && (!nodes?.length || !edges?.length)}
+        className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-100 disabled:opacity-50 transition text-sm font-medium"
+        title="Сохранить как новый проект"
+      >
+        ➕ Сохранить как новый проект
+      </button>
+
+
     {!session ? (
       <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
         <div className="text-sm text-gray-700 mb-2">
