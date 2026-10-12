@@ -3267,7 +3267,7 @@ const currentNextStepsCopy =
             <button
               onClick={handleGenerateExperiment}
               disabled={experimentLoading}
-              className="mt-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-100 disabled:opacity-50 transition font-medium"
+              className="mt-2 bg-[#FFDF2B] text-gray-900 px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 transition font-medium"
             >
               {experimentLoading ? "Генерация…" : "Эксперимент"}
             </button>  
@@ -3286,14 +3286,14 @@ const currentNextStepsCopy =
                   setEditMetricType(selectedMetric.type || "proxy");
                   setShowEditModal(true);
                 }}
-                className="bg-blue-50 text-blue-700 rounded-lg px-3 py-2 text-sm hover:bg-blue-100 transition"
+                className="bg-gray-100 text-gray-700 border border-gray-200 rounded-lg px-3 py-2 text-sm hover:bg-gray-200 transition"
               >
                 Редактировать
               </button>
 
               <button
                 onClick={() => handleDeleteMetric()}
-                className="bg-red-50 text-red-700 rounded-lg px-3 py-2 text-sm hover:bg-red-100 transition"
+                className="bg-white text-red-600 border border-gray-200 rounded-lg px-3 py-2 text-sm hover:bg-red-50 transition"
               >
                 Удалить метрику
               </button>
