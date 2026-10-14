@@ -369,7 +369,7 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
 // QUOTAS
 // -----------------------
 
-const PRO_PRICE_RUB = 5;
+const PRO_PRICE_RUB = 490;
 
 const PAID_PACKAGE_CREDITS = 300;
 
@@ -690,7 +690,7 @@ app.post("/api/payments/miro-export", authRequired, async (req, res) => {
     }
 
 
-    const amount = "5.00";
+    const amount = "99.00";
 
     const result = await pool.query(
       `
@@ -858,7 +858,7 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
 
     if (payment.plan === "miro_export") {
     if (
-    Number(payment.amount) !== 5 ||
+    ![5, 99].includes(Number(payment.amount)) ||
     !payment.project_id ||
     !payment.miro_tree_snapshot
     ) {
