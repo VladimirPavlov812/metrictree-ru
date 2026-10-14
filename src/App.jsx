@@ -709,6 +709,53 @@ const handleGenerateExperiment = async () => {
   left: 0,
   });
 
+  const [miroPurchases, setMiroPurchases] = useState({
+  lifetimeAccess: false,
+  purchases: [],
+});
+
+const [miroPurchasesLoading, setMiroPurchasesLoading] = useState(false);
+const [miroPurchasesError, setMiroPurchasesError] = useState("");
+
+useEffect(() => {
+  if (rightTab !== "quota" || !session?.user?.id) return;
+
+  let cancelled = false;
+
+  const loadMiroPurchases = async () => {
+    setMiroPurchasesLoading(true);
+    setMiroPurchasesError("");
+
+    try {
+      const res = await fetch("/api/miro/purchases");
+
+      if (!res.ok) {
+        throw new Error("Не удалось загрузить покупки Miro");
+      }
+
+      const data = await res.json();
+
+      if (!cancelled) {
+        setMiroPurchases({
+          lifetimeAccess: Boolean(data.lifetimeAccess),
+          purchases: data.purchases || [],
+        });
+      }
+    } catch (err) {
+      console.error("Miro purchases load error:", err);
+      if (!cancelled) setMiroPurchasesError(err.message);
+    } finally {
+      if (!cancelled) setMiroPurchasesLoading(false);
+    }
+  };
+
+  loadMiroPurchases();
+
+  return () => {
+    cancelled = true;
+  };
+}, [rightTab, session?.user?.id]);
+
   const STORAGE_KEY = "metrictree_data_v1";
   const nodeWidth = 230;
   const nodeHeight = 120;
@@ -3595,6 +3642,76 @@ const currentNextStepsCopy =
         {creditBalance.left}
         </span>
         </div>
+        <div className="mt-5 border-t border-gray-200 pt-4">
+  <h3 className="text-sm font-semibold text-gray-700 mb-3">
+    Экспорт в Miro
+  </h3>
+
+  {miroPurchasesLoading ? (
+    <p className="text-xs text-gray-500">Загрузка покупок...</p>
+  ) : miroPurchasesError ? (
+    <p className="text-xs text-red-600">{miroPurchasesError}</p>
+  ) : (
+    <>
+      <div className="p-3 rounded-xl border border-gray-200 bg-gray-50">
+        <div className="text-sm font-medium text-gray-900">
+          Безлимитный экспорт
+        </div>
+        <div className={`text-xs mt-1 ${
+          miroPurchases.lifetimeAccess
+            ? "text-green-700"
+            : "text-gray-500"
+        }`}>
+          {miroPurchases.lifetimeAccess
+            ? "✓ Активен бессрочно"
+            : "Не приобретён"}
+        </div>
+      </div>
+
+      {miroPurchases.purchases.length > 0 && (
+        <div className="mt-3">
+          <div className="text-sm font-medium text-gray-900 mb-2">
+            Оплаченные экспорты
+          </div>
+
+          <div className="space-y-2">
+            {miroPurchases.purchases.map((purchase) => (
+              <div
+                key={purchase.id}
+                className="p-3 rounded-xl border border-gray-200 bg-white"
+              >
+                <div className="text-sm font-medium text-gray-900 break-words">
+                  {purchase.projectName}
+                </div>
+
+                <div className="text-xs text-gray-500 mt-1">
+                  {new Date(purchase.purchasedAt).toLocaleDateString("ru-RU")}
+                </div>
+
+                <div className={`text-xs mt-2 ${
+                  purchase.exportAvailable
+                    ? "text-green-700"
+                    : "text-amber-700"
+                }`}>
+                  {purchase.exportAvailable
+                    ? "✓ Экспорт доступен"
+                    : "Дерево изменено или удалено"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!miroPurchases.lifetimeAccess &&
+        miroPurchases.purchases.length === 0 && (
+          <p className="text-xs text-gray-500 mt-3">
+            Оплаченных экспортов пока нет.
+          </p>
+        )}
+    </>
+  )}
+</div>
       </>
     )}
     </div>

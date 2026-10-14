@@ -1438,6 +1438,61 @@ app.get("/api/miro/boards", async (req, res) => {
   res.send(text);
 });
 
+app.get("/api/miro/purchases", authRequired, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const userResult = await pool.query(
+      `SELECT miro_lifetime_access
+       FROM users
+       WHERE id = $1`,
+      [userId]
+    );
+
+    if (!userResult.rows.length) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const purchasesResult = await pool.query(
+      `
+      SELECT
+        p.id,
+        p.project_id,
+        pr.name AS project_name,
+        p.created_at,
+        (
+          pr.id IS NOT NULL
+          AND pr.data->'nodes' = p.miro_tree_snapshot->'nodes'
+          AND pr.data->'edges' = p.miro_tree_snapshot->'edges'
+        ) AS export_available
+      FROM payments p
+      LEFT JOIN projects pr
+        ON pr.id = p.project_id
+       AND pr.user_id = p.user_id
+      WHERE p.user_id = $1
+        AND p.plan = 'miro_export'
+        AND p.status = 'paid'
+        AND p.miro_tree_snapshot IS NOT NULL
+      ORDER BY p.created_at DESC
+      `,
+      [userId]
+    );
+
+    return res.json({
+      lifetimeAccess: Boolean(userResult.rows[0].miro_lifetime_access),
+      purchases: purchasesResult.rows.map((row) => ({
+        id: row.id,
+        projectId: row.project_id,
+        projectName: row.project_name || "Удалённый проект",
+        purchasedAt: row.created_at,
+        exportAvailable: row.export_available,
+      })),
+    });
+  } catch (err) {
+    console.error("Miro purchases error:", err);
+    return res.status(500).json({ error: "Failed to load Miro purchases" });
+  }
+});
 
 app.post("/api/miro/export-access", authRequired, async (req, res) => {
   try {
