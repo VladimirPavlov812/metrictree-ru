@@ -625,6 +625,135 @@ app.post("/api/payments/pro", authRequired, async (req, res) => {
 });
 
 
+app.post("/api/payments/miro-export", authRequired, async (req, res) => {
+  try {
+    if (!ROBOKASSA_MERCHANT_LOGIN || !ROBOKASSA_PASSWORD_1) {
+      return res.status(503).json({ error: "Payments are not configured" });
+    }
+
+    const { projectId } = req.body || {};
+
+    if (!projectId) {
+      return res.status(400).json({ error: "Missing projectId" });
+    }
+
+    const projectResult = await pool.query(
+      `
+      SELECT id, data
+      FROM projects
+      WHERE id = $1 AND user_id = $2
+      LIMIT 1
+      `,
+      [projectId, req.user.userId]
+    );
+
+    const project = projectResult.rows[0];
+
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    const snapshot = {
+      nodes: project.data?.nodes,
+      edges: project.data?.edges,
+    };
+
+    if (!Array.isArray(snapshot.nodes) || !snapshot.nodes.length ||
+        !Array.isArray(snapshot.edges)) {
+      return res.status(400).json({ error: "Invalid project tree" });
+    }
+
+    
+    const existingPayment = await pool.query(
+      `
+      SELECT id
+      FROM payments
+      WHERE user_id = $1
+        AND project_id = $2
+        AND plan = 'miro_export'
+        AND status = 'paid'
+        AND miro_tree_snapshot = $3::jsonb
+      LIMIT 1
+      `,
+      [
+        req.user.userId,
+        project.id,
+        JSON.stringify(snapshot),
+      ]
+    );
+
+    if (existingPayment.rows.length > 0) {
+      return res.json({
+        alreadyPaid: true,
+        projectId: project.id,
+      });
+    }
+
+
+    const amount = "99.00";
+
+    const result = await pool.query(
+      `
+      INSERT INTO payments (
+        user_id, amount, currency, status, plan,
+        duration_days, project_id, miro_tree_snapshot
+      )
+      VALUES ($1, $2, 'RUB', 'pending', 'miro_export', 0, $3, $4)
+      RETURNING id
+      `,
+      [req.user.userId, amount, project.id, JSON.stringify(snapshot)]
+    );
+
+    const invId = result.rows[0].id;
+
+    const receipt = {
+      sno: "usn_income",
+      items: [{
+        name: "MetricTree - Miro export",
+        quantity: 1,
+        sum: 99,
+        payment_method: "full_prepayment",
+        payment_object: "service",
+        tax: "none",
+      }],
+    };
+
+    const receiptEncoded = encodeURIComponent(JSON.stringify(receipt));
+
+    const signature = robokassaMd5(
+      `${ROBOKASSA_MERCHANT_LOGIN}:${amount}:${invId}:${receiptEncoded}:${ROBOKASSA_PASSWORD_1}`
+    );
+
+    const paymentFields = {
+      MerchantLogin: ROBOKASSA_MERCHANT_LOGIN,
+      OutSum: amount,
+      InvId: String(invId),
+      Description: "MetricTree - Miro export",
+      SignatureValue: signature,
+      Culture: "ru",
+      Encoding: "utf-8",
+      Receipt: receiptEncoded,
+    };
+
+    if (ROBOKASSA_TEST_MODE) {
+      paymentFields.IsTest = "1";
+    }
+
+    return res.json({
+      paymentId: invId,
+      paymentForm: {
+        action: "https://auth.robokassa.ru/Merchant/Index.aspx",
+        method: "POST",
+        fields: paymentFields,
+      },
+    });
+  } catch (err) {
+    console.error("Create Miro export payment error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 app.get("/api/payments/:id/status", authRequired, async (req, res) => {
   try {
     const paymentId = Number(req.params.id);
@@ -687,10 +816,11 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
 
     const paymentResult = await client.query(
       `
-      SELECT id, user_id, amount, status, plan, duration_days
+      SELECT id, user_id, amount, status, plan, duration_days,
+      project_id, miro_tree_snapshot
       FROM payments
       WHERE id = $1
-      FOR UPDATE
+      FOR UPDATE 
       `,
       [invId]
     );
@@ -712,10 +842,89 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
       return res.send(`OK${invId}`);
     }
 
-    if (payment.plan !== "operations" && payment.plan !== "pro") {
+    if (payment.status !== "pending") {
+    await client.query("ROLLBACK");
+    return res.status(409).send("Payment is not pending");
+    }
+
+    if (
+    payment.plan !== "operations" &&
+    payment.plan !== "pro" &&
+    payment.plan !== "miro_export"
+    ) {
       await client.query("ROLLBACK");
       return res.status(400).send("Invalid plan");
     }
+
+    if (payment.plan === "miro_export") {
+    if (
+    Number(payment.amount) !== 99 ||
+    !payment.project_id ||
+    !payment.miro_tree_snapshot
+    ) {
+    await client.query("ROLLBACK");
+    return res.status(400).send("Invalid Miro export payment");
+    }
+    }
+
+    
+    if (payment.plan === "miro_export") {
+      // Сериализуем подтверждения покупок одного дерева.
+      await client.query(
+      `
+      SELECT pg_advisory_xact_lock(
+      hashtextextended(
+      $1::text || ':' || $2::text || ':' || md5($3::jsonb::text),
+      0
+      )
+      )
+      `,
+      [
+      payment.user_id,
+      payment.project_id,
+      JSON.stringify(payment.miro_tree_snapshot),
+      ]
+      );
+
+      const duplicateResult = await client.query(
+        `
+        SELECT id
+        FROM payments
+        WHERE user_id = $1
+          AND project_id = $2
+          AND plan = 'miro_export'
+          AND status = 'paid'
+          AND miro_tree_snapshot = $3::jsonb
+          AND id <> $4
+        LIMIT 1
+        `,
+        [
+          payment.user_id,
+          payment.project_id,
+          JSON.stringify(payment.miro_tree_snapshot),
+          payment.id,
+        ]
+      );
+
+      if (duplicateResult.rows.length > 0) {
+      await client.query(
+      `
+      UPDATE payments
+      SET status = 'paid',
+        paid_at = now(),
+        miro_tree_snapshot = NULL,
+        duplicate_of_payment_id = $2
+      WHERE id = $1
+      `,
+      [payment.id, duplicateResult.rows[0].id]
+      );
+
+        await client.query("COMMIT");
+        return res.send(`OK${invId}`);
+      }
+    }
+
+
 
     await client.query(
       `
@@ -727,6 +936,7 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
       [payment.id]
     );
 
+    if (payment.plan === "operations" || payment.plan === "pro") {  
     const creditResult = await client.query(
     `
     UPDATE credit_balances
@@ -743,6 +953,20 @@ app.all("/api/payments/robokassa/result", async (req, res) => {
     throw new Error("Не удалось начислить AI-кредиты");
     }
 
+    // Пожизненный доступ к экспорту Miro после покупки Pro
+    const accessResult = await client.query(
+    `
+    UPDATE users
+    SET miro_lifetime_access = TRUE
+    WHERE id = $1
+    `,
+    [payment.user_id]
+    );
+
+if (accessResult.rowCount !== 1) {
+  throw new Error("Не удалось выдать пожизненный доступ к Miro");
+}
+    }
     await client.query("COMMIT");
 
     return res.send(`OK${invId}`);
@@ -1214,12 +1438,139 @@ app.get("/api/miro/boards", async (req, res) => {
   res.send(text);
 });
 
+
+app.post("/api/miro/export-access", authRequired, async (req, res) => {
+  try {
+    const { projectId, nodes, edges } = req.body || {};
+
+    const userResult = await pool.query(
+      `
+      SELECT miro_lifetime_access
+      FROM users
+      WHERE id = $1
+      `,
+      [req.user.userId]
+    );
+
+    if (!userResult.rows.length) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (userResult.rows[0].miro_lifetime_access) {
+      return res.json({ allowed: true, reason: "pro" });
+    }
+
+    if (
+      !projectId ||
+      !Array.isArray(nodes) ||
+      !Array.isArray(edges)
+    ) {
+      return res.status(400).json({ error: "Invalid project data" });
+    }
+
+    const result = await pool.query(
+      `
+      SELECT 1
+      FROM payments p
+      JOIN projects pr
+        ON pr.id = p.project_id
+       AND pr.user_id = p.user_id
+      WHERE p.user_id = $1
+        AND p.project_id = $2
+        AND p.plan = 'miro_export'
+        AND p.status = 'paid'
+        AND p.miro_tree_snapshot = jsonb_build_object(
+          'nodes', $3::jsonb,
+          'edges', $4::jsonb
+        )
+        AND pr.data->'nodes' = $3::jsonb
+        AND pr.data->'edges' = $4::jsonb
+      LIMIT 1
+      `,
+      [
+        req.user.userId,
+        projectId,
+        JSON.stringify(nodes),
+        JSON.stringify(edges),
+      ]
+    );
+
+    return res.json({
+      allowed: result.rows.length > 0,
+      reason: result.rows.length > 0 ? "paid_tree" : "payment_required",
+    });
+  } catch (err) {
+    console.error("Miro export access error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 // -----------------------
 // MIRO EXPORT
 // -----------------------
 
-app.post("/api/miro/export", async (req, res) => {
+app.post("/api/miro/export", authRequired, async (req, res) => {
   try {
+    
+    const { projectId, nodes, edges } = req.body || {};
+
+    const accessResult = await pool.query(
+      `
+      SELECT miro_lifetime_access
+      FROM users
+      WHERE id = $1
+      `,
+      [req.user.userId]
+    );
+
+    if (!accessResult.rows[0]) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (!accessResult.rows[0].miro_lifetime_access) {
+      if (!projectId) {
+        return res.status(402).json({
+          error: "Miro export requires payment",
+          code: "MIRO_PAYMENT_REQUIRED",
+        });
+      }
+
+      const paidResult = await pool.query(
+        `
+        SELECT 1
+        FROM payments p
+        JOIN projects pr
+          ON pr.id = p.project_id
+         AND pr.user_id = p.user_id
+        WHERE p.user_id = $1
+          AND p.project_id = $2
+          AND p.plan = 'miro_export'
+          AND p.status = 'paid'
+          AND p.miro_tree_snapshot = jsonb_build_object(
+            'nodes', $3::jsonb,
+            'edges', $4::jsonb
+          )
+          AND pr.data->'nodes' = $3::jsonb
+          AND pr.data->'edges' = $4::jsonb
+        LIMIT 1
+        `,
+        [
+          req.user.userId,
+          projectId,
+          JSON.stringify(nodes ?? null),
+          JSON.stringify(edges ?? null),
+        ]
+      );
+
+      if (!paidResult.rows.length) {
+        return res.status(402).json({
+          error: "Miro export requires payment",
+          code: "MIRO_PAYMENT_REQUIRED",
+        });
+      }
+    }
+
     const token = req.cookies.miro_access_token;
 
     if (!token) {
@@ -1230,7 +1581,7 @@ app.post("/api/miro/export", async (req, res) => {
       });
     }
 
-    const { boardId, nodes, edges, options } = req.body || {};
+    const { boardId, options } = req.body || {};
 
     if (!boardId) {
       return res.status(400).json({ error: "Missing boardId" });

@@ -484,6 +484,8 @@ const handleGenerateExperiment = async () => {
   const [mobileMenuFor, setMobileMenuFor] = useState(null);
   // === Модалка: Преимущества ===
   const [showBenefitsModal, setShowBenefitsModal] = useState(false);
+  const [showMiroPaywall, setShowMiroPaywall] = useState(false);
+  const [miroPaywallProjectId, setMiroPaywallProjectId] = useState(null);
   const [miroExporting, setMiroExporting] = useState(false);
   const [showNextStepsModal, setShowNextStepsModal] = useState(false);
   const [nextStepsSource, setNextStepsSource] = useState("");
@@ -758,6 +760,40 @@ const handleGenerateExperiment = async () => {
   }
   };
 
+  
+  const redirectToRobokassa = (data) => {
+  if (!data.paymentForm?.action || !data.paymentForm?.fields) {
+    throw new Error("Не получены параметры оплаты");
+  }
+
+  if (!data.paymentId) {
+    throw new Error("Не получен номер платежа");
+  }
+
+  sessionStorage.setItem(
+    "metrictree_pending_payment_id",
+    String(data.paymentId)
+  );
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = data.paymentForm.action;
+  form.style.display = "none";
+
+  for (const [name, value] of Object.entries(data.paymentForm.fields)) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = String(value);
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+  };
+
+
+
   const handleBuyPro = async () => {
   try {
     const res = await fetch("/api/payments/pro", {
@@ -769,40 +805,56 @@ const handleGenerateExperiment = async () => {
     if (!res.ok) {
       throw new Error(data?.error || "Не удалось создать платёж");
     }
-    if (!data.paymentForm?.action || !data.paymentForm?.fields) {
-      throw new Error("Не получены параметры оплаты");
-    }
-
-    if (!data.paymentId) {
-      throw new Error("Не получен номер платежа");
-    }
-
-    sessionStorage.setItem(
-      "metrictree_pending_payment_id",
-      String(data.paymentId)
-    );
-
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = data.paymentForm.action;
-    form.style.display = "none";
-
-    for (const [name, value] of Object.entries(data.paymentForm.fields)) {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = name;
-      input.value = String(value);
-      form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-
+    redirectToRobokassa(data);
 
 
   } catch (err) {
     console.error("Pro payment error:", err);
     alert("Не удалось перейти к оплате. Попробуйте ещё раз.");
+  }
+  };
+
+  
+  const handleBuyMiroExport = async (projectId) => {
+  try {
+    if (!projectId) {
+      throw new Error("Сначала необходимо сохранить дерево");
+    }
+
+    const res = await fetch("/api/payments/miro-export", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ projectId }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data?.error || "Не удалось создать платёж");
+    }
+
+    if (data.alreadyPaid) {
+    alert(
+    "Это дерево уже оплачено. " +
+    "Вы можете экспортировать его в Miro бесплатно."
+    );
+    return;
+    }
+
+    sessionStorage.setItem(
+      "metrictree_pending_miro_project_id",
+      projectId
+    );
+
+    redirectToRobokassa(data);
+  } catch (err) {
+    console.error("Miro payment error:", err);
+    alert(
+      "Не удалось перейти к оплате экспорта: " +
+      (err?.message || "Неизвестная ошибка")
+    );
   }
   };
 
@@ -1020,9 +1072,20 @@ const handleGenerateExperiment = async () => {
     const paymentId = sessionStorage.getItem("metrictree_pending_payment_id");
 
     if (payment === "fail") {
-      sessionStorage.removeItem("metrictree_pending_payment_id");
-      alert("Оплата не завершена. Операции не начислены.");
-      return;
+    sessionStorage.removeItem("metrictree_pending_payment_id");
+
+    const miroProjectId = sessionStorage.getItem(
+    "metrictree_pending_miro_project_id"
+    );
+
+    if (miroProjectId) {
+    sessionStorage.removeItem("metrictree_pending_miro_project_id");
+    alert("Оплата экспорта Miro не завершена.");
+    } else {
+    alert("Оплата не завершена. AI-кредиты не начислены.");
+    }
+
+    return;
     }
 
     if (!paymentId || !/^\d+$/.test(paymentId)) {
@@ -1044,10 +1107,32 @@ const handleGenerateExperiment = async () => {
         if (cancelled) return;
 
         if (data.status === "paid") {
-          sessionStorage.removeItem("metrictree_pending_payment_id");
-          await fetchServerQuota();
-          if (!cancelled) alert("Оплата подтверждена! 300 AI-кредитов начислены на ваш баланс.");
-          return;
+        sessionStorage.removeItem("metrictree_pending_payment_id");
+
+      const miroProjectId = sessionStorage.getItem(
+      "metrictree_pending_miro_project_id"
+      );
+
+      if (miroProjectId) {
+      sessionStorage.removeItem("metrictree_pending_miro_project_id");
+
+        if (!cancelled) {
+        alert(
+        "Оплата подтверждена! Экспорт дерева в Miro разблокирован. " +
+        "Откройте сохранённый проект и нажмите «Экспорт в Miro»."
+        );
+        }
+        } else {
+        await fetchServerQuota();
+
+        if (!cancelled) {
+        alert(
+        "Оплата подтверждена! 300 AI-кредитов начислены на ваш баланс."
+        );
+        }
+        }
+
+        return;
         }
 
         if (data.status === "failed") {
@@ -1984,6 +2069,59 @@ ${nodeSvg}
   }
 };
 
+
+const ensureMiroProjectSaved = async () => {
+  const payload = {
+    description,
+    nodes,
+    edges,
+    treeData,
+    brief: brief || null,
+    model,
+    savedAt: new Date().toISOString(),
+  };
+
+  if (activeProjectId) {
+    const res = await fetch(`/api/projects/${activeProjectId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: payload }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Не удалось сохранить проект");
+    }
+
+    return activeProjectId;
+  }
+
+  const res = await fetch("/api/projects", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: "MetricTree — экспорт Miro",
+      data: payload,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Не удалось создать проект");
+  }
+
+  const project = await res.json();
+
+  if (!project.id) {
+    throw new Error("Сервер не вернул ID проекта");
+  }
+
+  setActiveProjectId(project.id);
+  setSaveStatus("saved");
+  await fetchCloudProjects();
+
+  return project.id;
+};
+
+
 const handleExportToMiro = async () => {
   if (!session?.user?.id) {
   setAuthModalReason("export_miro");
@@ -1995,6 +2133,30 @@ const handleExportToMiro = async () => {
       alert("Сначала сгенерируйте дерево");
       return;
     }
+    const miroProjectId = await ensureMiroProjectSaved();
+
+    const accessRes = await fetch("/api/miro/export-access", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    projectId: miroProjectId,
+    nodes,
+    edges,
+  }),
+});
+
+if (!accessRes.ok) {
+  throw new Error("Не удалось проверить доступ к Miro");
+}
+
+const access = await accessRes.json();
+
+if (!access.allowed) {
+  setMiroPaywallProjectId(miroProjectId);
+  setShowMiroPaywall(true);
+  return;
+}
+
 
     // UI: включаем оверлей
     setMiroExporting(true);
@@ -2019,11 +2181,12 @@ const handleExportToMiro = async () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        boardId,
-        nodes,
-        edges,
-        options: { nodeWidth, nodeHeight, padding: 300 },
-      }),
+      boardId,
+      projectId: miroProjectId,
+      nodes,
+      edges,
+      options: { nodeWidth, nodeHeight, padding: 300 },
+    }),
     });
 
     const data = await r.json().catch(() => ({}));
@@ -4028,6 +4191,95 @@ const currentNextStepsCopy =
     </div>
   </div>
 )}
+
+
+{/* === Модалка: Оплата экспорта в Miro === */}
+{showMiroPaywall && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 backdrop-blur-sm"
+    onClick={() => setShowMiroPaywall(false)}
+  >
+    <div
+      className="bg-white rounded-2xl shadow-2xl p-7 w-[480px] max-w-[92vw] max-h-[85vh] overflow-y-auto relative"
+      onClick={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="miro-paywall-title"
+    >
+      <button
+        type="button"
+        onClick={() => setShowMiroPaywall(false)}
+        className="absolute top-4 right-5 text-gray-400 hover:text-gray-700 text-2xl"
+        aria-label="Закрыть"
+      >
+        ×
+      </button>
+
+      <h3
+        id="miro-paywall-title"
+        className="text-xl font-semibold text-gray-900 mb-2"
+      >
+        Экспорт в Miro
+      </h3>
+
+      <p className="text-sm text-gray-600 mb-6">
+        Выберите подходящий вариант экспорта дерева метрик.
+      </p>
+
+      <div className="space-y-3">
+        <div className="border border-gray-200 rounded-xl p-4">
+          <div className="font-semibold text-gray-900">
+            Одно дерево — 99 ₽
+          </div>
+          <p className="text-sm text-gray-600 mt-1 mb-4">
+            Неограниченное количество повторных экспортов
+            оплаченной версии дерева.
+          </p>
+          <button
+            type="button"
+            disabled={!miroPaywallProjectId}
+            onClick={async () => {
+              setShowMiroPaywall(false);
+              await handleBuyMiroExport(miroPaywallProjectId);
+            }}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg py-2.5 font-medium"
+          >
+            Экспортировать за 99 ₽
+          </button>
+        </div>
+
+        <div className="border border-gray-200 rounded-xl p-4">
+          <div className="font-semibold text-gray-900">
+            Pro — 490 ₽
+          </div>
+          <p className="text-sm text-gray-600 mt-1 mb-4">
+            300 AI-кредитов и пожизненный безлимитный
+            экспорт любых деревьев в Miro.
+          </p>
+          <button
+            type="button"
+            onClick={async () => {
+              setShowMiroPaywall(false);
+              await handleBuyPro();
+            }}
+            className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-lg py-2.5 font-medium"
+          >
+            Купить Pro за 490 ₽
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setShowMiroPaywall(false)}
+        className="w-full mt-4 text-sm text-gray-500 hover:text-gray-800 py-2"
+      >
+        Не сейчас
+      </button>
+    </div>
+  </div>
+)}
+
 
 
 {/* === Модалка: Преимущества MetricTree === */}
