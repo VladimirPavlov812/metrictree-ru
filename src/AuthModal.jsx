@@ -165,13 +165,19 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
           className="w-full border border-gray-300 rounded-xl p-2 mb-4 focus:ring-2 focus:ring-[#ffdd2d] outline-none"
         />
 
+        {mode === "register" && password.length > 0 && password.length < 8 && (
+        <p className="text-sm text-red-600 -mt-3 mb-3">
+        Пароль должен содержать минимум 8 символов
+        </p>
+        )}  
+
           </>
         )}
 
 
         <button
           onClick={mode === "forgot" ? requestPasswordReset : submit}
-          disabled={!email || (mode !== "forgot" && password.length < 8) || loading}
+          disabled={!email || (mode === "register" && password.length < 8) || loading}
           className="w-full bg-[#ffdd2d] text-black rounded-xl px-4 py-2 hover:brightness-95 disabled:opacity-50 transition font-medium"
         >
         {loading
