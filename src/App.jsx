@@ -3526,6 +3526,10 @@ const currentNextStepsCopy =
           Продуктовые метрики
           </a>
 
+          <a href="/product-manager/" className="text-blue-600 hover:underline">
+          Продукт-менеджер
+          </a>
+
           <a href="/business-metrics/" className="text-blue-600 hover:underline">
           Бизнес-метрики
           </a>
