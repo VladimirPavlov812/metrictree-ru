@@ -641,7 +641,9 @@ app.post("/api/payments/miro-export", authRequired, async (req, res) => {
       `
       SELECT id, data
       FROM projects
-      WHERE id = $1 AND user_id = $2
+      WHERE id = $1
+      AND user_id = $2
+      AND deleted_at IS NULL
       LIMIT 1
       `,
       [projectId, req.user.userId]
@@ -999,6 +1001,7 @@ app.get("/api/projects", authRequired, async (req, res) => {
       SELECT id, name, created_at, updated_at
       FROM projects
       WHERE user_id = $1
+      AND deleted_at IS NULL
       ORDER BY updated_at DESC
       `,
       [req.user.userId]
@@ -1017,7 +1020,9 @@ app.get("/api/projects/:id", authRequired, async (req, res) => {
       `
       SELECT id, name, data
       FROM projects
-      WHERE id = $1 AND user_id = $2
+      WHERE id = $1
+      AND user_id = $2
+      AND deleted_at IS NULL
       LIMIT 1
       `,
       [req.params.id, req.user.userId]
@@ -1068,7 +1073,9 @@ app.put("/api/projects/:id", authRequired, async (req, res) => {
       `
       UPDATE projects
       SET data = $1
-      WHERE id = $2 AND user_id = $3
+      WHERE id = $2
+      AND user_id = $3
+      AND deleted_at IS NULL
       RETURNING id, name, created_at, updated_at
       `,
       [data, req.params.id, req.user.userId]
@@ -1089,8 +1096,11 @@ app.delete("/api/projects/:id", authRequired, async (req, res) => {
   try {
     const result = await pool.query(
       `
-      DELETE FROM projects
-      WHERE id = $1 AND user_id = $2
+      UPDATE projects
+      SET deleted_at = NOW()
+      WHERE id = $1
+      AND user_id = $2
+      AND deleted_at IS NULL
       RETURNING id
       `,
       [req.params.id, req.user.userId]
@@ -1462,6 +1472,7 @@ app.get("/api/miro/purchases", authRequired, async (req, res) => {
         p.created_at,
         (
           pr.id IS NOT NULL
+          AND pr.deleted_at IS NULL
           AND pr.data->'nodes' = p.miro_tree_snapshot->'nodes'
           AND pr.data->'edges' = p.miro_tree_snapshot->'edges'
         ) AS export_available
@@ -1498,6 +1509,24 @@ app.post("/api/miro/export-access", authRequired, async (req, res) => {
   try {
     const { projectId, nodes, edges } = req.body || {};
 
+    if (projectId) {
+    const projectResult = await pool.query(
+    `
+    SELECT id
+    FROM projects
+    WHERE id = $1
+      AND user_id = $2
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [projectId, req.user.userId]
+    );
+
+    if (!projectResult.rows.length) {
+    return res.status(404).json({ error: "Project not found" });
+    }
+    }
+
     const userResult = await pool.query(
       `
       SELECT miro_lifetime_access
@@ -1528,8 +1557,9 @@ app.post("/api/miro/export-access", authRequired, async (req, res) => {
       SELECT 1
       FROM payments p
       JOIN projects pr
-        ON pr.id = p.project_id
-       AND pr.user_id = p.user_id
+      ON pr.id = p.project_id
+      AND pr.user_id = p.user_id
+      AND pr.deleted_at IS NULL
       WHERE p.user_id = $1
         AND p.project_id = $2
         AND p.plan = 'miro_export'
@@ -1570,6 +1600,24 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
     
     const { projectId, nodes, edges } = req.body || {};
 
+    if (projectId) {
+    const projectResult = await pool.query(
+    `
+    SELECT id
+    FROM projects
+    WHERE id = $1
+      AND user_id = $2
+      AND deleted_at IS NULL
+    LIMIT 1
+    `,
+    [projectId, req.user.userId]
+    );
+
+    if (!projectResult.rows.length) {
+    return res.status(404).json({ error: "Project not found" });
+    }
+    }
+
     const accessResult = await pool.query(
       `
       SELECT miro_lifetime_access
@@ -1597,7 +1645,8 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
         FROM payments p
         JOIN projects pr
           ON pr.id = p.project_id
-         AND pr.user_id = p.user_id
+          AND pr.user_id = p.user_id
+          AND pr.deleted_at IS NULL
         WHERE p.user_id = $1
           AND p.project_id = $2
           AND p.plan = 'miro_export'
