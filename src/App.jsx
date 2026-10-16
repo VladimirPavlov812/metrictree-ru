@@ -4374,7 +4374,7 @@ const currentNextStepsCopy =
             Pro — 490 ₽
           </div>
           <p className="text-sm text-gray-600 mt-1 mb-4">
-            300 AI-кредитов и пожизненный безлимитный
+            300 AI-кредитов и бессрочный безлимитный
             экспорт любых деревьев в Miro.
           </p>
           <button
