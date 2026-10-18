@@ -3658,7 +3658,7 @@ const currentNextStepsCopy =
         {creditBalance.left}
         </span>
         </div>
-        {false && (
+        {true && (
         <div className="mt-5 border-t border-gray-200 pt-4">
   <h3 className="text-sm font-semibold text-gray-700 mb-3">
     Экспорт в Miro
