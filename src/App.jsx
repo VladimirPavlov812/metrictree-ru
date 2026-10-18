@@ -1103,6 +1103,18 @@ useEffect(() => {
 
     useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+
+     const miroToken = params.get("miro_token");
+    if (miroToken) {
+    // Сохраняем токен в куку
+    document.cookie = `miro_access_token=${miroToken}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+    // Очищаем URL
+    params.delete("miro_token");
+    params.delete("miro");
+    window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+    alert("✅ Miro успешно подключен!");
+    }  
+
     const payment = params.get("payment");
 
     if (payment !== "success" && payment !== "fail") return;

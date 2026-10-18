@@ -1329,34 +1329,9 @@ app.post("/api/openai", async (req, res) => {
 // -----------------------
 
 app.get("/api/miro/oauth/start", (req, res) => {
-  const clientId = process.env.MIRO_CLIENT_ID;
-  const redirectUri = process.env.MIRO_REDIRECT_URI;
-
-  if (!clientId || !redirectUri) {
-    return res.status(500).send("Missing MIRO_CLIENT_ID or MIRO_REDIRECT_URI");
-  }
-
-  const state = crypto.randomUUID();
-
-  res.cookie("miro_oauth_state", state, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 10 * 60 * 1000,
-    path: "/",
-  });
-
-  const scopes = encodeURIComponent("boards:read boards:write");
-
-  const authUrl =
-    `https://miro.com/oauth/authorize` +
-    `?response_type=code` +
-    `&client_id=${encodeURIComponent(clientId)}` +
-    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-    `&scope=${scopes}` +
-    `&state=${encodeURIComponent(state)}`;
-
-  res.redirect(authUrl);
+  // Перенаправляем пользователя на прокси в Казахстане
+  const proxyAuthUrl = `https://miro-connect.metrictree.ru/api/miro/oauth/start?returnUrl=${encodeURIComponent('https://metrictree.ru')}`;
+  res.redirect(proxyAuthUrl);
 });
 
 // -----------------------
