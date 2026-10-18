@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import crypto from "node:crypto";
 import nodemailer from "nodemailer";
+const MIRO_EXPORT_FREE = process.env.MIRO_EXPORT_FREE === "true";
 
 const { Pool } = pg;
 
@@ -1540,6 +1541,10 @@ app.post("/api/miro/export-access", authRequired, async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
+    if (MIRO_EXPORT_FREE) {
+    return res.json({ allowed: true, reason: "free_promo" });
+    }
+
     if (userResult.rows[0].miro_lifetime_access) {
       return res.json({ allowed: true, reason: "pro" });
     }
@@ -1631,7 +1636,7 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    if (!accessResult.rows[0].miro_lifetime_access) {
+    if (!MIRO_EXPORT_FREE && !accessResult.rows[0].miro_lifetime_access) {
       if (!projectId) {
         return res.status(402).json({
           error: "Miro export requires payment",
