@@ -7,6 +7,10 @@ import crypto from "node:crypto";
 import nodemailer from "nodemailer";
 const MIRO_EXPORT_FREE = process.env.MIRO_EXPORT_FREE === "true";
 
+const USE_MIRO_PROXY = process.env.USE_MIRO_PROXY === "true";
+const MIRO_PROXY_URL = process.env.MIRO_PROXY_URL || "https://miro-connect.metrictree.ru";
+const MIRO_PROXY_SECRET = process.env.MIRO_PROXY_SECRET;
+
 const { Pool } = pg;
 
 const app = express();
@@ -1602,86 +1606,47 @@ app.post("/api/miro/export-access", authRequired, async (req, res) => {
 
 app.post("/api/miro/export", authRequired, async (req, res) => {
   try {
-    
     const { projectId, nodes, edges } = req.body || {};
 
+    // 1. Проверка проекта (общая для обеих логик)
     if (projectId) {
-    const projectResult = await pool.query(
-    `
-    SELECT id
-    FROM projects
-    WHERE id = $1
-      AND user_id = $2
-      AND deleted_at IS NULL
-    LIMIT 1
-    `,
-    [projectId, req.user.userId]
-    );
-
-    if (!projectResult.rows.length) {
-    return res.status(404).json({ error: "Project not found" });
-    }
+      const projectResult = await pool.query(
+        `SELECT id FROM projects WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL LIMIT 1`,
+        [projectId, req.user.userId]
+      );
+      if (!projectResult.rows.length) {
+        return res.status(404).json({ error: "Project not found" });
+      }
     }
 
+    // 2. Проверка доступа (общая для обеих логик)
     const accessResult = await pool.query(
-      `
-      SELECT miro_lifetime_access
-      FROM users
-      WHERE id = $1
-      `,
+      `SELECT miro_lifetime_access FROM users WHERE id = $1`,
       [req.user.userId]
     );
-
     if (!accessResult.rows[0]) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
     if (!MIRO_EXPORT_FREE && !accessResult.rows[0].miro_lifetime_access) {
       if (!projectId) {
-        return res.status(402).json({
-          error: "Miro export requires payment",
-          code: "MIRO_PAYMENT_REQUIRED",
-        });
+        return res.status(402).json({ error: "Miro export requires payment", code: "MIRO_PAYMENT_REQUIRED" });
       }
-
       const paidResult = await pool.query(
-        `
-        SELECT 1
-        FROM payments p
-        JOIN projects pr
-          ON pr.id = p.project_id
-          AND pr.user_id = p.user_id
-          AND pr.deleted_at IS NULL
-        WHERE p.user_id = $1
-          AND p.project_id = $2
-          AND p.plan = 'miro_export'
-          AND p.status = 'paid'
-          AND p.miro_tree_snapshot = jsonb_build_object(
-            'nodes', $3::jsonb,
-            'edges', $4::jsonb
-          )
-          AND pr.data->'nodes' = $3::jsonb
-          AND pr.data->'edges' = $4::jsonb
-        LIMIT 1
-        `,
-        [
-          req.user.userId,
-          projectId,
-          JSON.stringify(nodes ?? null),
-          JSON.stringify(edges ?? null),
-        ]
+        `SELECT 1 FROM payments p
+         JOIN projects pr ON pr.id = p.project_id AND pr.user_id = p.user_id AND pr.deleted_at IS NULL
+         WHERE p.user_id = $1 AND p.project_id = $2 AND p.plan = 'miro_export' AND p.status = 'paid'
+           AND p.miro_tree_snapshot = jsonb_build_object('nodes', $3::jsonb, 'edges', $4::jsonb)
+           AND pr.data->'nodes' = $3::jsonb AND pr.data->'edges' = $4::jsonb LIMIT 1`,
+        [req.user.userId, projectId, JSON.stringify(nodes ?? null), JSON.stringify(edges ?? null)]
       );
-
       if (!paidResult.rows.length) {
-        return res.status(402).json({
-          error: "Miro export requires payment",
-          code: "MIRO_PAYMENT_REQUIRED",
-        });
+        return res.status(402).json({ error: "Miro export requires payment", code: "MIRO_PAYMENT_REQUIRED" });
       }
     }
 
+    // 3. Получаем токен из cookie (общая часть)
     const token = req.cookies.miro_access_token;
-
     if (!token) {
       return res.status(401).json({
         error: "Not connected to Miro",
@@ -1691,17 +1656,49 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
     }
 
     const { boardId, options } = req.body || {};
-
-    if (!boardId) {
-      return res.status(400).json({ error: "Missing boardId" });
-    }
-
+    if (!boardId) return res.status(400).json({ error: "Missing boardId" });
     if (!Array.isArray(nodes) || !Array.isArray(edges)) {
-      return res.status(400).json({
-        error: "nodes and edges must be arrays",
-      });
+      return res.status(400).json({ error: "nodes and edges must be arrays" });
     }
 
+    // ========================================================
+    // ТУМБЛЕР: Если USE_MIRO_PROXY=true, идем через Казахстан
+    // ========================================================
+    if (USE_MIRO_PROXY) {
+      console.log("Используем прокси в Казахстане для экспорта...");
+      
+      const proxyPayload = { boardId, nodes, edges, options, miroToken: token };
+      const bodyString = JSON.stringify(proxyPayload);
+      const timestamp = String(Date.now());
+      
+      const signature = crypto
+        .createHmac("sha256", MIRO_PROXY_SECRET)
+        .update(`${timestamp}.${bodyString}`)
+        .digest("hex");
+
+      const proxyRes = await fetch(`${MIRO_PROXY_URL}/internal/miro/export`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Internal-Signature": signature,
+          "X-Internal-Timestamp": timestamp,
+        },
+        body: bodyString,
+      });
+
+      const text = await proxyRes.text();
+      if (!proxyRes.ok) {
+        console.error("Miro proxy error", { status: proxyRes.status, body: text });
+        return res.status(proxyRes.status).json({ error: "Miro export failed", details: text.slice(0, 500) });
+      }
+      return res.type("application/json").send(text);
+    }
+
+    // ========================================================
+    // СТАРАЯ ЛОГИКА: Если USE_MIRO_PROXY=false, идем напрямую
+    // ========================================================
+    console.log("Используем старую прямую логику экспорта...");
+    
     const nodeWidth = options?.nodeWidth ?? 220;
     const nodeHeight = options?.nodeHeight ?? 110;
     const padding = options?.padding ?? 300;
@@ -1737,27 +1734,12 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
     const idMap = new Map();
 
     for (const n of visibleNodes) {
-      const label =
-        n.data?.label ??
-        n.data?.name ??
-        n.name ??
-        n.id;
-
-      const cx =
-        (n.position?.x ?? 0) +
-        nodeWidth / 2 +
-        offsetX;
-
-      const cy =
-        (n.position?.y ?? 0) +
-        nodeHeight / 2 +
-        offsetY;
+      const label = n.data?.label ?? n.data?.name ?? n.name ?? n.id;
+      const cx = (n.position?.x ?? 0) + nodeWidth / 2 + offsetX;
+      const cy = (n.position?.y ?? 0) + nodeHeight / 2 + offsetY;
 
       const shapeBody = {
-        data: {
-          content: String(label).slice(0, 500),
-          shape: "round_rectangle",
-        },
+        data: { content: String(label).slice(0, 500), shape: "round_rectangle" },
         style: {
           fillColor: colorByType(n.type),
           borderColor: "#d1d5db",
@@ -1769,15 +1751,8 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
           textAlign: "center",
           textAlignVertical: "middle",
         },
-        position: {
-          origin: "center",
-          x: cx,
-          y: cy,
-        },
-        geometry: {
-          width: nodeWidth,
-          height: nodeHeight,
-        },
+        position: { origin: "center", x: cx, y: cy },
+        geometry: { width: nodeWidth, height: nodeHeight },
       };
 
       const r = await fetch(
@@ -1794,31 +1769,22 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
       );
 
       const data = await r.json().catch(() => ({}));
-
       if (!r.ok) {
-        return res.status(r.status).json({
-          error: "Miro create shape failed",
-          miro: data,
-        });
+        return res.status(r.status).json({ error: "Miro create shape failed", miro: data });
       }
-
       idMap.set(n.id, data.id);
     }
 
     for (const e of edges) {
       const source = idMap.get(e.source);
       const target = idMap.get(e.target);
-
       if (!source || !target) continue;
 
       const connectorBody = {
         startItem: { id: source, snapTo: "auto" },
         endItem: { id: target, snapTo: "auto" },
         shape: "curved",
-        style: {
-          strokeColor: "#9ca3af",
-          strokeWidth: "1.0",
-        },
+        style: { strokeColor: "#9ca3af", strokeWidth: "1.0" },
       };
 
       const r = await fetch(
@@ -1835,22 +1801,15 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
       );
 
       const data = await r.json().catch(() => ({}));
-
       if (!r.ok) {
-        return res.status(r.status).json({
-          error: "Miro create connector failed",
-          miro: data,
-        });
+        return res.status(r.status).json({ error: "Miro create connector failed", miro: data });
       }
     }
 
     return res.json({ ok: true });
   } catch (err) {
     console.error("Miro export error:", err);
-
-    return res.status(500).json({
-      error: "Internal server error",
-    });
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
