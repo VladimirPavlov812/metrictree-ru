@@ -1608,8 +1608,44 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
   try {
     const { projectId, nodes, edges } = req.body || {};
 
-    // ... (проверки проекта и оплаты, они остаются без изменений) ...
+    // 1. Проверка проекта
+    if (projectId) {
+      const projectResult = await pool.query(
+        `SELECT id FROM projects WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL LIMIT 1`,
+        [projectId, req.user.userId]
+      );
+      if (!projectResult.rows.length) {
+        return res.status(404).json({ error: "Project not found" });
+      }
+    }
 
+    // 2. Проверка доступа (оплата / Pro)
+    const accessResult = await pool.query(
+      `SELECT miro_lifetime_access FROM users WHERE id = $1`,
+      [req.user.userId]
+    );
+    if (!accessResult.rows[0]) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (!MIRO_EXPORT_FREE && !accessResult.rows[0].miro_lifetime_access) {
+      if (!projectId) {
+        return res.status(402).json({ error: "Miro export requires payment", code: "MIRO_PAYMENT_REQUIRED" });
+      }
+      const paidResult = await pool.query(
+        `SELECT 1 FROM payments p
+         JOIN projects pr ON pr.id = p.project_id AND pr.user_id = p.user_id AND pr.deleted_at IS NULL
+         WHERE p.user_id = $1 AND p.project_id = $2 AND p.plan = 'miro_export' AND p.status = 'paid'
+           AND p.miro_tree_snapshot = jsonb_build_object('nodes', $3::jsonb, 'edges', $4::jsonb)
+           AND pr.data->'nodes' = $3::jsonb AND pr.data->'edges' = $4::jsonb LIMIT 1`,
+        [req.user.userId, projectId, JSON.stringify(nodes ?? null), JSON.stringify(edges ?? null)]
+      );
+      if (!paidResult.rows.length) {
+        return res.status(402).json({ error: "Miro export requires payment", code: "MIRO_PAYMENT_REQUIRED" });
+      }
+    }
+
+    // 3. Проверка токена
     const token = req.cookies.miro_access_token;
     if (!token) {
       return res.status(401).json({
@@ -1626,43 +1662,51 @@ app.post("/api/miro/export", authRequired, async (req, res) => {
     }
 
     // ========================================================
-    // НОВАЯ ЛОГИКА (только через Казахстан)
+    // ТУМБЛЕР: Проверяем, включен ли прокси
     // ========================================================
-    console.log("Используем прокси в Казахстане для экспорта...");
-    
-    const proxyPayload = { boardId, nodes, edges, options, miroToken: token };
-    const bodyString = JSON.stringify(proxyPayload);
-    const timestamp = String(Date.now());
-    
-    const signature = crypto
-      .createHmac("sha256", MIRO_PROXY_SECRET)
-      .update(`${timestamp}.${bodyString}`)
-      .digest("hex");
+    if (USE_MIRO_PROXY) {
+      console.log("Используем прокси в Казахстане для экспорта...");
+      
+      const proxyPayload = { boardId, nodes, edges, options, miroToken: token };
+      const bodyString = JSON.stringify(proxyPayload);
+      const timestamp = String(Date.now());
+      
+      const signature = crypto
+        .createHmac("sha256", MIRO_PROXY_SECRET)
+        .update(`${timestamp}.${bodyString}`)
+        .digest("hex");
 
-    const proxyRes = await fetch(`${MIRO_PROXY_URL}/internal/miro/export`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Internal-Signature": signature,
-        "X-Internal-Timestamp": timestamp,
-      },
-      body: bodyString,
-    });
+      const proxyRes = await fetch(`${MIRO_PROXY_URL}/internal/miro/export`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Internal-Signature": signature,
+          "X-Internal-Timestamp": timestamp,
+        },
+        body: bodyString,
+      });
 
-    const text = await proxyRes.text();
-    if (!proxyRes.ok) {
-      console.error("Miro proxy error", { status: proxyRes.status, body: text });
-      return res.status(proxyRes.status).json({ error: "Miro export failed", details: text.slice(0, 500) });
+      const text = await proxyRes.text();
+      if (!proxyRes.ok) {
+        console.error("Miro proxy error", { status: proxyRes.status, body: text });
+        return res.status(proxyRes.status).json({ error: "Miro export failed", details: text.slice(0, 500) });
+      }
+      return res.type("application/json").send(text);
     }
-    
-    return res.type("application/json").send(text);
-    
+
+    // ========================================================
+    // СТАРАЯ ЛОГИКА (если тумблер выключен)
+    // ========================================================
+    console.log("Используем старую прямую логику экспорта...");
+    // ... (здесь должен быть ваш старый код с циклами for...of) ...
+    // Если вы его удалили, просто оставьте заглушку:
+    return res.status(501).json({ error: "Old export logic is disabled. Please enable USE_MIRO_PROXY." });
+
   } catch (err) {
     console.error("Miro export error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 app.listen(3001, "127.0.0.1", () => {
   console.log("MetricTree backend listening on 127.0.0.1:3001");
