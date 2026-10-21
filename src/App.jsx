@@ -356,10 +356,26 @@ const handleGenerateExperiment = async () => {
 
 
   // UI: сразу откроем модалку и покажем загрузку
-  setShowExperimentModal(true);
-  setExperimentLoading(true);
-  setExperiment(null);
-  try {
+  // Сначала проверяем баланс AI-кредитов
+try {
+  const hasQuota = await checkServerQuota("experiment");
+
+  if (!hasQuota) {
+    setShowCreditsModal(true);
+    return;
+  }
+} catch (err) {
+  console.error("Experiment quota check error:", err);
+  alert("Не удалось проверить баланс AI-кредитов.");
+  return;
+}
+
+// Открываем окно эксперимента только при достаточном балансе
+setShowExperimentModal(true);
+setExperimentLoading(true);
+setExperiment(null);
+
+try {
     // найдем parent + children
     const parentEdge = edges.find((e) => e.target === selectedMetric.id);
     const parent = parentEdge ? nodes.find((n) => n.id === parentEdge.source) : null;
@@ -376,14 +392,7 @@ const handleGenerateExperiment = async () => {
       children: children.map(normalizeNode),
     };
 
-    // Проверяем серверную квоту до запроса к AI
-    const hasQuota = await checkServerQuota("experiment");
-
-    if (!hasQuota) {
-    setShowCreditsModal(true);
-    return;
-    }
-
+    
     // запрос к AI
     const res = await generateExperiment(payload, model);
     const exp = res.experiment;
@@ -4931,7 +4940,7 @@ const currentNextStepsCopy =
       </h3>
 
       <p className="mt-2 text-sm text-gray-600">
-        Для генерации дерева необходимо пополнить баланс AI-кредитов.
+        Для продолжения работы необходимо пополнить баланс AI-кредитов.
       </p>
 
       <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
