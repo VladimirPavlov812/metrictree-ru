@@ -1468,6 +1468,32 @@ useEffect(() => {
   }
   };
 
+  const handleDownloadTxt = () => {
+  if (!treeData) return;
+
+  try {
+    const text = renderTreeText(treeData);
+    const blob = new Blob(["\uFEFF", text], {
+      type: "text/plain;charset=utf-8",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "metrictree.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    ymEvent("export_txt");
+  } catch (error) {
+    console.error("TXT export error:", error);
+    alert("Не удалось скачать TXT");
+  }
+  };
   
   const handleSave = () => {
     const data = { description, nodes, edges, treeData };
@@ -3072,19 +3098,6 @@ const currentNextStepsCopy =
           {!isMobile  && !isFullscreen && (
           <div className="flex border-b border-gray-200 bg-white">
         
-              {!isMobile && (
-              <button
-               onClick={() => setActiveTab("text")}
-               className={`px-4 py-2 font-medium ${
-               activeTab === "text"
-                ? "border-b-2 border-[#ffdd2d] text-black"
-               : "text-gray-500 hover:text-black"
-                }`}
-               >
-              Текстовое дерево
-            </button>
-              )}
-
             {!isMobile && (
               <button
                   onClick={() => setActiveTab("visual")}
@@ -3430,6 +3443,14 @@ const currentNextStepsCopy =
         className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
       >
         Скачать CSV
+      </button>
+
+      <button
+      onClick={handleDownloadTxt}
+      disabled={!treeData}
+      className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
+      >
+      Скачать TXT
       </button>
 
       <button
