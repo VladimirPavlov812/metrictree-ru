@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const AUTH_REASONS = {
   default: "Войдите, чтобы сохранять проекты и продолжать работу.",
-  generation_limit: "Бесплатное дерево уже создано. Создайте аккаунт, чтобы продолжить работу.",
+  generation_limit: "Вы использовали бесплатную гостевую генерацию. Зарегистрируйтесь и получите 30 AI-кредитов для дальнейшей работы.",
   export_csv: "Создайте бесплатный аккаунт, чтобы скачать дерево метрик в CSV.",
   export_svg: "Создайте бесплатный аккаунт, чтобы скачать дерево метрик в SVG.",
   export_miro: "Создайте бесплатный аккаунт, чтобы экспортировать дерево в Miro.",
@@ -107,6 +107,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             ? "Вход"
             : reason === "default"
             ? "Регистрация"
+            : reason === "generation_limit"
+            ? "Продолжите работу бесплатно"
             : "Сохраните результат работы"}
             </h3>
 
@@ -122,7 +124,11 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
 
             <div className="flex items-center gap-2 text-sm text-gray-700">
             <span className="text-green-600 font-semibold">✓</span>
-            <span>Сможете продолжить работу позже</span>
+            <span>
+            {reason === "generation_limit"
+            ? "Генерируйте новые деревья и используйте AI-функции"
+            : "Сможете продолжить работу позже"}
+            </span>
             </div>
             </div>
             )}
