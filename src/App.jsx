@@ -215,8 +215,8 @@ const handleRunPrioritization = async () => {
   const hasQuota = await checkServerQuota("prioritization");
 
   if (!hasQuota) {
-    alert("Лимит приоритизаций исчерпан.");
-    return;
+  setShowCreditsModal(true);
+  return;
   }
   } catch (err) {
   console.error("Prioritization quota check error:", err);
@@ -380,7 +380,8 @@ const handleGenerateExperiment = async () => {
     const hasQuota = await checkServerQuota("experiment");
 
     if (!hasQuota) {
-    throw new Error("Лимит A/B экспериментов исчерпан.");
+    setShowCreditsModal(true);
+    return;
     }
 
     // запрос к AI
@@ -1990,7 +1991,7 @@ try {
     const hasQuota = await checkServerQuota("suggestion");
 
     if (!hasQuota) {
-    alert("Лимит подсказок метрик исчерпан.");
+    setShowCreditsModal(true);
     return;
     }
     } catch (err) {
@@ -2575,8 +2576,8 @@ const handleGetInsight = async (metricArg) => {
   const hasQuota = await checkServerQuota("insight");
 
   if (!hasQuota) {
-    alert("Лимит разборов метрик исчерпан.");
-    return;
+  setShowCreditsModal(true);
+  return;
   }
   } catch (err) {
   console.error("Insight quota check error:", err);
