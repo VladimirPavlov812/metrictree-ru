@@ -3310,49 +3310,53 @@ const currentNextStepsCopy =
     {/* Авторизация — всегда над вкладками */}
     <div className="mb-4 p-3 rounded-xl border border-gray-200 bg-gray-50">
     {session ? (
+    <div className="w-full">
     <div className="flex items-center justify-between gap-2">
       <div className="min-w-0 flex-1">
-      <div className="text-xs text-gray-500">✅ Вход выполнен</div>
-      <div className="text-sm font-medium text-gray-900 truncate">
-      {session.user?.email}
-      </div>
-
-      <div className="mt-2 flex items-center justify-between gap-2">
-      <div className="flex items-center gap-2 text-sm">
-      <span className="text-gray-600">AI-кредиты:</span>
-      <span className="font-bold text-gray-900">
-      {creditBalance.left}
-      </span>
+        <div className="text-xs text-gray-500">
+          ✅ Вход выполнен
+        </div>
+        <div className="text-sm font-medium text-gray-900 truncate">
+          {session.user?.email}
+        </div>
       </div>
 
       <button
-      type="button"
-      onClick={() => setRightTab("quota")}
-      className="shrink-0 px-3 py-1.5 rounded-lg bg-[#ffdd2d] text-black text-xs font-medium hover:brightness-95 transition"
-      >
-      + Добавить
-      </button>
-      </div>
-
-      </div>
-
-      <button
+        type="button"
         onClick={async () => {
-        try {
-        await fetch("/api/auth/logout", {
-        method: "POST",
-        });
-
-        setSession(null);
-        } catch (e) {
-        console.error("Logout error:", e);
-        }
+          try {
+            await fetch("/api/auth/logout", {
+              method: "POST",
+            });
+            setSession(null);
+          } catch (e) {
+            console.error("Logout error:", e);
+          }
         }}
-        className="text-sm px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 transition"
+        className="shrink-0 text-sm px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 transition"
       >
         Выйти
       </button>
-    </div>
+      </div>
+
+      <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-between gap-2">
+      <div className="flex items-center gap-2 whitespace-nowrap text-sm">
+        <span className="text-gray-600">AI-кредиты:</span>
+        <span className="font-bold text-gray-900">
+          {creditBalance.left}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setRightTab("quota")}
+        className="shrink-0 px-3 py-1.5 rounded-lg bg-[#ffdd2d] text-black text-xs font-medium hover:brightness-95 transition"
+      >
+        + Добавить
+      </button>
+      </div>
+      </div>
+    
     ) : (
     <div className="flex items-center justify-between gap-2">
       <div>
