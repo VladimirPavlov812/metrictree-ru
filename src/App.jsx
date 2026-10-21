@@ -477,6 +477,7 @@ const handleGenerateExperiment = async () => {
   const [showExperimentModal, setShowExperimentModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
+  const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
   const [highlightCreditPack, setHighlightCreditPack] = useState(false);
 
   useEffect(() => {
@@ -3474,13 +3475,41 @@ const currentNextStepsCopy =
 
     {/* Экспорт/импорт */}
     <div className="flex flex-wrap gap-2 mb-5">
-          
-      <button
-        onClick={handleDownloadSvg}
-        disabled={!treeData}
-        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"      >
-        Скачать SVG
-      </button>
+
+      <div className="relative">
+    <button
+    type="button"
+    onClick={() => setDownloadMenuOpen((prev) => !prev)}
+    disabled={!treeData}
+    aria-expanded={downloadMenuOpen}
+    className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
+    >
+    Скачать ▾
+    </button>
+
+    {downloadMenuOpen && (
+    <div className="absolute top-full left-0 mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-lg z-50 p-1">
+      {[
+        { label: "SVG — изображение", action: handleDownloadSvg },
+        { label: "CSV — таблица", action: handleDownloadCsv },
+        { label: "TXT — текст", action: handleDownloadTxt },
+      ].map(({ label, action }) => (
+        <button
+          key={label}
+          type="button"
+          onClick={() => {
+            setDownloadMenuOpen(false);
+            action();
+          }}
+          className="block w-full text-left px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100 transition"
+        >
+          {label}
+        </button>
+      ))}
+      </div>
+      )}
+      </div>
+
 
       <button
         onClick={handleExportToMiro}
@@ -3488,22 +3517,6 @@ const currentNextStepsCopy =
         className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
       >
         Экспорт в Miro
-      </button>
-
-      <button
-        onClick={handleDownloadCsv}
-        disabled={!treeData}
-        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
-      >
-        Скачать CSV
-      </button>
-
-      <button
-      onClick={handleDownloadTxt}
-      disabled={!treeData}
-      className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
-      >
-      Скачать TXT
       </button>
 
       <button
