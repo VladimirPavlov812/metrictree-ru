@@ -3095,7 +3095,7 @@ const currentNextStepsCopy =
 
         {/* === вкладки === */}
         <div className={`flex flex-col flex-1 bg-[#f5f6fa] ${isMobile ? "pt-0" : ""}`}>
-          {!isMobile  && !isFullscreen && (
+          {false && !isMobile && !isFullscreen && (
           <div className="flex border-b border-gray-200 bg-white">
         
             {!isMobile && (
