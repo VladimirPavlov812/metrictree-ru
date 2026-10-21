@@ -150,16 +150,6 @@ export default function App() {
   ops: MetricNode,
   }), []);
 
-  useEffect(() => {
-  if (!highlightCreditPack) return;
-
-  const timer = setTimeout(() => {
-    setHighlightCreditPack(false);
-  }, 1200);
-
-  return () => clearTimeout(timer);
-  }, [highlightCreditPack]);
-
   // === переключение вкладки при входе в мобильную версию ===
   useEffect(() => {
   if (isMobile) {
@@ -487,7 +477,6 @@ const handleGenerateExperiment = async () => {
   const [showExperimentModal, setShowExperimentModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
-  const [highlightCreditPack, setHighlightCreditPack] = useState(false);
   const [insightLoading, setInsightLoading] = useState(false);
   const [error, setError] = useState("");
   const [highlightedNodes, setHighlightedNodes] = useState([]);
@@ -503,10 +492,7 @@ const handleGenerateExperiment = async () => {
 
   const [miroExportStatus, setMiroExportStatus] = useState("");
   const [miroExportProgress, setMiroExportProgress] = useState(0); // 0..100
-  const handleAddCreditsClick = () => {
-  setRightTab("quota");
-  setHighlightCreditPack(true);
-  };
+
   // === Авто-показ онбординга "Преимущества" ===
   useEffect(() => {
   const seen = localStorage.getItem("seen_benefits");
@@ -3363,7 +3349,7 @@ const currentNextStepsCopy =
 
       <button
         type="button"
-        onClick={handleAddCreditsClick}
+        onClick={() => setRightTab("quota")}
         className="shrink-0 px-3 py-1.5 rounded-lg bg-[#ffdd2d] text-black text-xs font-medium hover:brightness-95 transition"
       >
         + Добавить
@@ -3700,18 +3686,7 @@ const currentNextStepsCopy =
           Лимиты аккаунта
         </h3>
 
-        <div
-        ref={(el) => {
-        if (el && highlightCreditPack) {
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-        }}
-        className={`mb-3 p-3 rounded-xl border bg-gray-50 transition-all duration-300 ${
-        highlightCreditPack
-        ? "border-yellow-400 ring-2 ring-yellow-300"
-        : "border-gray-200"
-        }`}
-        >
+        <div className="mb-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between gap-3">
             <div>
              
