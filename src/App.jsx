@@ -4951,8 +4951,8 @@ const currentNextStepsCopy =
       <button
         type="button"
         onClick={() => {
-          setShowCreditsModal(false);
-          handleAddCreditsClick();
+        setShowCreditsModal(false);
+        handleBuyPro();
         }}
         className="mt-4 w-full rounded-xl bg-[#ffdd2d] px-4 py-3 font-semibold text-black hover:brightness-95 transition"
       >
