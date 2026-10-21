@@ -3317,12 +3317,23 @@ const currentNextStepsCopy =
       {session.user?.email}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex items-center justify-between gap-2">
+      <div className="flex items-center gap-2 text-sm">
       <span className="text-gray-600">AI-кредиты:</span>
       <span className="font-bold text-gray-900">
       {creditBalance.left}
       </span>
       </div>
+
+      <button
+      type="button"
+      onClick={() => setRightTab("quota")}
+      className="shrink-0 px-3 py-1.5 rounded-lg bg-[#ffdd2d] text-black text-xs font-medium hover:brightness-95 transition"
+      >
+      + Добавить
+      </button>
+      </div>
+
       </div>
 
       <button
