@@ -500,6 +500,7 @@ const handleGenerateExperiment = async () => {
   };
   const [insightLoading, setInsightLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [highlightedNodes, setHighlightedNodes] = useState([]);
   const [activeTab, setActiveTab] = useState("visual");
   const [mobileMenuFor, setMobileMenuFor] = useState(null);
@@ -1692,8 +1693,8 @@ useEffect(() => {
 
   let generationId = null;
 
-if (session?.user?.id) {
-  try {
+    if (session?.user?.id) {
+    try {
     const res = await fetch("/api/generate/start", {
     method: "POST",
     headers: {
@@ -1705,12 +1706,25 @@ if (session?.user?.id) {
     const data = await res.json();
 
     if (!res.ok) {
-      if (res.status === 429) {
-        setError("Лимит генераций исчерпан.");
+    if (res.status === 429) {
+    try {
+      const hasCredits = await checkServerQuota("generate");
+
+      if (!hasCredits) {
+        setError("");
+        setShowCreditsModal(true);
       } else {
-        setError("Не удалось начать генерацию.");
+        setError("Не удалось начать генерацию. Попробуйте позже.");
       }
-      return;
+    } catch (quotaError) {
+      console.error("Quota check error:", quotaError);
+      setError("Не удалось проверить баланс кредитов.");
+    }
+    } else {
+    setError("Не удалось начать генерацию.");
+    }
+
+    return;
     }
 
     generationId = data.generationId;
@@ -4904,6 +4918,54 @@ const currentNextStepsCopy =
         <span>Не закрывайте вкладку</span>
         <span>{Math.round(miroExportProgress)}%</span>
       </div>
+    </div>
+  </div>
+)}
+
+{showCreditsModal && (
+  <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 p-4">
+    <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+      <h3 className="text-lg font-semibold text-gray-900">
+        Недостаточно AI-кредитов
+      </h3>
+
+      <p className="mt-2 text-sm text-gray-600">
+        Для генерации дерева необходимо пополнить баланс AI-кредитов.
+      </p>
+
+      <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="font-semibold text-gray-900">
+            300 AI-кредитов
+          </span>
+          <span className="font-semibold text-gray-900">
+            490 ₽
+          </span>
+        </div>
+
+        <p className="mt-1 text-xs text-gray-500">
+          Без ограничения срока действия
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => {
+          setShowCreditsModal(false);
+          handleAddCreditsClick();
+        }}
+        className="mt-4 w-full rounded-xl bg-[#ffdd2d] px-4 py-3 font-semibold text-black hover:brightness-95 transition"
+      >
+        Пополнить баланс
+      </button>
+
+      <button
+        type="button"
+        onClick={() => setShowCreditsModal(false)}
+        className="mt-3 w-full text-sm text-gray-500 hover:text-gray-800"
+      >
+        Продолжить без пополнения
+      </button>
     </div>
   </div>
 )}
