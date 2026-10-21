@@ -3087,9 +3087,20 @@ const currentNextStepsCopy =
 
         {/* === Мобильные лимиты === */}
         {isMobile && !session?.user?.id && (
-        <div className="px-4 py-2 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-600">
-        Бесплатная генерация:{" "}
-        {getQuotaInfo("generate_tree", 1).left}/1
+        <div className="px-4 py-3 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-700">
+        <div>
+        Генерация: осталось {getQuotaInfo("generate_tree", 1).left}
+        </div>
+
+        <div className="mt-2 font-semibold text-gray-900">
+        Новым пользователям — 30 бесплатных AI-кредитов на:
+        </div>
+
+        <div className="mt-1 text-gray-600">
+        генерацию, разбор и подсказки метрик, приоритизацию и A/B эксперименты.
+        </div>
+
+        
         </div>
         )}
 
