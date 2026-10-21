@@ -3606,40 +3606,45 @@ const currentNextStepsCopy =
     {!session?.user?.id ? (
       
       <>
-      <h3 className="text-sm font-semibold mb-2 text-gray-700">
-      Гостевой режим
-      </h3>
+    
+    <h3 className="text-sm font-semibold mb-2 text-gray-700">
+    Гостевой режим
+    </h3>
 
-      <QuotaLine
-      label="Бесплатная генерация"
-      info={getQuotaInfo("generate_tree", 1)}
-      />
+    <QuotaLine
+    label="Генерация"
+    info={getQuotaInfo("generate_tree", 1)}
+    />
 
-    <div className="mt-2 space-y-2 text-sm">
-    <div className="flex justify-between gap-3">
-      <span className="text-gray-600">Разбор метрик</span>
-      <span className="text-gray-500">После входа</span>
+    <div className="mt-4 border-t border-gray-200 pt-3">
+    <p className="text-sm font-medium text-gray-800 mb-2">
+    После регистрации или входа доступны:
+    </p>
+
+    <p className="text-sm font-semibold text-gray-900 mb-3">
+    Новым пользователям — 30 бесплатных AI-кредитов на:
+    </p>
+
+    <ul className="space-y-2 text-sm text-gray-700">
+    {[
+      "Генерацию",
+      "Разбор метрик",
+      "Подсказки метрик",
+      "Приоритизацию",
+      "A/B эксперименты",
+    ].map((item) => (
+      <li key={item} className="flex items-center gap-2">
+        <span className="text-green-600 font-semibold">✓</span>
+        <span>{item}</span>
+      </li>
+    ))}
+    </ul>
     </div>
 
-    <div className="flex justify-between gap-3">
-      <span className="text-gray-600">Подсказки метрик</span>
-      <span className="text-gray-500">После входа</span>
-    </div>
-
-    <div className="flex justify-between gap-3">
-      <span className="text-gray-600">Приоритизация</span>
-      <span className="text-gray-500">После входа</span>
-    </div>
-
-    <div className="flex justify-between gap-3">
-      <span className="text-gray-600">A/B эксперименты</span>
-      <span className="text-gray-500">После входа</span>
-    </div>
-    </div>
-
-    <p className="mt-3 text-xs text-gray-500">
+    <p className="mt-4 text-xs text-gray-500">
     Зарегистрируйтесь или войдите, чтобы продолжить работу с MetricTree.
     </p>
+
     </>
 
     ) : (
