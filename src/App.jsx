@@ -3111,7 +3111,7 @@ const currentNextStepsCopy =
             </button>
             )}
 
-            {!isMobile && (
+            {false && !isMobile && (
             <button
             onClick={() => setActiveTab("insight")}
             className={`
