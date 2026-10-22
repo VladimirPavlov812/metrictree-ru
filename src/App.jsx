@@ -488,6 +488,7 @@ try {
   const [loading, setLoading] = useState(false);
   const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
   const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
+  const [showDesktopTip, setShowDesktopTip] = useState(false);
 
   const downloadMenuRef = useRef(null);
 
@@ -1027,6 +1028,16 @@ useEffect(() => {
 
       setActiveProjectId(created?.id || null);
       setSaveStatus("saved");
+
+      // Подсказка о работе на компьютере после первого автосохранения
+      if (window.matchMedia("(max-width: 767px)").matches) {
+      const tipKey = `metrictree_desktop_tip_${session.user.id}`;
+
+      if (!localStorage.getItem(tipKey)) {
+      localStorage.setItem(tipKey, "1");
+      setShowDesktopTip(true);
+      }
+      }
 
       const projectsRes = await fetch("/api/projects");
       if (projectsRes.ok) {
@@ -5007,6 +5018,49 @@ const currentNextStepsCopy =
     </div>
   </div>
 )}
+
+
+{/* Подсказка о продолжении работы на компьютере */}
+{showDesktopTip && (
+  <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="desktop-tip-title"
+      className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl"
+    >
+      <div className="mb-3 text-3xl">💻</div>
+
+      <h2
+        id="desktop-tip-title"
+        className="mb-3 text-xl font-semibold text-gray-900"
+      >
+        Проект сохранён!
+      </h2>
+
+      <p className="mb-3 text-sm leading-relaxed text-gray-600">
+        Продолжите работу над деревом метрик на компьютере —
+        на большом экране редактировать дерево удобнее.
+      </p>
+
+      <p className="mb-6 text-sm leading-relaxed text-gray-600">
+        Откройте <strong>metrictree.ru</strong> на компьютере,
+        войдите в свой аккаунт и выберите дерево в разделе
+        «Мои проекты».
+      </p>
+
+      <button
+        type="button"
+        onClick={() => setShowDesktopTip(false)}
+        className="w-full rounded-xl bg-blue-600 px-4 py-3 font-medium text-white hover:bg-blue-700"
+      >
+        Понятно
+      </button>
+    </div>
+  </div>
+)}
+
+
 
 <AuthModal
   open={authModalOpen}
