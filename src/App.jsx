@@ -3032,7 +3032,7 @@ const currentNextStepsCopy =
         onClick={handleBuyPro}
         className="mt-1 text-xs font-medium text-blue-600"
         >
-        {creditBalance.left} AI-кредитов · Купить
+        {creditBalance.left} AI-кредитов · Добавить
         </button>
         )}
         </div>
