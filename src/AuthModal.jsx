@@ -113,7 +113,18 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             </h3>
 
             <p className="text-sm text-gray-500">
-            {AUTH_REASONS[reason] || AUTH_REASONS.default}
+            {reason === "generation_limit" ? (
+            <>
+            Вы использовали бесплатную гостевую генерацию.{" "}
+            Зарегистрируйтесь и получите{" "}
+            <strong className="font-bold text-gray-900">
+            30 AI-кредитов
+            </strong>{" "}
+            для дальнейшей работы.
+            </>
+            ) : (
+            AUTH_REASONS[reason] || AUTH_REASONS.default
+            )}
             </p>
             {mode === "register" && reason !== "default" && (
             <div className="mt-4 space-y-2">
