@@ -488,6 +488,28 @@ try {
   const [loading, setLoading] = useState(false);
   const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
   const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
+
+  const downloadMenuRef = useRef(null);
+
+  useEffect(() => {
+  if (!downloadMenuOpen) return;
+
+  const handleOutsideClick = (event) => {
+    if (
+      downloadMenuRef.current &&
+      !downloadMenuRef.current.contains(event.target)
+    ) {
+      setDownloadMenuOpen(false);
+    }
+  };
+
+  document.addEventListener("pointerdown", handleOutsideClick);
+
+  return () => {
+    document.removeEventListener("pointerdown", handleOutsideClick);
+  };
+  }, [downloadMenuOpen]);
+
   const [highlightCreditPack, setHighlightCreditPack] = useState(false);
 
   useEffect(() => {
@@ -3500,7 +3522,7 @@ const currentNextStepsCopy =
     {/* Экспорт/импорт */}
     <div className="flex flex-wrap gap-2 mb-5">
 
-      <div className="relative">
+      <div ref={downloadMenuRef} className="relative">
     <button
     type="button"
     onClick={() => setDownloadMenuOpen((prev) => !prev)}
