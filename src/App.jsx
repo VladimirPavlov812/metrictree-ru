@@ -4513,11 +4513,11 @@ const currentNextStepsCopy =
       >
         Экспорт в Miro
       </h3>
-
+      {/*
       <p className="text-sm text-gray-600 mb-6">
         Выберите подходящий вариант экспорта дерева метрик.
       </p>
-
+      */}
       <div className="space-y-3">
         {/*
         <div className="border border-gray-200 rounded-xl p-4">
