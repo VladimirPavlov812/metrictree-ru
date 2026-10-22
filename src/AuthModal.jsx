@@ -112,6 +112,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             : "Сохраните результат работы"}
             </h3>
 
+            
+            {mode === "register" && (
             <p className="text-sm text-gray-500">
             {reason === "generation_limit" ? (
             <>
@@ -126,6 +128,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             AUTH_REASONS[reason] || AUTH_REASONS.default
             )}
             </p>
+            )}
+
             {mode === "register" && reason !== "default" && (
             <div className="mt-4 space-y-2">
             <div className="flex items-center gap-2 text-sm text-gray-700">
