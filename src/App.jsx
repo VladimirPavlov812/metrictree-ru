@@ -5044,9 +5044,9 @@ const currentNextStepsCopy =
       </p>
 
       <p className="mb-6 text-sm leading-relaxed text-gray-600">
-        Откройте <strong>metrictree.ru</strong> на компьютере,
-        войдите в свой аккаунт и выберите дерево в разделе
-        «Мои проекты».
+      Откройте <strong>metrictree.ru</strong> на компьютере,
+      войдите в свой аккаунт и продолжите работу над
+      сохранённым деревом.
       </p>
 
       <button
