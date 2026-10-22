@@ -3027,9 +3027,11 @@ const currentNextStepsCopy =
         <div className="flex items-center justify-between gap-2 mb-3">
       
         <div className="min-w-0">
+        {session?.user?.id && (
         <div className="text-xs text-gray-600 truncate">
-        {session?.user?.email || "Гостевой режим"}
+        {session.user.email}
         </div>
+        )}
 
         {session?.user?.id && (
         <button
@@ -3176,7 +3178,7 @@ const currentNextStepsCopy =
         {isMobile && !session?.user?.id && (
         <div className="px-4 py-3 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-700">
         <div>
-        Генерация: осталось {getQuotaInfo("generate_tree", 1).left}
+        Гостевой режим. Генерация: осталось {getQuotaInfo("generate_tree", 1).left}
         </div>
 
         <div className="mt-2 font-semibold text-gray-900">
