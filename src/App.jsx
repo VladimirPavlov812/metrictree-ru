@@ -3133,7 +3133,8 @@ const currentNextStepsCopy =
     </button>
   </div>
 
-    <div className="flex gap-2">
+    {session?.user?.id && (
+  <div className="flex gap-2">
   <button
     type="button"
     onClick={() => handleSaveToCloud()}
@@ -3165,7 +3166,7 @@ const currentNextStepsCopy =
     Мои проекты
     </button>
     </div>  
-
+ )}
 
   </div>
         </div>
