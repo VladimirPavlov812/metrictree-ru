@@ -3012,19 +3012,12 @@ const currentNextStepsCopy =
         {isMobile && (
         <div className="bg-white p-4 border-b border-gray-200 shadow-sm sticky top-0 z-40">
 
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex items-center justify-between gap-2 mb-2">
         <img
         src="/metrictree-logo.png"
         alt="MetricTree"
         className="h-8 w-auto max-w-[100px] object-contain"
         />
-
-        <div className="text-sm font-semibold text-gray-900 leading-tight">
-        AI-генератор дерева метрик продукта
-        </div>
-        </div>    
-
-        <div className="flex items-center justify-between gap-2 mb-3">
       
         <div className="min-w-0">
         {session?.user?.id && (
@@ -3078,8 +3071,12 @@ const currentNextStepsCopy =
         </button>
         )}
 
-        </div>    
-       
+        </div>
+
+        {/* Заголовок мобильной версии */}
+        <div className="text-sm font-semibold text-gray-900 mb-3">
+          AI-генератор дерева метрик продукта
+        </div>
 
         <textarea
           value={description}
