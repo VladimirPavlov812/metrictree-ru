@@ -4519,6 +4519,7 @@ const currentNextStepsCopy =
       </p>
 
       <div className="space-y-3">
+        {/*
         <div className="border border-gray-200 rounded-xl p-4">
           <div className="font-semibold text-gray-900">
             Одно дерево — 99 ₽
@@ -4538,7 +4539,7 @@ const currentNextStepsCopy =
           >
             Экспортировать за 99 ₽
           </button>
-        </div>
+        </div>*/}
 
         <div className="border border-gray-200 rounded-xl p-4">
           <div className="font-semibold text-gray-900">
