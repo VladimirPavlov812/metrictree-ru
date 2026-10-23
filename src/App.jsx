@@ -4974,59 +4974,98 @@ const currentNextStepsCopy =
   </div>
 )}
 
+
 {showCreditsModal && (
   <div
     className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 p-4"
     onClick={() => setShowCreditsModal(false)}
-    >
+  >
     <div
-      className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
+      className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl"
       onClick={(e) => e.stopPropagation()}
     >
-      <h3 className="text-lg font-semibold text-gray-900">
-        Недостаточно AI-кредитов
-      </h3>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">
+            Недостаточно AI-кредитов
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Продолжайте работу с MetricTree PRO
+          </p>
+        </div>
 
-      <p className="mt-2 text-sm text-gray-600">
-        Для продолжения работы необходимо пополнить баланс AI-кредитов.
-      </p>
+        <button
+          type="button"
+          onClick={() => setShowCreditsModal(false)}
+          className="shrink-0 text-gray-400 hover:text-gray-700 text-xl leading-none"
+          aria-label="Закрыть"
+        >
+          ×
+        </button>
+      </div>
 
-      <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4">
-        <div className="flex items-center justify-between gap-3">
-          <span className="font-semibold text-gray-900">
-            300 AI-кредитов
-          </span>
-          <span className="font-semibold text-gray-900">
+      <div className="mt-5 rounded-xl border-2 border-[#ffdd2d] p-5">
+        <div className="text-lg font-bold text-gray-900">
+          MetricTree PRO
+        </div>
+
+        <div className="mt-3 flex items-baseline gap-2">
+          <span className="text-4xl font-bold text-gray-900">
             490 ₽
+          </span>
+          <span className="text-sm text-gray-500">
+            разовая оплата
           </span>
         </div>
 
-        <p className="mt-1 text-xs text-gray-500">
-          Без ограничения срока действия
-        </p>
+        <div className="mt-5 border-t border-gray-200 pt-4">
+          <p className="mb-3 text-sm font-medium text-gray-800">
+            Что входит в PRO:
+          </p>
+
+          <ul className="space-y-3 text-sm text-gray-700">
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 font-bold">✓</span>
+              <span>300 AI-кредитов для работы с метриками</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 font-bold">✓</span>
+              <span>Безлимитный экспорт любых деревьев в Miro</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 font-bold">✓</span>
+              <span>Кредиты и доступ к Miro без срока действия</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 font-bold">✓</span>
+              <span>Без подписки и автоматических списаний</span>
+            </li>
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setShowCreditsModal(false);
+            handleBuyPro();
+          }}
+          className="mt-6 w-full rounded-xl bg-[#ffdd2d] px-4 py-3 font-semibold text-black hover:brightness-95 transition"
+        >
+          Получить PRO за 490 ₽
+        </button>
       </div>
 
       <button
         type="button"
-        onClick={() => {
-        setShowCreditsModal(false);
-        handleBuyPro();
-        }}
-        className="mt-4 w-full rounded-xl bg-[#ffdd2d] px-4 py-3 font-semibold text-black hover:brightness-95 transition"
-      >
-        Пополнить баланс
-      </button>
-
-      <button
-        type="button"
         onClick={() => setShowCreditsModal(false)}
-        className="mt-3 w-full text-sm text-gray-500 hover:text-gray-800"
+        className="mt-4 w-full text-sm text-gray-500 hover:text-gray-800"
       >
         Продолжить без пополнения
       </button>
     </div>
   </div>
 )}
+
 
 
 {/* Подсказка о продолжении работы на компьютере */}
