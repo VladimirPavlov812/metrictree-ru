@@ -114,6 +114,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             ? "Вход"
             : AI_AUTH_TITLES[reason]
             ? AI_AUTH_TITLES[reason]
+            : reason === "export_miro"
+            ? "Экспортируйте дерево метрик в Miro"
             : reason === "default"
             ? "Регистрация"
             : reason === "generation_limit"
@@ -135,6 +137,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             </>
             ) : AI_AUTH_TITLES[reason] ? (
             "Создайте бесплатный аккаунт, чтобы получить AI-анализ и рекомендации."
+            ) : reason === "export_miro" ? (
+            "Создайте бесплатный аккаунт, чтобы сохранить дерево и перейти к экспорту в Miro."
             ) : (
             AUTH_REASONS[reason] || AUTH_REASONS.default
             )}
@@ -146,8 +150,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         <div className="flex items-center gap-2 text-sm text-gray-700">
         <span className="text-green-600 font-semibold">✓</span>
         <span>
-        {AI_AUTH_TITLES[reason]
-        ? "30 бесплатных AI-кредитов для анализа метрик"
+        {AI_AUTH_TITLES[reason] || reason === "export_miro"
+        ? "30 бесплатных AI-кредитов после регистрации"
         : "Ваше дерево останется доступным"}
         </span>
         </div>
@@ -155,7 +159,9 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         <div className="flex items-center gap-2 text-sm text-gray-700">
         <span className="text-green-600 font-semibold">✓</span>
         <span>
-        {AI_AUTH_TITLES[reason]
+        {reason === "export_miro"
+        ? "Экспорт в Miro доступен с MetricTree PRO — 490 ₽"
+        : AI_AUTH_TITLES[reason]
         ? "Сохраните дерево и продолжите работу позже"
         : reason === "generation_limit"
         ? "Генерируйте новые деревья и используйте AI-функции"
