@@ -215,6 +215,7 @@ const handleRunPrioritization = async () => {
   const hasQuota = await checkServerQuota("prioritization");
 
   if (!hasQuota) {
+  setCreditsModalMode("insufficient");
   setShowCreditsModal(true);
   return;
   }
@@ -361,6 +362,7 @@ try {
   const hasQuota = await checkServerQuota("experiment");
 
   if (!hasQuota) {
+    setCreditsModalMode("insufficient");
     setShowCreditsModal(true);
     return;
   }
@@ -534,6 +536,7 @@ try {
   const [insightLoading, setInsightLoading] = useState(false);
   const [error, setError] = useState("");
   const [showCreditsModal, setShowCreditsModal] = useState(false);
+  const [creditsModalMode, setCreditsModalMode] = useState("insufficient");
   const [highlightedNodes, setHighlightedNodes] = useState([]);
   const [activeTab, setActiveTab] = useState("visual");
   const [mobileMenuFor, setMobileMenuFor] = useState(null);
@@ -1755,6 +1758,7 @@ useEffect(() => {
 
       if (!hasCredits) {
         setError("");
+        setCreditsModalMode("insufficient");
         setShowCreditsModal(true);
       } else {
         setError("Не удалось начать генерацию. Попробуйте позже.");
@@ -2033,6 +2037,7 @@ try {
     const hasQuota = await checkServerQuota("suggestion");
 
     if (!hasQuota) {
+    setCreditsModalMode("insufficient");
     setShowCreditsModal(true);
     return;
     }
@@ -2618,6 +2623,7 @@ const handleGetInsight = async (metricArg) => {
   const hasQuota = await checkServerQuota("insight");
 
   if (!hasQuota) {
+  setCreditsModalMode("insufficient");
   setShowCreditsModal(true);
   return;
   }
@@ -3029,7 +3035,10 @@ const currentNextStepsCopy =
         {session?.user?.id && (
         <button
         type="button"
-        onClick={handleBuyPro}
+        onClick={() => {
+        setCreditsModalMode("purchase");
+        setShowCreditsModal(true);
+        }}
         className="mt-1 text-xs font-medium text-blue-600"
         >
         {creditBalance.left} AI-кредитов · Купить
@@ -3807,11 +3816,14 @@ const currentNextStepsCopy =
             </div>
           </div>
           <button
-            type="button"
-            onClick={handleBuyPro}
-            className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
+          type="button"
+          onClick={() => {
+          setCreditsModalMode("purchase");
+          setShowCreditsModal(true);
+          }}
+          className="mt-3 w-full bg-[#ffdd2d] text-black px-3 py-2 rounded-lg hover:brightness-95 transition font-medium text-sm"
           >
-            Купить 300 кредитов — 490 ₽
+          Купить 300 кредитов — 490 ₽
           </button>
         </div>
 
@@ -4986,11 +4998,15 @@ const currentNextStepsCopy =
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">
-            Недостаточно AI-кредитов
+         <h3 className="text-xl font-bold text-gray-900">
+          {creditsModalMode === "purchase"
+          ? "MetricTree PRO"
+          : "Недостаточно AI-кредитов"}
           </h3>
           <p className="mt-2 text-sm text-gray-600">
-            Продолжайте работу с MetricTree PRO
+          {creditsModalMode === "purchase"
+          ? "Больше возможностей для работы с деревьями метрик"
+          : "Продолжайте работу с MetricTree PRO"}
           </p>
         </div>
 
