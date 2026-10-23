@@ -2320,8 +2320,8 @@ if (!accessRes.ok) {
 const access = await accessRes.json();
 
 if (!access.allowed) {
-  setMiroPaywallProjectId(miroProjectId);
-  setShowMiroPaywall(true);
+  setCreditsModalMode("purchase");
+  setShowCreditsModal(true);
   return;
 }
 
@@ -4498,7 +4498,7 @@ const currentNextStepsCopy =
 
 
 {/* === Модалка: Оплата экспорта в Miro === */}
-{showMiroPaywall && (
+{false && showMiroPaywall && (
   <div
     className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 backdrop-blur-sm"
     onClick={() => setShowMiroPaywall(false)}
