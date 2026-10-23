@@ -13,6 +13,13 @@ const AUTH_REASONS = {
   save_project: "Создайте бесплатный аккаунт, чтобы сохранить дерево и вернуться к нему позже.",
 };
 
+const AI_AUTH_TITLES = {
+  insight: "Узнайте, как улучшить метрику",
+  experiment: "Создайте эксперимент для метрики",
+  suggestion: "Добавьте новую метрику",
+  prioritization: "Определите приоритетные метрики",
+};
+
 export default function AuthModal({ open, onClose, onAuth, reason = "default" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -105,6 +112,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             ? "Восстановление пароля"
             : mode === "login"
             ? "Вход"
+            : AI_AUTH_TITLES[reason]
+            ? AI_AUTH_TITLES[reason]
             : reason === "default"
             ? "Регистрация"
             : reason === "generation_limit"
@@ -124,6 +133,8 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
             </strong>{" "}
             для дальнейшей работы.
             </>
+            ) : AI_AUTH_TITLES[reason] ? (
+            "Создайте бесплатный аккаунт, чтобы получить AI-анализ и рекомендации."
             ) : (
             AUTH_REASONS[reason] || AUTH_REASONS.default
             )}
@@ -132,20 +143,26 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
 
             {mode === "register" && reason !== "default" && (
             <div className="mt-4 space-y-2">
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-            <span className="text-green-600 font-semibold">✓</span>
-            <span>Ваше дерево останется доступным</span>
-            </div>
+        <div className="flex items-center gap-2 text-sm text-gray-700">
+        <span className="text-green-600 font-semibold">✓</span>
+        <span>
+        {AI_AUTH_TITLES[reason]
+        ? "30 бесплатных AI-кредитов для анализа метрик"
+        : "Ваше дерево останется доступным"}
+        </span>
+        </div>
 
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-            <span className="text-green-600 font-semibold">✓</span>
-            <span>
-            {reason === "generation_limit"
-            ? "Генерируйте новые деревья и используйте AI-функции"
-            : "Сможете продолжить работу позже"}
-            </span>
-            </div>
-            </div>
+        <div className="flex items-center gap-2 text-sm text-gray-700">
+        <span className="text-green-600 font-semibold">✓</span>
+        <span>
+        {AI_AUTH_TITLES[reason]
+        ? "Сохраните дерево и продолжите работу позже"
+        : reason === "generation_limit"
+        ? "Генерируйте новые деревья и используйте AI-функции"
+        : "Сможете продолжить работу позже"}
+        </span>
+        </div>
+        </div>
             )}
           </div>
 
@@ -207,7 +224,7 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         ? "Отправить ссылку"
         : mode === "login"
         ? "Войти"
-        : "Создать бесплатный аккаунт"}
+        : "Регистрация"}
         </button>
 
         {mode === "login" && (
