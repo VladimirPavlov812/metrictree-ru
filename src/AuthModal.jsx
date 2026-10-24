@@ -23,6 +23,17 @@ const AI_AUTH_TITLES = {
 export default function AuthModal({ open, onClose, onAuth, reason = "default" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [referralCode, setReferralCode] = useState(() => {
+  const params = new URLSearchParams(window.location.search);
+  const code = (params.get("ref") || "").trim().toUpperCase();
+
+  if (code) {
+    sessionStorage.setItem("metrictree_referral_code", code);
+    return code;
+  }
+
+  return sessionStorage.getItem("metrictree_referral_code") || "";
+  });
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState(
   reason === "default" ? "login" : "register"
@@ -81,9 +92,12 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
-          password,
-        }),
+        email,
+        password,
+        ...(mode === "register" && referralCode
+        ? { referralCode }
+        : {}),
+      }),
       });
 
       const data = await res.json();
@@ -92,8 +106,13 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         throw new Error(data?.error || "Ошибка авторизации");
       }
 
+      if (mode === "register") {
+      sessionStorage.removeItem("metrictree_referral_code");
+      }
+
       onAuth?.(data.user, mode === "register");
       onClose();
+
     } catch (e) {
       alert(e?.message || "Ошибка авторизации");
     } finally {
@@ -214,7 +233,30 @@ export default function AuthModal({ open, onClose, onAuth, reason = "default" })
         Пароль должен содержать минимум 8 символов
         </p>
         )}  
+        {mode === "register" && (
+        <div className="mb-4">
+        <label className="block text-sm text-gray-700 mb-1">
+        Реферальный код (необязательно)
+        </label>
 
+        <input
+        type="text"
+        value={referralCode}
+        onChange={(e) =>
+        setReferralCode(e.target.value.trim().toUpperCase())
+        }
+        placeholder="MT-XXXXXXXXXXXX"
+        maxLength={19}
+        className="w-full border border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-[#ffdd2d] outline-none"
+        />
+
+        {referralCode && (
+        <p className="text-sm text-green-700 mt-2">
+        По приглашению вы получите 80 AI-кредитов вместо 30
+        </p>
+        )}
+        </div>
+        )}
           </>
         )}
 

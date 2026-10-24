@@ -472,6 +472,52 @@ try {
   const [questionsError, setQuestionsError] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [session, setSession] = useState(null);
+  const [referralData, setReferralData] = useState(null);
+  const [referralLoading, setReferralLoading] = useState(false);
+  const [referralError, setReferralError] = useState("");
+  useEffect(() => {
+  if (rightTab !== "quota" || !session?.user?.id) {
+    setReferralData(null);
+    return;
+  }
+
+  let cancelled = false;
+
+  const loadReferralData = async () => {
+    setReferralLoading(true);
+    setReferralError("");
+
+    try {
+      const res = await fetch("/api/referrals/me");
+
+      if (!res.ok) {
+        throw new Error("Не удалось загрузить реферальную статистику");
+      }
+
+      const data = await res.json();
+
+      if (!cancelled) {
+        setReferralData(data);
+      }
+    } catch (err) {
+      console.error("Referral load error:", err);
+
+      if (!cancelled) {
+        setReferralError(err.message);
+      }
+    } finally {
+      if (!cancelled) {
+        setReferralLoading(false);
+      }
+    }
+  };
+
+  loadReferralData();
+
+  return () => {
+    cancelled = true;
+  };
+  }, [rightTab, session?.user?.id]);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalReason, setAuthModalReason] = useState("default");
   const [activeProjectId, setActiveProjectId] = useState(null); // если открыт проект из облака
@@ -3826,6 +3872,95 @@ const currentNextStepsCopy =
           Купить 300 кредитов — 490 ₽
           </button>
         </div>
+
+  {/* === Реферальная программа === */}
+<div className="mt-5 border-t border-gray-200 pt-4">
+  <h3 className="text-sm font-semibold text-gray-900 mb-2">
+    Приглашайте друзей — получайте AI-кредиты
+  </h3>
+
+  <p className="text-xs text-gray-600 mb-3">
+    Получайте 100 AI-кредитов за каждого друга,
+    зарегистрировавшегося по вашей ссылке.
+    Ваш друг получит 80 AI-кредитов вместо 30.
+  </p>
+
+  {referralLoading ? (
+    <p className="text-xs text-gray-500">Загрузка...</p>
+  ) : referralError ? (
+    <p className="text-xs text-red-600">{referralError}</p>
+  ) : referralData ? (
+    <div className="space-y-3">
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          Ваша ссылка для приглашения
+        </label>
+        <div className="flex gap-2">
+          <input
+            readOnly
+            value={referralData.referralLink}
+            className="min-w-0 flex-1 border border-gray-200 rounded-lg px-2 py-2 text-xs bg-gray-50"
+          />
+          <button
+            type="button"
+            onClick={() =>
+              navigator.clipboard.writeText(referralData.referralLink)
+                .then(() => alert("Ссылка скопирована"))
+                .catch(() => alert("Не удалось скопировать ссылку"))
+            }
+            className="bg-[#ffdd2d] text-black px-3 py-2 rounded-lg text-xs font-medium hover:brightness-95"
+          >
+            Копировать
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          Ваш реферальный код
+        </label>
+        <div className="flex gap-2">
+          <input
+            readOnly
+            value={referralData.referralCode}
+            className="min-w-0 flex-1 border border-gray-200 rounded-lg px-2 py-2 text-xs bg-gray-50"
+          />
+          <button
+            type="button"
+            onClick={() =>
+              navigator.clipboard.writeText(referralData.referralCode)
+                .then(() => alert("Код скопирован"))
+                .catch(() => alert("Не удалось скопировать код"))
+            }
+            className="border border-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs font-medium hover:bg-gray-100"
+          >
+            Копировать
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-gray-50 rounded-xl p-3">
+          <div className="text-xl font-semibold text-gray-900">
+            {referralData.activatedCount}
+          </div>
+          <div className="text-xs text-gray-500">
+            Приглашено друзей
+          </div>
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-3">
+          <div className="text-xl font-semibold text-gray-900">
+            +{referralData.earnedCredits}
+          </div>
+          <div className="text-xs text-gray-500">
+            Заработано AI-кредитов
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null}
+  </div>
 
         {true && (
         <div className="mt-5 border-t border-gray-200 pt-4">

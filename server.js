@@ -60,6 +60,10 @@ function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
 }
 
+function generateReferralCode() {
+  return "MT-" + crypto.randomBytes(8).toString("hex").toUpperCase();
+}
+
 function createToken(user) {
   return jwt.sign(
     {
@@ -100,59 +104,126 @@ function authRequired(req, res, next) {
 // AUTH: REGISTER
 // -----------------------
 
+
 app.post("/api/auth/register", async (req, res) => {
+  const email = normalizeEmail(req.body?.email);
+  const password = String(req.body?.password || "");
+  const invitedByCode = String(req.body?.referralCode || "")
+    .trim()
+    .toUpperCase();
+
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ error: "Введите корректный email" });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({
+      error: "Пароль должен содержать минимум 8 символов",
+    });
+  }
+
+  if (invitedByCode && !/^MT-[A-F0-9]{12,16}$/.test(invitedByCode)) {
+    return res.status(400).json({
+      error: "Некорректный реферальный код",
+    });
+  }
+
+  let client;
+
   try {
-    const email = normalizeEmail(req.body?.email);
-    const password = String(req.body?.password || "");
-
-    if (!email || !email.includes("@")) {
-      return res.status(400).json({ error: "Введите корректный email" });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({
-        error: "Пароль должен содержать минимум 8 символов",
-      });
-    }
-
     const passwordHash = await bcrypt.hash(password, 12);
+    client = await pool.connect();
+    await client.query("BEGIN");
 
-    const result = await pool.query(
-      `
-      INSERT INTO users (email, password_hash)
-      VALUES ($1, $2)
-      RETURNING id, email, created_at
-      `,
-      [email, passwordHash]
+    let referrerId = null;
+
+    if (invitedByCode) {
+      const referrerResult = await client.query(
+        `SELECT id FROM users WHERE referral_code = $1 LIMIT 1`,
+        [invitedByCode]
+      );
+
+      if (!referrerResult.rows.length) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({
+          error: "Реферальный код не найден",
+        });
+      }
+
+      referrerId = referrerResult.rows[0].id;
+    }
+
+    const referralCode = generateReferralCode();
+
+    const result = await client.query(
+      `INSERT INTO users (email, password_hash, referral_code)
+       VALUES ($1, $2, $3)
+       RETURNING id, email, created_at, referral_code`,
+      [email, passwordHash, referralCode]
     );
 
     const user = result.rows[0];
 
-    await pool.query(
-    `
-    INSERT INTO credit_balances (user_id, free_credits, paid_credits)
-    VALUES ($1, 30, 0)
-    ON CONFLICT (user_id) DO NOTHING
-    `,
-    [user.id]
+    await client.query(
+      `INSERT INTO credit_balances
+         (user_id, free_credits, paid_credits)
+       VALUES ($1, $2, 0)`,
+      [user.id, referrerId ? 80 : 30]
     );
 
-    const token = createToken(user);
+    if (referrerId) {
+    await client.query(
+    `INSERT INTO referrals (referrer_id, referred_id, activated_at)
+     VALUES ($1, $2, NOW())`,
+    [referrerId, user.id]
+    );
 
+    const bonusResult = await client.query(
+    `UPDATE credit_balances
+     SET free_credits = free_credits + 100,
+         updated_at = NOW()
+     WHERE user_id = $1
+     RETURNING free_credits`,
+    [referrerId]
+    );
+
+    if (bonusResult.rowCount !== 1) {
+    throw new Error("Failed to award referral bonus");
+    }
+    }
+
+    await client.query("COMMIT");
+
+    const token = createToken(user);
     setSessionCookie(res, token);
 
     return res.status(201).json({ user });
   } catch (err) {
+    if (client) {
+      await client.query("ROLLBACK").catch(() => {});
+    }
+
     if (err?.code === "23505") {
+      if (err.constraint === "users_email_key") {
+        return res.status(409).json({
+          error: "Пользователь с таким email уже существует",
+        });
+      }
+
       return res.status(409).json({
-        error: "Пользователь с таким email уже существует",
+        error: "Конфликт уникального кода. Попробуйте ещё раз.",
       });
     }
 
     console.error("Register error:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: "Internal server error",
+    });
+  } finally {
+    client?.release();
   }
 });
+
 
 
 // -----------------------
@@ -369,6 +440,44 @@ app.get("/api/auth/me", authRequired, async (req, res) => {
   }
 });
 
+
+app.get("/api/referrals/me", authRequired, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const result = await pool.query(
+      `SELECT
+         u.referral_code,
+         COUNT(r.id)::int AS invited_count,
+         COUNT(r.activated_at)::int AS activated_count
+       FROM users u
+       LEFT JOIN referrals r ON r.referrer_id = u.id
+       WHERE u.id = $1
+       GROUP BY u.id, u.referral_code`,
+      [userId]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const row = result.rows[0];
+
+    return res.json({
+      referralCode: row.referral_code,
+      referralLink:
+        `https://metrictree.ru/?ref=${encodeURIComponent(row.referral_code)}`,
+      invitedCount: row.invited_count,
+      activatedCount: row.activated_count,
+      earnedCredits: row.activated_count * 100,
+    });
+  } catch (err) {
+    console.error("Referral stats error:", err);
+    return res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+});
 
 // -----------------------
 // QUOTAS
