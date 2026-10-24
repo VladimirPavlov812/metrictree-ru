@@ -475,6 +475,7 @@ try {
   const [referralData, setReferralData] = useState(null);
   const [referralLoading, setReferralLoading] = useState(false);
   const [referralError, setReferralError] = useState("");
+  const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
   useEffect(() => {
   if (rightTab !== "quota" || !session?.user?.id) {
     setReferralData(null);
@@ -534,7 +535,7 @@ try {
   const [experimentLoading, setExperimentLoading] = useState(false);
   const [showExperimentModal, setShowExperimentModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [rightTab, setRightTab] = useState("metric"); // "metric" | "quota"
+  
   const [downloadMenuOpen, setDownloadMenuOpen] = useState(false);
   const [showDesktopTip, setShowDesktopTip] = useState(false);
 
