@@ -3789,7 +3789,7 @@ const currentNextStepsCopy =
 
     {/* === TAB: ЛИМИТЫ === */}
     {rightTab === "quota" && (
-    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 max-h-[calc(100vh-250px)] overflow-y-auto overscroll-contain">
     {!session?.user?.id ? (
       
       <>
