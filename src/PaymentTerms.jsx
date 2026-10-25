@@ -1,13 +1,32 @@
 export default function PaymentTerms() {
-  return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <div className="max-w-3xl mx-auto px-6 py-12">
+return (
+  <div className="min-h-screen bg-gray-50 text-gray-900">
+
+    {/* Шапка сайта */}
+    <header className="bg-white border-b border-gray-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-3 min-w-0">
+          <img
+            src="/metrictree-logo.png"
+            alt="MetricTree"
+            className="w-28 sm:w-36 h-auto object-contain"
+          />
+          <span className="hidden sm:block text-sm text-gray-600">
+            AI-генератор дерева метрик
+          </span>
+        </a>
+
         <a
           href="/"
-          className="inline-block mb-8 text-blue-600 hover:underline"
+          className="shrink-0 bg-[#FFDF2B] text-gray-900 px-4 py-2 rounded-xl font-medium text-sm hover:brightness-95 transition"
         >
-          ← Вернуться в MetricTree
+          Построить дерево →
         </a>
+      </div>
+    </header>
+
+    <div className="max-w-3xl mx-auto px-6 py-12">  
+    
 
         <h1 className="text-3xl font-bold mb-8">
           Оплата и условия использования
