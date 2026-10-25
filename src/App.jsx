@@ -3364,6 +3364,56 @@ const currentNextStepsCopy =
           >
           <div ref={reactFlowWrapperRef} className="w-full h-full relative">
           {/* сюда пойдёт кнопка */}
+          
+          {isFullscreen && selectedMetric && (
+    <div className="absolute top-20 right-4 z-[10000] w-64 rounded-xl bg-white p-3 shadow-2xl border border-gray-200 flex flex-col gap-2">
+    <div className="text-sm font-semibold text-gray-800 truncate mb-1">
+      {selectedMetric.data.label}
+    </div>
+
+    <button
+      onClick={() => handleGetInsight()}
+      disabled={insightLoading}
+      className="bg-[#ffdd2d] text-black px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 font-medium"
+    >
+      {insightLoading ? "Анализирую..." : "💡 Как улучшить метрику"}
+    </button>
+
+    <button
+      onClick={handleGenerateExperiment}
+      disabled={experimentLoading}
+      className="bg-[#ffdd2d] text-black px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 font-medium"
+    >
+      {experimentLoading ? "Генерация…" : "Эксперимент"}
+    </button>
+
+    <button
+      onClick={handleAddMetric}
+      className="bg-[#fff9db] text-gray-900 px-3 py-2 rounded-lg hover:bg-[#ffed93] text-sm"
+    >
+      Добавить метрику
+    </button>
+
+    <button
+      onClick={() => {
+        setEditMetricName(selectedMetric.data.label);
+        setEditMetricType(selectedMetric.type || "proxy");
+        setShowEditModal(true);
+      }}
+      className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-lg hover:bg-gray-200 text-sm"
+    >
+      Редактировать
+    </button>
+
+    <button
+      onClick={() => handleDeleteMetric()}
+      className="bg-white text-red-600 border border-gray-200 px-3 py-2 rounded-lg hover:bg-red-50 text-sm"
+    >
+      Удалить метрику
+    </button>
+    </div>
+    )}
+
           {isFullscreen && (
           <button
           onClick={() => setIsFullscreen(false)}
@@ -4282,7 +4332,7 @@ const currentNextStepsCopy =
 
       {/* === Модалка: Добавить === */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-[10001]">
           <div className="bg-white rounded-xl shadow-xl p-6 w-[400px] transition-all">
             <h3 className="text-lg font-semibold mb-4">Добавить метрику</h3>
 
@@ -4987,7 +5037,7 @@ const currentNextStepsCopy =
 
       {/* === Модалка: Редактировать === */}
       {showEditModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-[10001]">
           <div className="bg-white rounded-xl shadow-xl p-6 w-[400px] transition-all">
             <h3 className="text-lg font-semibold mb-4">Редактировать метрику</h3>
 
@@ -5032,7 +5082,7 @@ const currentNextStepsCopy =
 
 
       {showExperimentModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[10001]">
     <div className="bg-white rounded-2xl shadow-2xl p-8 w-[700px] max-h-[85vh] overflow-y-auto">
 
       <h3 className="text-xl font-semibold mb-4">
@@ -5112,7 +5162,7 @@ const currentNextStepsCopy =
 
       {/* === Модалка: AI инсайт === */}
       {showInsightModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 backdrop-blur-sm">
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[10001] backdrop-blur-sm">
     <div className="bg-white rounded-2xl shadow-2xl p-8 w-[700px] max-h-[85vh] overflow-y-auto animate-fadeIn relative">
 
       <h3 className="text-xl font-semibold mb-4 text-gray-900 flex items-center gap-2">
