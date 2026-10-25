@@ -4735,18 +4735,18 @@ const currentNextStepsCopy =
         >
 
       <div className="flex items-center gap-3 mb-4">
-       <img
-        src="/metrictree-logo.png"
-        alt="MetricTree"
-        className="w-10 h-10 object-contain shrink-0"
-        />
-        <h3 className="text-xl font-semibold text-gray-900">
-        Почему MetricTree полезен
-        </h3>
+      <img
+      src="/metrictree-logo.png"
+      alt="MetricTree"
+      className="w-32 sm:w-40 h-auto object-contain shrink-0"
+      />
+      <h3 className="text-xl font-semibold text-gray-900">
+      Почему MetricTree полезен
+      </h3>
       </div>
 
       <div className="space-y-3 text-gray-800 leading-relaxed">
-        <div className="p-4 rounded-xl border border-gray-200 bg-gray-50">
+      <div className="p-4 rounded-xl border border-gray-200 bg-gray-50">
           <div className="font-semibold mb-1">1) Быстро наводит порядок в метриках</div>
           <div className="text-sm text-gray-700">
             Генерирует структуру метрик от Business → Product → Proxy/Counter/Ops, чтобы команда говорила на одном языке.
