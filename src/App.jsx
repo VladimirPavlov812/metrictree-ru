@@ -3583,7 +3583,7 @@ const currentNextStepsCopy =
       >
         Как это работает
       </button>
-
+      {(session || treeData) && (
       <button
         onClick={handleOpenPrioritization}
         disabled={!treeData || priorLoading}
@@ -3592,9 +3592,11 @@ const currentNextStepsCopy =
       >
         Приоритизировать метрики
       </button>
+      )}
     </div>
 
     {/* Экспорт/импорт */}
+    {(session || treeData) && (
     <div className="flex flex-wrap gap-2 mb-5">
 
       <div ref={downloadMenuRef} className="relative">
@@ -3647,6 +3649,7 @@ const currentNextStepsCopy =
         Очистить
       </button>
     </div>
+    )}
     </>
     )}
     {/* === TAB: МЕТРИКА === */}
