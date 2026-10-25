@@ -1239,26 +1239,48 @@ app.post("/api/feedback", async (req, res) => {
   try {
     const { source, answers, createdAt } = req.body || {};
 
-    if (!source || !answers?.task || !answers?.nextStep) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
+    const isGenerationFeedback = source === "generate_tree";
+
+    const missingRequiredFields =
+    !source ||
+    !answers?.task?.trim() ||
+    (isGenerationFeedback
+    ? !answers?.returnReason?.trim()
+    : !answers?.nextStep?.trim());
+
+if (missingRequiredFields) {
+  return res.status(400).json({ error: "Missing required fields" });
+}
 
     await pool.query(
-      `
-      INSERT INTO feedback
-        (source, task, next_step, reuse_score, contact, created_at)
-      VALUES
-        ($1, $2, $3, $4, $5, $6)
-      `,
-      [
-        source,
-        answers.task,
-        answers.nextStep,
-        answers.reuseScore ? Number(answers.reuseScore) : null,
-        answers.contact || null,
-        createdAt || new Date().toISOString(),
-      ]
-    );
+  `
+  INSERT INTO feedback
+    (
+      source,
+      task,
+      next_step,
+      reuse_score,
+      contact,
+      usefulness,
+      return_reason,
+      paid_feature,
+      created_at
+    )
+  VALUES
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  `,
+  [
+    source,
+    answers.task,
+    answers.nextStep,
+    answers.reuseScore ? Number(answers.reuseScore) : null,
+    answers.contact || null,
+    answers.usefulness ? Number(answers.usefulness) : null,
+    answers.returnReason || null,
+    answers.paidFeature || null,
+    createdAt || new Date().toISOString(),
+  ]
+);
 
     res.json({ ok: true });
   } catch (err) {

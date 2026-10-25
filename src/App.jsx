@@ -268,10 +268,13 @@ const openFeedbackModal = (source) => {
   setFeedbackSubmitting(false);
   setFeedbackSubmitted(false);
   setFeedbackForm({
-    task: "",
-    nextStep: "",
-    reuseScore: "",
-    contact: "",
+  task: "",
+  nextStep: "",
+  reuseScore: "",
+  contact: "",
+  usefulness: "",
+  returnReason: "",
+  paidFeature: "",
   });
   setShowFeedbackModal(true);
 };
@@ -291,28 +294,38 @@ const tryOpenFeedbackModal = (source) => {
 
 const handleSubmitFeedback = async () => {
   if (!feedbackForm.task.trim()) {
-    alert("Пожалуйста, ответьте на первый вопрос");
+  alert("Пожалуйста, ответьте на первый вопрос");
+  return;
+}
+
+if (feedbackSource === "generate_tree") {
+  if (!feedbackForm.returnReason.trim()) {
+    alert("Пожалуйста, расскажите, что побудило бы вас вернуться");
     return;
   }
-
+} else {
   if (!feedbackForm.nextStep.trim()) {
     alert("Пожалуйста, ответьте на второй вопрос");
     return;
   }
+}
 
 
   try {
     setFeedbackSubmitting(true);
 
     const payload = {
-      source: feedbackSource,
-      answers: {
-        task: feedbackForm.task,
-        nextStep: feedbackForm.nextStep,
-        reuseScore: feedbackForm.reuseScore || null,
-        contact: feedbackForm.contact || null,
-      },
-      createdAt: new Date().toISOString(),
+    source: feedbackSource,
+    answers: {
+    task: feedbackForm.task,
+    nextStep: feedbackForm.nextStep,
+    reuseScore: feedbackForm.reuseScore || null,
+    contact: feedbackForm.contact || null,
+    usefulness: feedbackForm.usefulness || null,
+    returnReason: feedbackForm.returnReason || null,
+    paidFeature: feedbackForm.paidFeature || null,
+    },
+    createdAt: new Date().toISOString(),
     };
 
     const r = await fetch("/api/feedback", {
@@ -445,6 +458,24 @@ try {
   });
   const [showQuestionsModal, setShowQuestionsModal] = useState(false);
   const [feedbackShownThisSession, setFeedbackShownThisSession] = useState(false);
+  const [feedbackGenerationTrigger, setFeedbackGenerationTrigger] = useState(0);
+  useEffect(() => {
+  if (feedbackGenerationTrigger === 0 || feedbackShownThisSession) return;
+
+  const timer = setTimeout(() => {
+    if (
+  document.visibilityState === "visible" &&
+  !showInsightModal &&
+  !showExperimentModal &&
+  !showQuestionsModal &&
+  !showFeedbackModal
+  ) {
+  tryOpenFeedbackModal("generate_tree");
+  }
+  }, 60000);
+
+  return () => clearTimeout(timer);
+  }, [feedbackGenerationTrigger, feedbackShownThisSession]);
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackSource, setFeedbackSource] = useState(""); // "generate_tree" | "export_miro"
@@ -456,6 +487,9 @@ try {
   nextStep: "",
   reuseScore: "",
   contact: "",
+  usefulness: "",
+  returnReason: "",
+  paidFeature: "",
   });
 
   const currentFeedbackMeta =
@@ -1888,6 +1922,7 @@ useEffect(() => {
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
       setTreeData(treeJson);
+      setFeedbackGenerationTrigger((prev) => prev + 1);
       
       return; // важно
     }
@@ -1934,6 +1969,7 @@ useEffect(() => {
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
       setTreeData(treeJson);
+      setFeedbackGenerationTrigger((prev) => prev + 1);
       
       return;
     }
@@ -2047,6 +2083,7 @@ try {
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
     setTreeData(treeJson);
+    setFeedbackGenerationTrigger((prev) => prev + 1);
     
     // 4) закрываем модалку
     setShowQuestionsModal(false);
@@ -4335,19 +4372,37 @@ const currentNextStepsCopy =
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
-                2. Что ты будешь делать с этим деревом дальше? <span className="text-red-500">*</span>
+                {feedbackSource === "generate_tree"
+                ? "2. Что побудило бы вас снова воспользоваться MetricTree?"
+                : "2. Что ты будешь делать с этим деревом дальше?"}
+                <span className="text-red-500">*</span>
               </label>
               <textarea
-                value={feedbackForm.nextStep}
-                onChange={(e) => updateFeedbackField("nextStep", e.target.value)}
-                placeholder="Например: обсужу с командой, загружу в Miro, соберу dashboard..."
+              value={
+              feedbackSource === "generate_tree"
+              ? feedbackForm.returnReason
+              : feedbackForm.nextStep
+              }
+              onChange={(e) =>
+              updateFeedbackField(
+              feedbackSource === "generate_tree" ? "returnReason" : "nextStep",
+              e.target.value
+              )
+              }
+              placeholder={
+              feedbackSource === "generate_tree"
+              ? "Например: новые функции, больше AI-кредитов, интеграции..."
+              : "Например: обсужу с командой, загружу в Miro, соберу dashboard..."
+              }
                 className="w-full border border-gray-300 rounded-xl p-3 min-h-[96px] focus:ring-2 focus:ring-[#ffdd2d] outline-none resize-none"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
-                3. Насколько вероятно, что ты снова воспользуешься этим инструментом?
+                {feedbackSource === "generate_tree"
+                ? "3. Насколько полезным оказалось созданное дерево метрик?"
+                : "3. Насколько вероятно, что ты снова воспользуешься этим инструментом?"}
                 <span className="text-gray-400 text-xs ml-2">(опционально)</span>
               </label>
 
@@ -4356,9 +4411,16 @@ const currentNextStepsCopy =
                   <button
                     key={n}
                     type="button"
-                    onClick={() => updateFeedbackField("reuseScore", String(n))}
+                    onClick={() =>
+                    updateFeedbackField(
+                    feedbackSource === "generate_tree" ? "usefulness" : "reuseScore",
+                    String(n)
+                    )
+                    }
                     className={`w-11 h-11 rounded-xl border text-sm font-medium transition ${
-                      feedbackForm.reuseScore === String(n)
+                      (feedbackSource === "generate_tree"
+                      ? feedbackForm.usefulness
+                      : feedbackForm.reuseScore) === String(n)
                         ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
                         : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                     }`}
@@ -4369,9 +4431,26 @@ const currentNextStepsCopy =
               </div>
             </div>
 
+            {feedbackSource === "generate_tree" && (
+            <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
+            4. За какую дополнительную возможность MetricTree вы были бы готовы заплатить?
+            <span className="text-gray-400 text-xs ml-2">
+            (необязательно)
+            </span>
+            </label>
+
+            <textarea
+            value={feedbackForm.paidFeature}
+            onChange={(e) => updateFeedbackField("paidFeature", e.target.value)}
+            placeholder="Например: интеграции, AI-анализ, экспорт или другая функция. Можно написать «ни за какую»."
+            className="w-full border border-gray-300 rounded-xl p-3 min-h-[96px] focus:ring-2 focus:ring-[#ffdd2d] outline-none resize-none"
+            />
+            </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
-                4. Можно ли связаться с тобой, чтобы задать пару вопросов? <span className="text-gray-400 text-xs ml-2">(опционально)</span>
+                {feedbackSource === "generate_tree" ? "5." : "4."} Можно ли связаться с тобой, чтобы задать пару вопросов? <span className="text-gray-400 text-xs ml-2">(опционально)</span>
               </label>
               <input
                 type="text"
