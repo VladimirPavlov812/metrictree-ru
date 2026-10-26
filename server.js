@@ -1291,7 +1291,44 @@ if (missingRequiredFields) {
 
 
 
+// -----------------------
+// GUEST GENERATION ANALYTICS
+// -----------------------
 
+app.post("/api/analytics/guest-generation", async (req, res) => {
+  const token = req.cookies[COOKIE_NAME];
+
+  if (token) {
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      return res.status(403).json({ error: "Guests only" });
+    } catch {
+      return res.status(401).json({ error: "Invalid session" });
+    }
+  }
+
+  const description = req.body?.description;
+
+  if (
+    typeof description !== "string" ||
+    !description.trim() ||
+    description.length > 10000
+  ) {
+    return res.status(400).json({ error: "Invalid description" });
+  }
+
+  try {
+    await pool.query(
+      "INSERT INTO generation_analytics (description) VALUES ($1)",
+      [description.trim()]
+    );
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("Guest generation analytics error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 // -----------------------
 // CLOUD.RU / GPT
 // -----------------------

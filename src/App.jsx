@@ -1923,6 +1923,7 @@ useEffect(() => {
       setEdges(layoutedEdges);
       setTreeData(treeJson);
       setFeedbackGenerationTrigger((prev) => prev + 1);
+      logGuestGeneration(description);
       
       return; // важно
     }
@@ -1970,6 +1971,7 @@ useEffect(() => {
       setEdges(layoutedEdges);
       setTreeData(treeJson);
       setFeedbackGenerationTrigger((prev) => prev + 1);
+      logGuestGeneration(description);
       
       return;
     }
@@ -1986,6 +1988,25 @@ useEffect(() => {
     setLoading(false);
   }
   };
+
+
+  const logGuestGeneration = (originalDescription) => {
+  if (session?.user?.id) return;
+
+  fetch("/api/analytics/guest-generation", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+    body: JSON.stringify({
+      description: originalDescription,
+    }),
+  }).catch((err) => {
+    console.warn("Guest generation analytics failed:", err);
+  });
+  };
+
 
   const handleConfirmQuestions = async () => {
   // ✅ старт новой “сессии” генерации, которую можно отменить
@@ -2084,6 +2105,7 @@ try {
     setEdges(layoutedEdges);
     setTreeData(treeJson);
     setFeedbackGenerationTrigger((prev) => prev + 1);
+    logGuestGeneration(description);
     
     // 4) закрываем модалку
     setShowQuestionsModal(false);
