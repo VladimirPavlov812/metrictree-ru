@@ -459,23 +459,9 @@ try {
   const [showQuestionsModal, setShowQuestionsModal] = useState(false);
   const [feedbackShownThisSession, setFeedbackShownThisSession] = useState(false);
   const [feedbackGenerationTrigger, setFeedbackGenerationTrigger] = useState(0);
-  useEffect(() => {
-  if (feedbackGenerationTrigger === 0 || feedbackShownThisSession) return;
-
-  const timer = setTimeout(() => {
-    if (
-  document.visibilityState === "visible" &&
-  !showInsightModal &&
-  !showExperimentModal &&
-  !showQuestionsModal &&
-  !showFeedbackModal
-  ) {
-  tryOpenFeedbackModal("generate_tree");
-  }
-  }, 60000);
-
-  return () => clearTimeout(timer);
-  }, [feedbackGenerationTrigger, feedbackShownThisSession]);
+  
+  const [showGuestSavePrompt, setShowGuestSavePrompt] = useState(false);
+  const [guestSavePromptDismissed, setGuestSavePromptDismissed] = useState(false);
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackSource, setFeedbackSource] = useState(""); // "generate_tree" | "export_miro"
@@ -506,6 +492,47 @@ try {
   const [questionsError, setQuestionsError] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [session, setSession] = useState(null);
+
+   useEffect(() => {
+  if (
+    feedbackGenerationTrigger === 0 ||
+    session?.user?.id ||
+    guestSavePromptDismissed
+  ) {
+    return;
+  }
+
+  const timer = setTimeout(() => {
+    if (document.visibilityState === "visible") {
+      setShowGuestSavePrompt(true);
+    }
+  }, 12000);
+
+  return () => clearTimeout(timer);
+  }, [feedbackGenerationTrigger, session?.user?.id, guestSavePromptDismissed]);  
+
+  useEffect(() => {
+  if (
+  feedbackGenerationTrigger === 0 ||
+  feedbackShownThisSession ||
+  !session?.user?.id
+  ) return;
+
+  const timer = setTimeout(() => {
+    if (
+  document.visibilityState === "visible" &&
+  !showInsightModal &&
+  !showExperimentModal &&
+  !showQuestionsModal &&
+  !showFeedbackModal
+  ) {
+  tryOpenFeedbackModal("generate_tree");
+  }
+  }, 60000);
+
+  return () => clearTimeout(timer);
+  }, [feedbackGenerationTrigger, feedbackShownThisSession, session?.user?.id]);
+
   const [referralData, setReferralData] = useState(null);
   const [referralLoading, setReferralLoading] = useState(false);
   const [referralError, setReferralError] = useState("");
@@ -5421,7 +5448,53 @@ const currentNextStepsCopy =
   </div>
 )}
 
+{showGuestSavePrompt &&
+  !session?.user?.id &&
+  !authModalOpen &&
+  !showQuestionsModal &&
+  !showFeedbackModal &&
+  !showInsightModal &&
+  !showExperimentModal && (
+    <div className="fixed bottom-20 right-4 z-[9998] w-[calc(100%-2rem)] max-w-sm rounded-xl border border-gray-200 bg-white p-4 shadow-xl">
+      <button
+        type="button"
+        onClick={() => {
+          setShowGuestSavePrompt(false);
+          setGuestSavePromptDismissed(true);
+        }}
+        className="absolute right-3 top-2 text-xl text-gray-400 hover:text-gray-700"
+        aria-label="Закрыть"
+      >
+        ×
+      </button>
 
+      <div className="pr-6 text-base font-semibold text-gray-900">
+        Не потеряйте своё дерево метрик
+      </div>
+
+      <p className="mt-2 text-sm text-gray-600">
+        Создайте бесплатный аккаунт, чтобы сохранить дерево
+        и продолжить работу позже.
+      </p>
+
+      <button
+        type="button"
+        onClick={() => {
+          setShowGuestSavePrompt(false);
+          setGuestSavePromptDismissed(true);
+          setAuthModalReason("save_project");
+          setAuthModalOpen(true);
+        }}
+        className="mt-4 w-full rounded-lg bg-[#ffdd2d] px-4 py-2.5 text-sm font-medium text-black hover:brightness-95"
+      >
+        Сохранить дерево бесплатно
+      </button>
+
+      <p className="mt-2 text-center text-xs text-gray-400">
+        Можно продолжить без регистрации
+      </p>
+    </div>
+  )}
 
 <AuthModal
   open={authModalOpen}
