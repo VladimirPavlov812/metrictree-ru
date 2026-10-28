@@ -1645,6 +1645,12 @@ useEffect(() => {
   };
 
   const handleDownloadTxt = () => {
+  if (!session?.user?.id) {
+    setAuthModalReason("export_txt");
+    setAuthModalOpen(true);
+    return;
+  }
+
   if (!treeData) return;
 
   try {
