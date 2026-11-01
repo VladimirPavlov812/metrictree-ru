@@ -655,6 +655,7 @@ try {
   const [miroExporting, setMiroExporting] = useState(false);
   const [showNextStepsModal, setShowNextStepsModal] = useState(false);
   const [nextStepsSource, setNextStepsSource] = useState("");
+  const [miroSuccessBoardId, setMiroSuccessBoardId] = useState(null);
 
   const [miroExportStatus, setMiroExportStatus] = useState("");
   const [miroExportProgress, setMiroExportProgress] = useState(0); // 0..100
@@ -2520,7 +2521,7 @@ if (!access.allowed) {
     setMiroExportProgress(95);
 
     ymEvent("export_miro");
-    openNextStepsModal("export_miro");
+    setMiroSuccessBoardId(boardId.trim());
 
   } catch (e) {
     console.error(e);
@@ -4707,6 +4708,41 @@ const currentNextStepsCopy =
   </div>
 )}
 
+
+{miroSuccessBoardId && (
+  <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 p-4">
+    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+      <div className="mb-3 text-xl font-semibold text-gray-900">
+        ✅ Дерево выгружено в Miro
+      </div>
+
+      <p className="mb-6 text-sm text-gray-600">
+        Дерево добавлено на выбранную доску.
+        Теперь можно продолжить работу в Miro.
+      </p>
+
+      <div className="flex flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          onClick={() => setMiroSuccessBoardId(null)}
+          className="rounded-lg bg-gray-100 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+        >
+          Закрыть
+        </button>
+
+        <a
+          href={`https://miro.com/app/board/${encodeURIComponent(miroSuccessBoardId)}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setMiroSuccessBoardId(null)}
+          className="rounded-lg bg-[#ffdd2d] px-4 py-2 text-sm font-medium text-black hover:brightness-95"
+        >
+          Открыть в Miro ↗
+        </a>
+      </div>
+    </div>
+  </div>
+)}
 
 {/* === Модалка: Что дальше после экспорта === */}
 {showNextStepsModal && (
