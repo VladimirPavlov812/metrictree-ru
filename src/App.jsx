@@ -3664,7 +3664,7 @@ const currentNextStepsCopy =
     <div className="flex items-center gap-2 mb-4">
       <button
         onClick={() => setRightTab("metric")}
-        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
           rightTab === "metric"
             ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
             : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3678,7 +3678,7 @@ const currentNextStepsCopy =
     setRightTab("cloud");
     fetchCloudProjects();
     }}
-    className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+    className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
     rightTab === "cloud"
       ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
       : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3693,7 +3693,7 @@ const currentNextStepsCopy =
           refreshQuotaView();
           setRightTab("quota");
         }}
-        className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
+        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
           rightTab === "quota"
             ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
             : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3709,7 +3709,7 @@ const currentNextStepsCopy =
     }}
     title="Как это работает"
     aria-label="Как это работает"
-    className="shrink-0 w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black transition font-semibold"
+    className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black transition font-semibold text-sm"
     >
     ?
     </button>
