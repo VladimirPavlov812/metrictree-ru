@@ -3884,14 +3884,14 @@ const currentNextStepsCopy =
               </button>
             </div>
             </div>
-          </>
+            </>
         ) : (
-          <div>
           <div className="text-sm text-gray-500">
-          Выбери метрику в дереве — здесь появятся действия.
+            Выбери метрику в дереве — здесь появятся действия.
           </div>
+        )}
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="text-xs font-semibold text-gray-500 mb-3">
           Материалы о метриках
           </div>
@@ -3926,19 +3926,14 @@ const currentNextStepsCopy =
         </a>
         </div>
 
-        <div className="mt-4 text-xs text-gray-400">
-        <a href="/payment-terms" className="hover:text-gray-600 hover:underline">
-        Оплата и условия
-        </a>
-        <span className="mx-2">·</span>
-        <span>© 2026 MetricTree</span>
+                <div className="mt-4 text-xs text-gray-400">
+          <a href="/payment-terms" className="hover:text-gray-600 hover:underline">
+            Оплата и условия
+          </a>
+          <span className="mx-2">·</span>
+          <span>© 2026 MetricTree</span>
         </div>
         </div>
-
-
-          </div>
-
-          )}
       </div>
     )}
 
