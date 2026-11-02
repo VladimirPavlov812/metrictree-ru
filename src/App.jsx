@@ -3639,6 +3639,18 @@ const currentNextStepsCopy =
       >
         + Добавить
       </button>
+      <button
+      type="button"
+      onClick={() => {
+      setShowBenefitsModal(true);
+      ymEvent("benefits_open");
+      }}
+      title="Как это работает"
+      aria-label="Как это работает"
+      className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black transition font-semibold text-sm"
+      >
+      ?
+      </button>
       </div>
       </div>
     
@@ -3664,7 +3676,7 @@ const currentNextStepsCopy =
     <div className="flex items-center gap-2 mb-4">
       <button
         onClick={() => setRightTab("metric")}
-        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
+        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-sm font-medium border transition ${
           rightTab === "metric"
             ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
             : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3678,7 +3690,7 @@ const currentNextStepsCopy =
     setRightTab("cloud");
     fetchCloudProjects();
     }}
-    className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
+    className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-sm font-medium border transition ${
     rightTab === "cloud"
       ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
       : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3693,7 +3705,7 @@ const currentNextStepsCopy =
           refreshQuotaView();
           setRightTab("quota");
         }}
-        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-xs font-medium border transition ${
+        className={`min-w-0 flex-1 px-2 py-2 rounded-xl text-sm font-medium border transition ${
           rightTab === "quota"
             ? "bg-[#ffdd2d] border-[#ffdd2d] text-black"
             : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
@@ -3701,18 +3713,7 @@ const currentNextStepsCopy =
       >
         Аккаунт
       </button>
-    <button
-    type="button"
-    onClick={() => {
-    setShowBenefitsModal(true);
-    ymEvent("benefits_open");
-    }}
-    title="Как это работает"
-    aria-label="Как это работает"
-    className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black transition font-semibold text-sm"
-    >
-    ?
-    </button>
+    
       
     </div>
     {rightTab === "metric" && (
@@ -3858,10 +3859,11 @@ const currentNextStepsCopy =
 
             <div className="grid grid-cols-2 gap-2 mt-4 mb-5">
               <button
-                onClick={handleAddMetric}
-                className="bg-[#fff9db] text-[#1c1c1e] rounded-lg px-3 py-2 text-sm hover:bg-[#ffed93] transition"
+              onClick={handleAddMetric}
+              title="Добавить дочернюю метрику"
+              className="bg-[#fff9db] text-[#1c1c1e] rounded-lg px-3 py-2 text-sm hover:bg-[#ffed93] transition"
               >
-                Добавить метрику
+              Добавить
               </button>
 
               <button
