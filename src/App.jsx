@@ -3590,7 +3590,7 @@ const currentNextStepsCopy =
 
       {/* === Правая панель === */}
 {!isMobile && !isFullscreen && (
- <aside className="w-80 min-w-0 shrink-0 border-l border-gray-200 bg-white p-5 flex flex-col shadow-sm">
+ <aside className="w-80 min-w-0 shrink-0 h-full min-h-0 overflow-hidden border-l border-gray-200 bg-white p-5 flex flex-col shadow-sm">
 
     {/* Авторизация — всегда над вкладками */}
     <div className="mb-4 p-3 rounded-xl border border-gray-200 bg-gray-50">
@@ -3716,8 +3716,10 @@ const currentNextStepsCopy =
     
       
     </div>
+
     {rightTab === "metric" && (
-    <>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1">
+    
 
     {/* Верхние действия */}
     <div className="grid grid-cols-2 gap-2 mb-3">
@@ -3794,14 +3796,11 @@ const currentNextStepsCopy =
     title="Очистить всё дерево"
     >
     Очистить дерево
-    </button>
+       </button>
     </div>
     )}
-    </>
-    )}
+
     {/* === TAB: МЕТРИКА === */}
-    {rightTab === "metric" && (
-      <>
         {selectedMetric ? (
       <>
       <div className="border-t border-gray-200 pt-4 mt-1">
@@ -3940,8 +3939,8 @@ const currentNextStepsCopy =
           </div>
 
           )}
-          </>
-          )}
+      </div>
+    )}
 
     {/* === TAB: ЛИМИТЫ === */}
     {rightTab === "quota" && (
