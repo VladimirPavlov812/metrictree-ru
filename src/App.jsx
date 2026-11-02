@@ -3661,7 +3661,7 @@ const currentNextStepsCopy =
 
 
     {/* Tabs: Инструменты / Лимиты */}
-    <div className="flex gap-2 mb-4">
+    <div className="flex items-center gap-2 mb-4">
       <button
         onClick={() => setRightTab("metric")}
         className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium border transition ${
@@ -3701,7 +3701,18 @@ const currentNextStepsCopy =
       >
         Аккаунт
       </button>
-
+    <button
+    type="button"
+    onClick={() => {
+    setShowBenefitsModal(true);
+    ymEvent("benefits_open");
+    }}
+    title="Как это работает"
+    aria-label="Как это работает"
+    className="shrink-0 w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black transition font-semibold"
+    >
+    ?
+    </button>
       
     </div>
     {rightTab === "metric" && (
@@ -3711,21 +3722,12 @@ const currentNextStepsCopy =
     <div className="grid grid-cols-2 gap-2 mb-3">
       <button
         onClick={() => setIsFullscreen(true)}
-        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
+        className="col-span-2 inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
       >
         ⛶ На весь экран
       </button>
 
-      <button
-        onClick={() => {
-          setShowBenefitsModal(true);
-          ymEvent("benefits_open");
-        }}
-        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-3 rounded-xl hover:bg-gray-200 font-medium transition text-sm"
-        title="Как это работает"
-      >
-        Как это работает
-      </button>
+      
       {(session || treeData) && (
       <button
         onClick={handleOpenPrioritization}
@@ -3740,15 +3742,15 @@ const currentNextStepsCopy =
 
     {/* Экспорт/импорт */}
     {(session || treeData) && (
-    <div className="flex flex-wrap gap-2 mb-5">
+    <div className="grid grid-cols-2 gap-2 mb-5">
 
-      <div ref={downloadMenuRef} className="relative">
+      <div ref={downloadMenuRef} className="relative min-w-0">
     <button
     type="button"
     onClick={() => setDownloadMenuOpen((prev) => !prev)}
     disabled={!treeData}
     aria-expanded={downloadMenuOpen}
-    className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
+    className="w-full bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
     >
     Скачать ▾
     </button>
@@ -3780,17 +3782,18 @@ const currentNextStepsCopy =
       <button
         onClick={handleExportToMiro}
         disabled={!treeData}
-        className="bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
+        className="w-full bg-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 font-medium transition text-sm"
       >
         Экспорт в Miro
       </button>
 
       <button
-        onClick={handleClear}
-        className="bg-white text-red-600 border border-gray-200 px-3 py-2 rounded-xl hover:bg-red-50 font-medium transition text-sm"
-      >
-        Очистить
-      </button>
+    onClick={handleClear}
+    className="col-span-2 justify-self-end text-xs text-gray-400 hover:text-red-600 hover:underline transition mt-1"
+    title="Очистить всё дерево"
+    >
+    Очистить дерево
+    </button>
     </div>
     )}
     </>
@@ -3799,8 +3802,13 @@ const currentNextStepsCopy =
     {rightTab === "metric" && (
       <>
         {selectedMetric ? (
-          <>
-            <h2 className="text-lg font-semibold mb-1 flex items-center gap-2">
+      <>
+      <div className="border-t border-gray-200 pt-4 mt-1">
+      <div className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+        Выбранная метрика
+      </div>
+
+      <h2 className="text-base font-semibold mb-2 text-gray-900 break-words">
               {selectedMetric.data.label}
             </h2>
 
@@ -3834,7 +3842,7 @@ const currentNextStepsCopy =
             <button
               onClick={() => handleGetInsight()} // важно: без MouseEvent
               disabled={insightLoading}
-              className="bg-[#ffdd2d] text-black px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 transition font-medium"
+              className="w-full bg-[#ffdd2d] text-black px-3 py-3 rounded-xl hover:brightness-95 disabled:opacity-50 transition font-medium text-sm"
               title="Разбор метрики: что измеряет, почему важна, как улучшить, риски и контр-метрики"
             >
               {insightLoading ? "Анализирую метрику..." : "💡 Как улучшить метрику"}
@@ -3843,12 +3851,12 @@ const currentNextStepsCopy =
             <button
               onClick={handleGenerateExperiment}
               disabled={experimentLoading}
-              className="mt-2 bg-[#FFDF2B] text-gray-900 px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 transition font-medium"
+              className="mt-2 w-full bg-gray-100 text-gray-800 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 transition font-medium text-sm"
             >
               {experimentLoading ? "Генерация…" : "Эксперимент"}
             </button>  
 
-            <div className="flex flex-col gap-2 mb-5 mt-4" >
+            <div className="grid grid-cols-2 gap-2 mt-4 mb-5">
               <button
                 onClick={handleAddMetric}
                 className="bg-[#fff9db] text-[#1c1c1e] rounded-lg px-3 py-2 text-sm hover:bg-[#ffed93] transition"
@@ -3868,13 +3876,13 @@ const currentNextStepsCopy =
               </button>
 
               <button
-                onClick={() => handleDeleteMetric()}
-                className="bg-white text-red-600 border border-gray-200 rounded-lg px-3 py-2 text-sm hover:bg-red-50 transition"
+              onClick={() => handleDeleteMetric()}
+              className="col-span-2 justify-self-start mt-2 text-xs text-red-600 hover:text-red-700 hover:underline transition"
               >
-                Удалить метрику
+              Удалить метрику
               </button>
             </div>
-     
+            </div>
           </>
         ) : (
           <div>
