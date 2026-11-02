@@ -3322,7 +3322,7 @@ const currentNextStepsCopy =
 
         {/* === Мобильные лимиты === */}
         {isMobile && !session?.user?.id && (
-        <div className="px-4 py-3 bg-[#fafafa] border-b border-gray-200 text-xs text-gray-700">
+        <div className="px-4 py-3 bg-[#fafafa] border-b border-gray-200 text-[13px] leading-relaxed text-gray-700">
         <div>
         Гостевой режим. Генерация: осталось {getQuotaInfo("generate_tree", 1).left}
         </div>
