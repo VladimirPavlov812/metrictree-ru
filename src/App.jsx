@@ -3138,7 +3138,7 @@ const currentNextStepsCopy =
             <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
             <option value="gpt-5.5">GPT-5.5 (экспертная)</option>
             <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
-            <option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
+            <option value="gigachat-3.5">GigaChat 3.5 Ultra</option>
             
 
             </select>
@@ -3245,7 +3245,7 @@ const currentNextStepsCopy =
 <option value="gpt-4.1">GPT-4.1 (стандартная)</option>
 <option value="gpt-5.5">GPT-5.5 (экспертная)</option>
 <option value="claude-sonnet-4.6">Claude Sonnet 4.6</option>
-<option value="gigachat-3.5">GigaChat 3.5 (российская)</option>
+<option value="gigachat-3.5">GigaChat 3.5 Ultra</option>
 
 
 </select>
