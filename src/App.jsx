@@ -3924,6 +3924,19 @@ const currentNextStepsCopy =
         <a href="/derevo-metrik/" className="text-blue-600 hover:underline">
         Дерево метрик
         </a>
+        <a href="/kpi-tree/" className="text-blue-600 hover:underline">
+        Дерево KPI
+        </a>
+
+        <a href="/financial-metrics/" className="text-blue-600 hover:underline">
+        Финансовые метрики
+        </a>
+
+        <a href="/north-star-metric/" className="text-blue-600 hover:underline">
+        North Star Metric
+        </a>
+
+
         </div>
 
                 <div className="mt-4 text-xs text-gray-400">

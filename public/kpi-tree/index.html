@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Дерево KPI: как построить, декомпозиция и пример | MetricTree</title>
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205', 'ym');
+
+    ym(112997205, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+
+  <meta
+    name="description"
+    content="Как построить дерево KPI: декомпозиция целей бизнеса, формулы, пример для отдела продаж и типичные ошибки. Создайте дерево показателей с AI в MetricTree."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.ru/kpi-tree/"
+  />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "MetricTree",
+      "item": "https://metrictree.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Дерево KPI",
+      "item": "https://metrictree.ru/kpi-tree/"
+    }
+  ]
+}
+</script>
+<style>
+  @media (max-width: 700px) {
+    .seo-brand-tagline {
+      display: none;
+    }
+  }
+</style>
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+  <header style="
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:14px 24px;
+">
+  <div style="
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  ">
+
+    <a
+      href="/"
+      style="
+        display:flex;
+        align-items:center;
+        gap:16px;
+        text-decoration:none;
+        color:#111827;
+        min-width:0;
+      "
+    >
+      <img
+        src="/metrictree-logo.png"
+        alt="MetricTree"
+        style="
+          height:48px;
+          width:auto;
+          display:block;
+        "
+      />
+
+      <span class="seo-brand-tagline" style="
+        font-size:15px;
+        font-weight:600;
+        color:#374151;
+        border-left:1px solid #e5e7eb;
+        padding-left:16px;
+        white-space:nowrap;
+      ">
+        AI-генератор дерева метрик
+      </span>
+    </a>
+
+    <a
+      href="/"
+      style="
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:11px 18px;
+        border-radius:10px;
+        font-weight:600;
+        white-space:nowrap;
+      "
+    >
+      Построить дерево →
+    </a>
+
+  </div>
+</header>
+
+<main style="max-width:900px;margin:0 auto;padding:64px 24px">
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:800px">Дерево KPI: как построить и декомпозировать показатели эффективности</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:760px;margin-bottom:32px">От общей бизнес-цели к конкретным показателям команд: разберём, как устроено дерево KPI, покажем формулы и пример для отдела продаж.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево KPI с помощью AI</a>
+<section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Что такое дерево KPI</h2><p style="font-size:18px;line-height:1.7;color:#374151">Дерево KPI — иерархия взаимосвязанных показателей, которая объясняет, за счёт чего достигается ключевой результат бизнеса. На верхнем уровне находится целевой KPI, ниже — его измеримые составляющие и факторы, на которые могут влиять команды.</p><p style="font-size:18px;line-height:1.7;color:#374151">Например, выручку можно представить как произведение количества оплаченных заказов и среднего чека. Количество заказов, в свою очередь, зависит от числа покупателей и частоты покупок. Такая декомпозиция помогает перейти от цели «увеличить выручку» к конкретным действиям.</p><p style="font-size:18px;line-height:1.7;color:#374151">В отличие от простого списка KPI, дерево показывает <strong>связи между показателями</strong>. При этом не все связи являются математическими: причинные гипотезы нужно проверять данными и экспериментами.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Чем дерево KPI отличается от дерева метрик</h2><p style="font-size:18px;line-height:1.7;color:#374151">Дерево метрик — более широкое понятие: оно может включать бизнес-, продуктовые, операционные, диагностические и защитные показатели. Дерево KPI фокусируется на ключевых результатах и их драйверах, важных для управления эффективностью.</p><p style="font-size:18px;line-height:1.7;color:#374151">В MetricTree эти подходы дополняют друг друга. Можно начать с KPI компании, а затем раскрыть его через показатели воронки, качества сервиса и поведения пользователей. Подробнее — в статье <a href="/derevo-metrik/">как построить дерево метрик продукта</a>.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Как построить дерево KPI: 5 шагов</h2><ol style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Выберите цель и период.</strong> Например, увеличить месячную выручку на 15% за два квартала. Укажите базовое значение и способ расчёта.</li><li style="margin-bottom:12px"><strong>Определите формулу верхнего KPI.</strong> Для выручки по заказам: оплаченные заказы × средний чек. Не смешивайте выручку, GMV и прибыль.</li><li style="margin-bottom:12px"><strong>Разложите компоненты на управляемые драйверы.</strong> Количество заказов можно разложить на покупателей и заказы на покупателя; покупателей — на новых и повторных.</li><li style="margin-bottom:12px"><strong>Назначьте владельцев и источники данных.</strong> Для каждой метрики укажите команду, источник, частоту измерения и единицу.</li><li style="margin-bottom:12px"><strong>Проверьте дерево на данных.</strong> Убедитесь, что формулы согласованы, а предполагаемые причинные связи подтверждаются анализом или экспериментом.</li></ol></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Пример дерева KPI для отдела продаж</h2><p style="font-size:18px;line-height:1.7;color:#374151">Предположим, компания хочет увеличить выручку от продаж. Начнём с выручки по оплаченным заказам и раскроем её через количество заказов и средний чек.</p><div style="margin:28px 0;padding:24px;background:white;border:1px solid #e5e7eb;border-radius:16px;overflow-x:auto"><div style="font-family:monospace;font-size:16px;line-height:1.8;white-space:pre">Выручка по оплаченным заказам
+├── Количество оплаченных заказов
+│   ├── Количество покупателей
+│   │   ├── Новые покупатели
+│   │   └── Повторные покупатели
+│   └── Заказов на покупателя
+└── Средний чек
+    ├── Товаров на заказ
+    └── Средняя цена товара</div></div><p style="font-size:18px;line-height:1.7;color:#374151"><strong>Формулы:</strong> выручка = количество оплаченных заказов × средний чек; количество оплаченных заказов = количество покупателей × заказов на покупателя; средний чек = товаров на заказ × средняя цена товара. Эти равенства применимы при согласованных определениях показателей и одном периоде измерения.</p><p style="font-size:18px;line-height:1.7;color:#374151">Допустим, за месяц было 2 000 оплаченных заказов со средним чеком 3 000 ₽. Выручка составит 6 млн ₽. Если число заказов вырастет на 10% при прежнем чеке, выручка достигнет 6,6 млн ₽. Это расчётный сценарий, а не прогноз.</p><p style="font-size:18px;line-height:1.7;color:#374151">В зависимости от бизнеса стоит дополнительно контролировать возвраты, скидки, валовую маржу и стоимость привлечения. Рост выручки не гарантирует роста прибыли.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Какие KPI стоит включать в дерево</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Результат:</strong> выручка, валовая прибыль, доля повторной выручки.</li><li style="margin-bottom:12px"><strong>Драйверы:</strong> количество покупателей, конверсия в оплату, частота покупок, средний чек.</li><li style="margin-bottom:12px"><strong>Операционные показатели:</strong> время обработки заявки, доля успешно выполненных заказов.</li><li style="margin-bottom:12px"><strong>Защитные метрики:</strong> возвраты, жалобы, стоимость привлечения, маржинальность.</li></ul><p style="font-size:18px;line-height:1.7;color:#374151">Не стоит объявлять каждый узел дерева отдельным KPI сотрудника. Часть метрик нужна для диагностики и проверки гипотез.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Частые ошибки при декомпозиции KPI</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Список вместо дерева:</strong> показатели перечислены, но связи между ними не объяснены.</li><li style="margin-bottom:12px"><strong>Разные определения:</strong> в одной формуле смешаны оплаченные и созданные заказы или разные периоды.</li><li style="margin-bottom:12px"><strong>Ложная причинность:</strong> корреляцию принимают за доказанное влияние на бизнес-результат.</li><li style="margin-bottom:12px"><strong>Отсутствие владельцев:</strong> показатель есть, но никто не отвечает за его измерение и улучшение.</li><li style="margin-bottom:12px"><strong>Рост любой ценой:</strong> улучшают локальную метрику, игнорируя прибыль и качество сервиса.</li></ul></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Частые вопросы</h2><h3 style="font-size:21px;margin:28px 0 10px">Сколько уровней должно быть в дереве KPI?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Столько, сколько нужно для перехода от бизнес-результата к понятным управляемым факторам. Часто хватает трёх-четырёх уровней; искусственно увеличивать глубину не нужно.</p><h3 style="font-size:21px;margin:28px 0 10px">Можно ли построить дерево KPI без формул?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Да, если некоторые связи качественные. Но важно явно отличать математическую декомпозицию от гипотезы о влиянии одной метрики на другую.</p><h3 style="font-size:21px;margin:28px 0 10px">Подходит ли дерево KPI для небольшого бизнеса?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Да. Можно начать с одного ключевого результата, например месячной прибыли, и нескольких факторов: объёма продаж, маржи и постоянных расходов.</p></section><section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево KPI с AI в MetricTree</h2><p style="font-size:18px;line-height:1.7;color:#374151">Опишите бизнес, цель и ключевой показатель. MetricTree предложит структуру дерева, которую можно редактировать, анализировать и использовать для поиска точек роста и идей экспериментов.</p><a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево KPI →</a></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Материалы по теме</h2><ul style="font-size:18px;line-height:1.9;color:#374151;padding-left:24px"><li><a href="/derevo-metrik/">Дерево метрик продукта</a></li><li><a href="/business-metrics/">Бизнес-метрики</a></li><li><a href="/sales-metrics/">Метрики продаж</a></li><li><a href="/efficiency-metrics/">Метрики эффективности</a></li></ul></section></main>
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых метрик.
+</footer>
+
+</body>
+
+
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Финансовые метрики бизнеса: дерево показателей | MetricTree</title>
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112997205', 'ym');
+
+    ym(112997205, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/112997205" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+
+  <meta
+    name="description"
+    content="Финансовые метрики бизнеса: выручка, прибыль, маржа и расходы. Пример дерева финансовых показателей, формулы и построение с AI в MetricTree."
+  />
+
+  <link
+    rel="canonical"
+    href="https://metrictree.ru/financial-metrics/"
+  />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "MetricTree",
+      "item": "https://metrictree.ru/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Финансовые метрики",
+      "item": "https://metrictree.ru/financial-metrics/"
+    }
+  ]
+}
+</script>
+<style>
+  @media (max-width: 700px) {
+    .seo-brand-tagline {
+      display: none;
+    }
+  }
+</style>
+</head>
+
+<body style="margin:0; font-family:Arial, sans-serif; background:#f9fafb; color:#111827;">
+
+  <header style="
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:14px 24px;
+">
+  <div style="
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+  ">
+
+    <a
+      href="/"
+      style="
+        display:flex;
+        align-items:center;
+        gap:16px;
+        text-decoration:none;
+        color:#111827;
+        min-width:0;
+      "
+    >
+      <img
+        src="/metrictree-logo.png"
+        alt="MetricTree"
+        style="
+          height:48px;
+          width:auto;
+          display:block;
+        "
+      />
+
+      <span class="seo-brand-tagline" style="
+        font-size:15px;
+        font-weight:600;
+        color:#374151;
+        border-left:1px solid #e5e7eb;
+        padding-left:16px;
+        white-space:nowrap;
+      ">
+        AI-генератор дерева метрик
+      </span>
+    </a>
+
+    <a
+      href="/"
+      style="
+        background:#ffdd2d;
+        color:#111827;
+        text-decoration:none;
+        padding:11px 18px;
+        border-radius:10px;
+        font-weight:600;
+        white-space:nowrap;
+      "
+    >
+      Построить дерево →
+    </a>
+
+  </div>
+</header>
+
+<main style="max-width:900px;margin:0 auto;padding:64px 24px">
+<h1 style="font-size:42px;line-height:1.15;margin:0 0 20px;max-width:800px">Финансовые метрики бизнеса: как построить дерево показателей</h1>
+<p style="font-size:20px;line-height:1.6;color:#4b5563;max-width:760px;margin-bottom:32px">Как связать прибыль с выручкой, себестоимостью и расходами, выбрать правильные финансовые метрики и найти управляемые драйверы роста.</p>
+<a href="/" style="display:inline-block;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:16px">Построить дерево финансовых метрик с AI</a>
+<section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Что такое финансовые метрики бизнеса</h2><p style="font-size:18px;line-height:1.7;color:#374151">Финансовые метрики — показатели, описывающие денежные результаты компании: выручку, прибыль, затраты, рентабельность и денежные потоки. Они помогают понять не только сколько бизнес продаёт, но и сколько зарабатывает и какие ресурсы на это тратит.</p><p style="font-size:18px;line-height:1.7;color:#374151">Список показателей полезен для отчётности, но не объясняет, почему прибыль изменилась. <strong>Дерево финансовых метрик</strong> показывает структуру результата: например, как прибыль зависит от выручки и расходов, а выручка — от объёма продаж и среднего дохода на заказ.</p><p style="font-size:18px;line-height:1.7;color:#374151">В отличие от общей статьи о <a href="/business-metrics/">бизнес-метриках</a>, здесь разберём именно финансовую декомпозицию с формулами и примером расчёта.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Какие финансовые показатели включить в дерево</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Выручка:</strong> доход от реализации за период, рассчитанный по выбранным правилам учёта.</li><li style="margin-bottom:12px"><strong>Валовая прибыль:</strong> выручка минус себестоимость реализованных товаров или услуг.</li><li style="margin-bottom:12px"><strong>Валовая маржа:</strong> валовая прибыль / выручка × 100%.</li><li style="margin-bottom:12px"><strong>Операционная прибыль:</strong> результат основной деятельности после соответствующих операционных расходов.</li><li style="margin-bottom:12px"><strong>Чистая прибыль:</strong> финансовый результат после всех учитываемых доходов, расходов и налогов.</li><li style="margin-bottom:12px"><strong>Денежный поток:</strong> реальные поступления и выплаты; прибыль и движение денег не равнозначны.</li></ul><p style="font-size:18px;line-height:1.7;color:#374151">Не нужно включать все показатели сразу. Выберите верхнюю метрику под задачу: для управления доходностью — прибыль или маржинальность, для ликвидности — денежный поток.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Пример дерева финансовых метрик: прибыль интернет-магазина</h2><p style="font-size:18px;line-height:1.7;color:#374151">Для простого управленческого примера возьмём прибыль до налогов и прочих статей как разницу между выручкой и рассматриваемыми расходами. Это <strong>упрощённая модель</strong>, а не полная форма отчёта о прибылях и убытках.</p><div style="margin:28px 0;padding:24px;background:white;border:1px solid #e5e7eb;border-radius:16px;overflow-x:auto"><div style="font-family:monospace;font-size:16px;line-height:1.8;white-space:pre">Прибыль (упрощённая модель)
+├── Выручка
+│   ├── Оплаченные заказы
+│   │   ├── Покупатели
+│   │   └── Заказов на покупателя
+│   └── Средний чек
+└── Расходы
+    ├── Переменные расходы
+    │   ├── Себестоимость заказов
+    │   └── Доставка и эквайринг
+    └── Постоянные расходы
+        ├── Аренда и инфраструктура
+        └── Фиксированные затраты команды</div></div><p style="font-size:18px;line-height:1.7;color:#374151"><strong>Связи:</strong> выручка = оплаченные заказы × средний чек; прибыль = выручка − расходы. В модели расходы разделены на постоянные и переменные; в реальной компании их классификация и состав зависят от правил управленческого учёта.</p><p style="font-size:18px;line-height:1.7;color:#374151">Например, 2 000 заказов × 3 000 ₽ = <strong>6 млн ₽ выручки</strong>. При переменных расходах 3,6 млн ₽ и постоянных 1,5 млн ₽ расчётная прибыль составит <strong>900 тыс. ₽</strong>, а рентабельность продаж по этой модели — 15%.</p><p style="font-size:18px;line-height:1.7;color:#374151">Если средний чек увеличится на 10% при прежнем количестве заказов, выручка вырастет до 6,6 млн ₽. Но прибыль нельзя пересчитать без уточнения, как изменятся себестоимость, комиссии и другие расходы.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Как построить дерево финансовых метрик: 5 шагов</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Определите управленческий вопрос.</strong> Например: почему снизилась прибыль за последний квартал?</li><li style="margin-bottom:12px"><strong>Выберите верхний показатель.</strong> Прибыль, валовая маржа, EBITDA или операционный денежный поток — в зависимости от задачи.</li><li style="margin-bottom:12px"><strong>Разложите показатель по формулам.</strong> Зафиксируйте определения выручки, себестоимости, расходов и период расчёта.</li><li style="margin-bottom:12px"><strong>Дойдите до управляемых факторов.</strong> Например, объём заказов, возвраты, стоимость доставки, конверсия в оплату.</li><li style="margin-bottom:12px"><strong>Проверьте дерево на фактических данных.</strong> Сверьте суммы с отчётностью, выделите наиболее чувствительные драйверы и оцените гипотезы.</li></ul></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Чем финансовые метрики отличаются от продуктовых</h2><p style="font-size:18px;line-height:1.7;color:#374151">Финансовые метрики фиксируют экономический результат. Продуктовые метрики помогают объяснить, как пользовательское поведение может влиять на этот результат. Например, retention и конверсия могут воздействовать на повторные покупки, а те — на выручку. Но это уже причинная гипотеза, которую нужно проверять.</p><p style="font-size:18px;line-height:1.7;color:#374151">В едином дереве можно соединить финансовые результаты с <a href="/product-metrics/">продуктовыми метриками</a> и показателями маркетинга. При этом <a href="/metrics/ltv/">LTV</a>, <a href="/metrics/cac/">CAC</a> и <a href="/metrics/roi/">ROI</a> стоит использовать с чёткими определениями и не смешивать с бухгалтерскими статьями прибыли.</p></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Ошибки при анализе финансовых метрик</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><strong>Путать прибыль и денежный поток.</strong> Компания может быть прибыльной по отчёту, но испытывать кассовый разрыв.</li><li style="margin-bottom:12px"><strong>Смешивать GMV и выручку.</strong> Для маркетплейса стоимость заказов и собственная выручка платформы — разные величины.</li><li style="margin-bottom:12px"><strong>Игнорировать себестоимость.</strong> Рост продаж при ухудшении маржи может снижать прибыль.</li><li style="margin-bottom:12px"><strong>Сравнивать несопоставимые периоды.</strong> Метрики должны рассчитываться в единой логике и с учётом сезонности.</li><li style="margin-bottom:12px"><strong>Считать корреляцию доказательством.</strong> Не каждая связанная продуктовая метрика гарантированно влияет на финансовый результат.</li></ul></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Частые вопросы</h2><h3 style="font-size:21px;margin:28px 0 10px">С какой финансовой метрики начать?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Если цель — повышение доходности, начните с прибыли или маржи. Если задача — устойчивость платежей, полезнее дерево операционного денежного потока. Выбор зависит от бизнес-модели.</p><h3 style="font-size:21px;margin:28px 0 10px">Можно ли построить дерево финансовых метрик для SaaS?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Да. Например, регулярную выручку можно разложить на число платящих клиентов и средний регулярный доход на клиента; далее изучать новые подключения, отток и расширение подписок. Определения MRR и ARR следует применять последовательно.</p><h3 style="font-size:21px;margin:28px 0 10px">Нужна ли финансовая отчётность для построения дерева?</h3><p style="font-size:18px;line-height:1.7;color:#374151">Для черновой структуры достаточно описания бизнес-модели. Чтобы использовать дерево для решений, понадобятся фактические данные и согласованные определения показателей.</p></section><section style="margin-top:64px;max-width:760px;padding:36px;background:white;border:1px solid #e5e7eb;border-radius:18px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 18px">Постройте дерево финансовых метрик с AI</h2><p style="font-size:18px;line-height:1.7;color:#374151">Опишите бизнес-модель, цель анализа и главный финансовый показатель. MetricTree предложит структуру дерева метрик, которую можно редактировать, анализировать и использовать для поиска точек роста.</p><a href="/" style="display:inline-block;margin-top:12px;background:#ffdd2d;color:#111827;text-decoration:none;padding:14px 22px;border-radius:12px;font-weight:600;font-size:17px">Построить дерево финансовых метрик →</a></section><section style="margin-top:56px;max-width:760px"><h2 style="font-size:30px;line-height:1.25;margin:0 0 20px">Материалы по теме</h2><ul style="font-size:18px;line-height:1.7;color:#374151;padding-left:24px"><li style="margin-bottom:12px"><a href="/business-metrics/">Бизнес-метрики</a></li><li style="margin-bottom:12px"><a href="/derevo-metrik/">Как построить дерево метрик</a></li><li style="margin-bottom:12px"><a href="/metrics/roi/">ROI: окупаемость инвестиций</a></li><li style="margin-bottom:12px"><a href="/metrics/ltv/">LTV: пожизненная ценность клиента</a></li><li style="margin-bottom:12px"><a href="/metrics/cac/">CAC: стоимость привлечения клиента</a></li><li style="margin-bottom:12px"><a href="/kpi-tree/">Дерево KPI</a></li></ul></section></main>
+
+<footer style="
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 24px 48px;
+  color:#6b7280;
+  font-size:14px;
+">
+  MetricTree — AI-инструмент для построения и анализа дерева продуктовых метрик.
+</footer>
+
+</body>
+
+
+</html>
