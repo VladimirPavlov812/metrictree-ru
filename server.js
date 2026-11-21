@@ -572,6 +572,9 @@ const CREDIT_COSTS = {
     "gpt-5.5": 10,
     "gigachat-3.5": 1,
   },
+  metric_description: {
+  "gpt-4.1": 1,
+  },
 };
 
 async function consumeCredits(userId, amount) {
@@ -603,6 +606,7 @@ async function consumeCredits(userId, amount) {
     left: free_credits + paid_credits,
   };
 }
+
 
 app.post("/api/generate/start", authRequired, async (req, res) => {
   try {
@@ -1348,11 +1352,12 @@ app.post("/api/openai", async (req, res) => {
         const operation = req.get("X-MetricTree-Operation");
 
     const allowedOperations = new Set([
-      "generate",
-      "insight",
-      "suggestion",
-      "experiment",
-      "prioritization",
+    "generate",
+    "insight",
+    "suggestion",
+    "experiment",
+    "prioritization",
+    "metric_description",
     ]);
 
     if (!operation || !allowedOperations.has(operation)) {

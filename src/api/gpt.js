@@ -580,3 +580,89 @@ export async function prioritizeMetrics(
   }
 }
 
+
+
+/**
+ * Генерация краткого описания метрики.
+ * Используем GPT-4.1 через Cloud.ru.
+ */
+export async function generateMetricDescription({
+  metric,
+  productDescription,
+  parent,
+}) {
+  const response = await callOpenAI(
+    {
+      model: "gpt-4.1",
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `
+Ты — эксперт по продуктовой аналитике.
+
+Объясни указанную метрику в контексте продукта.
+
+Верни только JSON следующего формата:
+{
+  "description": "Краткое определение метрики",
+  "formula": "Формула расчёта или null",
+  "unit": "Единица измерения или null"
+}
+
+Правила:
+- Определение: 1–2 предложения.
+- Формула должна быть понятной продакт-менеджеру.
+- Не предлагай способы улучшения метрики.
+- Не выдумывай фактические данные о продукте.
+- Если формулы нет, используй null.
+- Если формула зависит от определения метрики,
+  укажи допущения.
+- Отвечай на русском языке.
+          `.trim(),
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            productDescription,
+            metric: metric?.name,
+            parent: parent?.name ?? null,
+          }),
+        },
+      ],
+    },
+    { operation: "metric_description" }
+  );
+
+  const raw = response.data?.choices?.[0]?.message?.content;
+
+  if (!raw) {
+    throw new Error("Пустой ответ от AI");
+  }
+
+  const result = parseModelJson(raw);
+
+  if (
+    !result ||
+    typeof result.description !== "string" ||
+    !result.description.trim()
+  ) {
+    throw new Error("Некорректное описание метрики от AI");
+  }
+
+  return {
+    description: {
+      description: result.description.trim(),
+      formula:
+        typeof result.formula === "string"
+          ? result.formula.trim()
+          : null,
+      unit:
+        typeof result.unit === "string"
+          ? result.unit.trim()
+          : null,
+    },
+    limitInfo: response.limitInfo,
+  };
+}

@@ -19,6 +19,7 @@ import dagre from "dagre";
 import {
   generateMetricTree,
   generateMetricInsight,
+  generateMetricDescription,
   suggestMetricNames,
   prioritizeMetrics,
   generateClarifyingQuestions,
@@ -590,6 +591,11 @@ try {
   const [description, setDescription] = useState("");
   const [treeData, setTreeData] = useState(null);
   const [selectedMetric, setSelectedMetric] = useState(null);
+  const [metricDescriptionLoading, setMetricDescriptionLoading] =
+  useState(false);
+
+  const [metricDescriptionError, setMetricDescriptionError] =
+  useState(null);
   const [mobileMenuOpenId, setMobileMenuOpenId] = useState(null);
   const [insight, setInsight] = useState("");
   const [experiment, setExperiment] = useState(null);
@@ -1167,7 +1173,11 @@ useEffect(() => {
   }, [session?.user?.id]);
 
 
-  const handleSaveToCloud = async ({ forceNew = false } = {}) => {
+  const handleSaveToCloud = async ({
+  forceNew = false,
+  updatedNodes = null,
+  updatedTreeData = null,
+  } = {}) => {
   if (!session?.user?.id) {
   setAuthModalReason("save_project");
   setAuthModalOpen(true);
@@ -1182,15 +1192,17 @@ useEffect(() => {
   try {
     setSaveStatus("saving");
 
-    const payload = {
-      description,
-      nodes,
-      edges,
-      treeData,
-      brief: brief || null,
-      model,
-      savedAt: new Date().toISOString(),
-    };
+    
+  const payload = {
+  description,
+  nodes: updatedNodes ?? nodes,
+  edges,
+  treeData: updatedTreeData ?? treeData,
+  brief: brief || null,
+  model,   
+  savedAt: new Date().toISOString(),
+  };
+
 
     // Если уже открыт проект и не просим "как новый" — делаем UPDATE
     if (activeProjectId && !forceNew) {
@@ -2672,6 +2684,137 @@ if (!access.allowed) {
   };
 
 
+const handleGenerateMetricDescription = async () => {
+  if (!selectedMetric || metricDescriptionLoading) return;
+
+  if (!session?.user?.id) {
+    setAuthModalReason("default");
+    setAuthModalOpen(true);
+    return;
+  }
+
+  const metric = nodes.find(
+    (n) => n.id === selectedMetric.id
+  );
+
+  if (!metric) return;
+
+  // Повторно AI не вызываем, если описание уже есть.
+  if (metric.data?.metricDescription) return;
+
+  setMetricDescriptionLoading(true);
+  setMetricDescriptionError(null);
+
+  try {
+    const quotaRes = await fetch("/api/quota");
+
+    if (!quotaRes.ok) {
+      throw new Error("Не удалось проверить AI-кредиты");
+    }
+
+    const quota = await quotaRes.json();
+
+    if ((quota?.credits?.left ?? 0) < 1) {
+      setCreditsModalMode("insufficient");
+      setShowCreditsModal(true);
+      return;
+    }
+
+    const parentEdge = edges.find(
+      (e) => e.target === metric.id
+    );
+
+    const parent = parentEdge
+      ? nodes.find((n) => n.id === parentEdge.source)
+      : null;
+
+    const result = await generateMetricDescription({
+      metric: normalizeNode(metric),
+      parent: normalizeNode(parent),
+      productDescription: brief || { raw: description },
+    });
+
+    const metricDescription = result.description;
+
+    
+    // Создаём обновлённые данные дерева.
+    const updatedNodes = nodes.map((n) =>
+      n.id === metric.id
+        ? {
+            ...n,
+            data: {
+              ...n.data,
+              metricDescription,
+            },
+          }
+        : n
+    );
+
+    const addDescription = (node) => {
+      if (!node) return node;
+
+      if (node.id === metric.id) {
+        return {
+          ...node,
+          metricDescription,
+        };
+      }
+
+      return {
+        ...node,
+        children: node.children?.map(addDescription),
+      };
+    };
+
+    const updatedTreeData = addDescription(treeData);
+
+    // Обновляем интерфейс.
+    setNodes(updatedNodes);
+    setTreeData(updatedTreeData);
+
+    setSelectedMetric((prev) =>
+      prev?.id === metric.id
+        ? {
+            ...prev,
+            data: {
+              ...prev.data,
+              metricDescription,
+            },
+          }
+        : prev
+    );
+
+    // Сохраняем описание в существующий облачный проект.
+    // Для нового дерева пока оставляем локальное сохранение.
+    if (activeProjectId) {
+      try {
+        await handleSaveToCloud({
+          updatedNodes,
+          updatedTreeData,
+        });
+      } catch (saveError) {
+        console.error("Metric description save error:", saveError);
+        setSaveStatus("error");
+      }
+    } else {
+      setSaveStatus("idle");
+    }
+
+    await fetchServerQuota();
+
+  } catch (err) {
+    console.error("Metric description error:", err);
+
+    setMetricDescriptionError(
+      err?.message || "Не удалось получить описание метрики"
+    );
+  } finally {
+    setMetricDescriptionLoading(false);
+  }
+};
+
+
+
 // === Приведение узлов к единому формату для AI ===
 function normalizeNode(n) {
   if (!n) return null;
@@ -3839,6 +3982,58 @@ const currentNextStepsCopy =
             )}
 
             
+            {/* === Описание метрики === */}
+{selectedMetric.data?.metricDescription ? (
+  <div className="mb-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+    <div className="mb-2 text-sm font-semibold text-gray-900">
+      📖 Что означает метрика
+    </div>
+
+    <p className="text-sm leading-relaxed text-gray-700">
+      {selectedMetric.data.metricDescription.description}
+    </p>
+
+    {selectedMetric.data.metricDescription.formula && (
+      <div className="mt-3">
+        <div className="mb-1 text-xs font-semibold text-gray-500">
+          Формула
+        </div>
+        <p className="break-words text-sm text-gray-700">
+          {selectedMetric.data.metricDescription.formula}
+        </p>
+      </div>
+    )}
+
+    {selectedMetric.data.metricDescription.unit && (
+      <div className="mt-3">
+        <div className="mb-1 text-xs font-semibold text-gray-500">
+          Единица измерения
+        </div>
+        <p className="text-sm text-gray-700">
+          {selectedMetric.data.metricDescription.unit}
+        </p>
+      </div>
+    )}
+  </div>
+) : (
+  <button
+    onClick={handleGenerateMetricDescription}
+    disabled={metricDescriptionLoading}
+    className="mb-3 w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-gray-50 disabled:opacity-50"
+  >
+    {metricDescriptionLoading
+      ? "⏳ Получаем описание..."
+      : "📖 Что означает метрика? · 1 кредит"}
+  </button>
+)}
+
+{metricDescriptionError && (
+  <p className="mb-3 text-xs text-red-600">
+    {metricDescriptionError}
+  </p>
+)}
+
+
             <button
               onClick={() => handleGetInsight()} // важно: без MouseEvent
               disabled={insightLoading}
