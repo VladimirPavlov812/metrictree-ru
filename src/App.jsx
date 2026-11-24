@@ -3649,7 +3649,8 @@ const currentNextStepsCopy =
           onEdgesChange={onEdgesChange}
           onConnect={(params) => setEdges((eds) => addEdge(params, eds))}
           fitView
-          minZoom={0.05}
+          fitViewOptions={{ minZoom: 0.5, maxZoom: 1 }}
+          minZoom={0.2}
           maxZoom={4}
           >
           <MiniMap pannable zoomable />
