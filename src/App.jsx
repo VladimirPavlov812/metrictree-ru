@@ -2886,12 +2886,22 @@ const pickMetricForInsight = () => {
 
 
  // === AI инсайт ===
-const handleGetInsight = async (metricArg) => {
-  // нормализуем вход
-  const rfMetric = metricArg
-    ? nodes.find(n => n.id === metricArg.id)
-    : selectedMetric;
+const handleGetInsight = async (metricArg, forceRegenerate = false) => {
+  if (insightLoading) return;
+
+  const metricId = metricArg?.id || selectedMetric?.id;
+  const rfMetric = nodes.find(n => n.id === metricId);
+
   if (!rfMetric) return;
+
+  // Показываем сохранённый результат без AI-запроса
+  if (rfMetric.data?.metricInsight && !forceRegenerate) {
+    setSelectedMetric(rfMetric);
+    setModalInsight(rfMetric.data.metricInsight);
+    setInsightPending(false);
+    setShowInsightModal(true);
+    return;
+  }
 
   if (!session?.user?.id) {
   setAuthModalReason("insight");
@@ -2916,10 +2926,9 @@ const handleGetInsight = async (metricArg) => {
   return;
   }
 
-  if (isMobile) {
-    setInsightPending(true);
-    setModalInsight("Анализирую метрики…");
-    setShowInsightModal(true);
+  if (isMobile || forceRegenerate) {
+  setInsightPending(true);
+  setShowInsightModal(true);
   }
 
   setInsightLoading(true);
@@ -2958,6 +2967,63 @@ const handleGetInsight = async (metricArg) => {
 
     setModalInsight(result.insight);
     setInsightPending(false);
+    // Сохраняем AI-рекомендации в данных метрики
+const metricInsight = result.insight;
+
+const updatedNodes = nodes.map((n) =>
+  n.id === metric.id
+    ? {
+        ...n,
+        data: {
+          ...n.data,
+          metricInsight,
+        },
+      }
+    : n
+);
+
+const addInsight = (node) => {
+  if (!node) return node;
+
+  if (node.id === metric.id) {
+    return {
+      ...node,
+      metricInsight,
+    };
+  }
+
+  return {
+    ...node,
+    children: node.children?.map(addInsight),
+  };
+};
+
+const updatedTreeData = addInsight(treeData);
+
+setNodes(updatedNodes);
+setTreeData(updatedTreeData);
+
+setSelectedMetric((prev) =>
+  prev?.id === metric.id
+    ? {
+        ...prev,
+        data: {
+          ...prev.data,
+          metricInsight,
+        },
+      }
+    : prev
+);
+
+// Сохраняем рекомендации в существующий облачный проект
+if (activeProjectId) {
+  await handleSaveToCloud({
+    updatedNodes,
+    updatedTreeData,
+  });
+} else {
+  setSaveStatus("idle");
+}
 
     ymEvent("insight");
     await fetchServerQuota();
@@ -4043,7 +4109,11 @@ const currentNextStepsCopy =
               className="w-full bg-[#ffdd2d] text-black px-3 py-3 rounded-xl hover:brightness-95 disabled:opacity-50 transition font-medium text-sm"
               title="Разбор метрики: что измеряет, почему важна, как улучшить, риски и контр-метрики"
             >
-              {insightLoading ? "Анализирую метрику..." : "💡 Как улучшить метрику"}
+              {insightLoading
+              ? "Анализирую метрику..."
+              : selectedMetric.data?.metricInsight
+              ? "💡 Посмотреть рекомендации"
+              : "💡 Как улучшить метрику"}
             </button>
 
             <button
@@ -5486,7 +5556,24 @@ const currentNextStepsCopy =
         </p>
       )}
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-between items-center flex-wrap gap-3 mt-6">
+        <button
+        disabled={insightLoading || insightPending || !selectedMetric}
+        onClick={() => {
+        const cost = CREDIT_COSTS.insight[model];
+
+        if (
+        window.confirm(
+          `Сгенерировать рекомендации заново за ${cost} AI-кредит(ов)?`
+        )
+        ) {
+        handleGetInsight(selectedMetric, true);
+        }
+        }}
+        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+        🔄 Сгенерировать заново ({CREDIT_COSTS.insight[model]} кр.)
+        </button>
         <button
         onClick={() => {
         setShowInsightModal(false);
