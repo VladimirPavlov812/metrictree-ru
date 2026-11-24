@@ -5048,12 +5048,6 @@ const currentNextStepsCopy =
 
       <div className="flex gap-2 justify-end mb-4">
         <button
-          onClick={() => setShowPriorModal(false)}
-          className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700"
-        >
-          Отмена
-        </button>
-        <button
           onClick={handleRunPrioritization}
           disabled={priorLoading}
           className="px-4 py-2 rounded-lg bg-[#ffdd2d] text-black hover:brightness-95 font-medium disabled:opacity-50"
@@ -5104,6 +5098,14 @@ const currentNextStepsCopy =
           </p>
         </div>
       )}
+      <div className="flex justify-end mt-6">
+  <button
+    onClick={() => setShowPriorModal(false)}
+    className="px-5 py-2 bg-[#ffdd2d] text-black rounded-lg hover:brightness-95 transition font-medium"
+  >
+    Закрыть
+  </button>
+</div>
     </div>
   </div>
 )}
@@ -5658,7 +5660,7 @@ const currentNextStepsCopy =
         setPendingFeedbackSource(null);
         }
         }}
-  className="px-5 py-2 bg-[#ffdd2d] rounded-lg"
+  className="px-5 py-2 bg-[#ffdd2d] text-black rounded-lg hover:brightness-95 transition font-medium"
 >
   Закрыть
 </button>
