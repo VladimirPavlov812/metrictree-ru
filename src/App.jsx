@@ -1041,7 +1041,7 @@ useEffect(() => {
 
     if (!rootNode || !wrapper) return;
 
-    const zoom = 0.8;
+    const zoom = 0.5;
     const width = wrapper.clientWidth;
     const height = wrapper.clientHeight;
 
