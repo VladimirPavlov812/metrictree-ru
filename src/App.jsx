@@ -361,83 +361,179 @@ const updateFeedbackField = (field, value) => {
   }));
 };
 
-const handleGenerateExperiment = async () => {
-  if (!selectedMetric) return;
-  if (!session?.user?.id) {
-  setAuthModalReason("experiment");
-  setAuthModalOpen(true);
-  return;
-  }
+const handleGenerateExperiment = async (
+  metricArg = null,
+  forceRegenerate = false
+) => {
+  if (experimentLoading) return;
 
+  const metricId = metricArg?.id || selectedMetric?.id;
+  const metric = nodes.find((n) => n.id === metricId);
 
-  // UI: сразу откроем модалку и покажем загрузку
-  // Сначала проверяем баланс AI-кредитов
-try {
-  const hasQuota = await checkServerQuota("experiment");
+  if (!metric) return;
 
-  if (!hasQuota) {
-    setCreditsModalMode("insufficient");
-    setShowCreditsModal(true);
+  // Показываем сохранённый эксперимент бесплатно
+  if (metric.data?.metricExperiment && !forceRegenerate) {
+    setSelectedMetric(metric);
+    setExperiment(metric.data.metricExperiment);
+    setShowExperimentModal(true);
     return;
   }
-} catch (err) {
-  console.error("Experiment quota check error:", err);
-  alert("Не удалось проверить баланс AI-кредитов.");
-  return;
-}
 
-// Открываем окно эксперимента только при достаточном балансе
-setShowExperimentModal(true);
-setExperimentLoading(true);
-setExperiment(null);
+  if (!session?.user?.id) {
+    setAuthModalReason("experiment");
+    setAuthModalOpen(true);
+    return;
+  }
 
-try {
-    // найдем parent + children
-    const parentEdge = edges.find((e) => e.target === selectedMetric.id);
-    const parent = parentEdge ? nodes.find((n) => n.id === parentEdge.source) : null;
+  setExperimentLoading(true);
 
-    const childEdges = edges.filter((e) => e.source === selectedMetric.id);
+  try {
+    const hasQuota = await checkServerQuota("experiment");
+
+    if (!hasQuota) {
+      setCreditsModalMode("insufficient");
+      setShowCreditsModal(true);
+      return;
+    }
+  } catch (err) {
+    console.error("Experiment quota check error:", err);
+    alert("Не удалось проверить баланс AI-кредитов.");
+    return;
+  } finally {
+    setExperimentLoading(false);
+  }
+
+  setSelectedMetric(metric);
+  setShowExperimentModal(true);
+  setExperimentLoading(true);
+
+  try {
+    const parentEdge = edges.find(
+      (e) => e.target === metric.id
+    );
+
+    const parent = parentEdge
+      ? nodes.find((n) => n.id === parentEdge.source)
+      : null;
+
+    const childEdges = edges.filter(
+      (e) => e.source === metric.id
+    );
+
     const children = childEdges
       .map((e) => nodes.find((n) => n.id === e.target))
       .filter(Boolean);
-    // payload
+
     const payload = {
       productDescription: brief ? brief : { raw: description },
-      metric: normalizeNode(selectedMetric),
+      metric: normalizeNode(metric),
       parent: normalizeNode(parent),
       children: children.map(normalizeNode),
     };
 
-    
-    // запрос к AI
     const res = await generateExperiment(payload, model);
     const exp = res.experiment;
 
-    // кладем данные в стейт
-    setExperiment({
+    if (!exp || typeof exp !== "object" || exp.error) {
+      throw new Error("Не удалось получить эксперимент");
+    }
+
+    const metricExperiment = {
       hypothesis: exp.hypothesis ?? "",
       variant: exp.variant ?? "",
-      successMetrics: Array.isArray(exp.successMetrics) ? exp.successMetrics : [],
-      guardrails: Array.isArray(exp.guardrails) ? exp.guardrails : [],
+      successMetrics: Array.isArray(exp.successMetrics)
+        ? exp.successMetrics
+        : [],
+      guardrails: Array.isArray(exp.guardrails)
+        ? exp.guardrails
+        : [],
       segment: exp.segment ?? "",
       duration: exp.duration ?? "",
       risks: exp.risks ?? "",
-      raw: exp, // удобно для дебага
-    });
+      raw: exp,
+    };
+
+    setExperiment(metricExperiment);
+
+    // Сохраняем эксперимент в данных метрики
+    const updatedNodes = nodes.map((n) =>
+      n.id === metric.id
+        ? {
+            ...n,
+            data: {
+              ...n.data,
+              metricExperiment,
+            },
+          }
+        : n
+    );
+
+    // Сохраняем эксперимент в JSON-дереве
+    const addExperiment = (node) => {
+      if (!node) return node;
+
+      if (node.id === metric.id) {
+        return {
+          ...node,
+          metricExperiment,
+        };
+      }
+
+      return {
+        ...node,
+        children: node.children?.map(addExperiment),
+      };
+    };
+
+    const updatedTreeData = addExperiment(treeData);
+
+    setNodes(updatedNodes);
+    setTreeData(updatedTreeData);
+
+    setSelectedMetric((prev) =>
+      prev?.id === metric.id
+        ? {
+            ...prev,
+            data: {
+              ...prev.data,
+              metricExperiment,
+            },
+          }
+        : prev
+    );
+
+    // Сохраняем существующий облачный проект
+    if (activeProjectId) {
+      await handleSaveToCloud({
+        updatedNodes,
+        updatedTreeData,
+      });
+    } else {
+      setSaveStatus("idle");
+    }
 
     ymEvent("experiment");
     await fetchServerQuota();
     setPendingFeedbackSource("experiment");
+
   } catch (e) {
     console.error(e);
-    setExperiment({
-      error: e?.message || "Ошибка генерации эксперимента",
-      raw: e,
-    });
+
+    // При ошибке сохраняем предыдущий результат
+    if (metric.data?.metricExperiment) {
+      setExperiment(metric.data.metricExperiment);
+      alert("Не удалось обновить эксперимент. Предыдущий результат сохранён.");
+    } else {
+      setExperiment({
+        error: e?.message || "Ошибка генерации эксперимента",
+      });
+    }
+
   } finally {
     setExperimentLoading(false);
   }
-  };
+};
 
   const findNodeInTree = (node, id) => {
   if (!node) return null;
@@ -3194,12 +3290,23 @@ const renderMobileTree = (node, level = 0) => {
           </button>
 
            <button
-            onClick={handleGenerateExperiment}
-            disabled={!selectedMetric || experimentLoading}
-            className="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-100 transition"
+            onClick={(e) => {
+            e.stopPropagation();
+
+            const rfNode = nodes.find((n) => n.id === node.id);
+
+            if (!rfNode) return;
+
+            setMobileMenuFor(null);
+            handleGenerateExperiment(rfNode);
+            }}
+            disabled={experimentLoading}
+            className="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-100 transition disabled:opacity-50"
             >
-            🧪 Эксперимент
-            </button> 
+            {nodes.find((n) => n.id === node.id)?.data?.metricExperiment
+            ? "🧪 Посмотреть эксперимент"
+            : "🧪 Эксперимент"}
+            </button>
   
           <button
             onClick={(e) => {
@@ -3645,11 +3752,15 @@ const currentNextStepsCopy =
     </button>
 
     <button
-      onClick={handleGenerateExperiment}
+      onClick={() => handleGenerateExperiment()}
       disabled={experimentLoading}
       className="bg-[#ffdd2d] text-black px-4 py-2 rounded-lg hover:brightness-95 disabled:opacity-50 font-medium"
     >
-      {experimentLoading ? "Генерация…" : "Эксперимент"}
+      {experimentLoading
+  ? "Генерация…"
+  : selectedMetric.data?.metricExperiment
+    ? "Посмотреть эксперимент"
+    : "Эксперимент"}
     </button>
 
     <button
@@ -4117,11 +4228,15 @@ const currentNextStepsCopy =
             </button>
 
             <button
-              onClick={handleGenerateExperiment}
+              onClick={() => handleGenerateExperiment()}
               disabled={experimentLoading}
               className="mt-2 w-full bg-gray-100 text-gray-800 border border-gray-200 px-3 py-2 rounded-xl hover:bg-gray-200 disabled:opacity-50 transition font-medium text-sm"
             >
-              {experimentLoading ? "Генерация…" : "Эксперимент"}
+              {experimentLoading
+              ? "Генерация…"
+              : selectedMetric.data?.metricExperiment
+              ? "Посмотреть эксперимент"
+              : "Эксперимент"}
             </button>  
 
             <div className="grid grid-cols-2 gap-2 mt-4 mb-5">
@@ -5516,7 +5631,24 @@ const currentNextStepsCopy =
 ) : null}
 
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-between items-center flex-wrap gap-3 mt-6">
+  <button
+    disabled={experimentLoading || !selectedMetric}
+    onClick={() => {
+      const cost = CREDIT_COSTS.experiment[model];
+
+      if (
+        window.confirm(
+          `Сгенерировать эксперимент заново за ${cost} AI-кредит(ов)?`
+        )
+      ) {
+        handleGenerateExperiment(selectedMetric, true);
+      }
+    }}
+    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    🔄 Сгенерировать заново ({CREDIT_COSTS.experiment[model]} кр.)
+  </button>
         <button
         onClick={() => {
         setShowExperimentModal(false);
