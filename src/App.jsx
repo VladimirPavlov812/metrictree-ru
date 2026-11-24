@@ -1029,6 +1029,38 @@ useEffect(() => {
   const nodeWidth = 230;
   const nodeHeight = 120;
   const reactFlowWrapperRef = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [treeOpenVersion, setTreeOpenVersion] = useState(0);
+
+  useEffect(() => {
+  if (!reactFlowInstance || !treeData?.id) return;
+
+  const frame = requestAnimationFrame(() => {
+    const rootNode = reactFlowInstance.getNode(treeData.id);
+    const wrapper = reactFlowWrapperRef.current;
+
+    if (!rootNode || !wrapper) return;
+
+    const zoom = 0.8;
+    const width = wrapper.clientWidth;
+    const height = wrapper.clientHeight;
+
+    const rootX =
+      rootNode.position.x + nodeWidth / 2;
+
+    const rootY =
+      rootNode.position.y + nodeHeight / 2;
+
+    reactFlowInstance.setViewport({
+      x: width / 2 - rootX * zoom,
+      y: height * 0.2 - rootY * zoom,
+      zoom,
+    });
+  });
+
+  return () => cancelAnimationFrame(frame);
+}, [reactFlowInstance, treeData?.id, treeOpenVersion]);
+
   const getLayoutedElements = (nodes, edges, direction = "TB") => {
     const dagreGraph = new dagre.graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -1589,6 +1621,7 @@ useEffect(() => {
     setEdges(e);
     setTreeData(t);
     setBrief(b);
+    setTreeOpenVersion((prev) => prev + 1);
 
     setSelectedMetric(null);
     setInsight("");
@@ -3825,8 +3858,7 @@ const currentNextStepsCopy =
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={(params) => setEdges((eds) => addEdge(params, eds))}
-          fitView
-          fitViewOptions={{ minZoom: 0.5, maxZoom: 1 }}
+          onInit={setReactFlowInstance}
           minZoom={0.2}
           maxZoom={4}
           >
